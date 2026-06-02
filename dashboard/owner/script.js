@@ -47,11 +47,15 @@ function showAlert(msg, type = "error") {
 
 /* ── API caller ─────────────────────────────────────────── */
 async function apiFetch(payload) {
-  const res  = await fetch(CONFIG.API_URL, {
-    method  : "POST",
-    headers : { "Content-Type": "application/json" },
-    body    : JSON.stringify({ ...payload, sessionUserId: session.userId }),
-  });
+  const formData = new URLSearchParams();
+
+formData.append("action", "getUsers");
+formData.append("sessionUserId", session.userId);
+
+const res = await fetch(CONFIG.API_URL, {
+  method: "POST",
+  body: formData
+});
   return res.json();
 }
 
