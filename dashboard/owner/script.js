@@ -73,8 +73,12 @@ async function fetchUsers() {
     console.log(data);
     if (!data.success) throw new Error(data.message);
     allUsers = data.users || [];
-    updateStats();
-    renderTable();
+
+tableLoading.hidden = true;
+tableLoading.style.display = "none";
+
+updateStats();
+renderTable();
   } catch (err) {
     console.error(err);
     showAlert("Gagal memuat data: " + err.message);
