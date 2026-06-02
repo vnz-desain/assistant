@@ -11,7 +11,7 @@ const CONFIG = {
   VERSION: "2.1.0",
   
   // Masukkan URL Web App Google Apps Script Anda di bawah ini setelah deployment
-  API_URL: "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec",
+  API_URL: "https://script.google.com/macros/s/AKfycbyyyHbiZJRsgdTt8iJKAmN_km8DAUHSkqgTQEgkeuYChF6Mi8e7wDb5J1E_uFw1oUmINQ/exec",
   
   ROLES: {
     OWNER: "owner",
