@@ -57,7 +57,6 @@ const SITE = {
         type  : "link",
         label : "Portfolio ↗",
         href  : "https://evanalmunawar.my.id",
-        extern: true,
       },
     ],
   },
