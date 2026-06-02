@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>MEA Asisten Trading</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,600&family=Space+Mono&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="style.css">
+  
+  <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+</head>
+<body>
+
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">MEA</div>
+      <button class="close-btn" onclick="toggleSidebar()">✕</button>
+    </div>
+    <div class="sidebar-user">
+      <div class="avatar">US</div>
+      <div class="user-info">
+        <span class="user-name" id="ui-fullname">Loading...</span>
+        <span class="user-status" id="ui-username">@loading</span>
+      </div>
+    </div>
+    <ul class="sidebar-menu">
+      <li onclick="newConversation()">+ Percakapan Baru</li>
+      <li onclick="alert('Fitur History dalam pengembangan')">History Trading</li>
+      <li onclick="logout()">Logout</li>
+    </ul>
+  </nav>
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+  <main class="app-container">
+    <header class="top-nav">
+      <button class="hamburger-btn" onclick="toggleSidebar()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+      <div class="nav-title-wrapper">
+        <h1 class="nav-title">MEA Asisten<br><span>Trading</span></h1>
+        <div class="pulse-indicator"></div>
+      </div>
+      <div class="spacer"></div>
+    </header>
+
+    <div class="chat-area" id="chatArea">
+      <div class="welcome-message">Sistem aktif. Masukkan parameter untuk analisis teknikal.</div>
+    </div>
+
+    <div class="input-panel">
+      <form id="tradingForm">
+        <div class="form-row">
+          <input type="text" id="ticker" placeholder="KODE SAHAM (e.g., BBCA)" required class="mea-input uppercase-input">
+        </div>
+        <div class="form-row split">
+          <select id="tradeType" class="mea-input">
+            <option value="day">Day Trade (Harian)</option>
+            <option value="swing">Swing Trade</option>
+            <option value="invest">Investing</option>
+          </select>
+          <select id="riskStyle" class="mea-input risk-select">
+            <option value="normal">Normal (40/60)</option>
+            <option value="agresif">Agresif (70/30)</option>
+          </select>
+        </div>
+        <div class="form-row multi-input">
+          <div class="input-group">
+            <label class="toggle-label">
+              <span id="priceLabel">Hrg Skrg</span>
+              <label class="switch">
+                <input type="checkbox" id="priceToggle" onchange="updatePriceLabel()">
+                <span class="slider"></span>
+              </label>
+              <span>Open</span>
+            </label>
+            <input type="number" id="openPrice" placeholder="0" required class="mea-input">
+          </div>
+          <div class="input-group">
+            <label>Tutup</label>
+            <input type="number" id="closePrice" placeholder="0" required class="mea-input">
+          </div>
+        </div>
+        <div class="form-row multi-input">
+          <div class="input-group">
+            <label>AVG (Opsional)</label>
+            <input type="number" id="avgPrice" placeholder="Opsional" class="mea-input">
+          </div>
+          <div class="input-group">
+            <label>Lot (Opsional)</label>
+            <input type="number" id="lots" placeholder="0" class="mea-input">
+          </div>
+        </div>
+        <div class="form-row multi-input">
+          <div class="input-group">
+            <label>Tot. Bid</label>
+            <input type="number" id="bidVol" placeholder="0" class="mea-input">
+          </div>
+          <div class="input-group">
+            <label>Tot. Ask</label>
+            <input type="number" id="askVol" placeholder="0" class="mea-input">
+          </div>
+        </div>
+        <button type="submit" class="submit-btn" id="submitBtn">ANALISIS SEKARANG</button>
+      </form>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
