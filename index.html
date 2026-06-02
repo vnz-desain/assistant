@@ -3,267 +3,227 @@
 
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--
+    ============================================================
+    MEA ASSISTANT V2 — INDEX
+    ============================================================
+    File   : index.html
+    Version: 2.0 (refactored)
 
-<title>MEA Assistant V2</title>
+    Load order yang benar:
+      1. css/style.css        → styling dasar + variabel
+      2. Google Fonts         → typography
+      3. config/theme.js      → konfigurasi asset & animasi
+      4. js/script.js         → logika (butuh THEME tersedia)
+    ============================================================
+  -->
 
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MEA Assistant — Business AI, Trading AI, Developer AI. Built for the MEA Ecosystem.">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <title>MEA Assistant V2</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
+  <!-- ===================== STYLESHEET ===================== -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- ===================== TYPOGRAPHY ===================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:wght@300;400;500&family=Space+Mono&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- ======== PRELOAD hint untuk browser — gambar hero ======== -->
+  <!-- Browser akan mulai download lebih awal, mengurangi blank BG -->
+  <link rel="preload" as="image" href="images/hero-bg.webp">
 
 </head>
 
 <body>
 
-<div class="hero-bg" aria-hidden="true">
-  <img
-    src="images/hero-bg.webp"
-    alt=""
-    class="hero-bg-img"
-    fetchpriority="high"
-    decoding="async"
-    onerror="this.style.display='none'"
-  />
-</div>
+  <!-- ========================================================
+       HERO BACKGROUND
+       ========================================================
 
-<header class="navbar">
+       Arsitektur 3 layer:
+         1. .hero-bg-fallback  → gradient (selalu ada, fallback)
+         2. .hero-bg-img       → gambar, di-inject src oleh JS
+         3. .hero-bg::after    → overlay CSS (aksen merah + gelap)
 
-<div class="logo">
-MEA
-</div>
+       Dengan struktur ini:
+         - Jika JS belum selesai → gradient terlihat (tidak putih)
+         - Jika gambar gagal     → gradient tetap tampil rapi
+         - Jika gambar berhasil  → fade-in halus dari gradient ke gambar
+       ======================================================== -->
+
+  <div class="hero-bg" aria-hidden="true">
 
-<nav>
+    <!-- Layer 1: Fallback gradient — always visible as base layer -->
+    <div class="hero-bg-fallback"></div>
 
-<a href="#platform">Platform</a>
-<a href="#status">Status</a>
+    <!-- Layer 2: Hero image — src di-set oleh JS dari THEME config -->
+    <!-- src dikosongkan di HTML, JS yang mengisi setelah validasi -->
+    <img
+      class="hero-bg-img"
+      alt=""
+      fetchpriority="high"
+      decoding="async"
+    >
 
-<a href="login.html">
-Login
-</a>
+  </div><!-- /.hero-bg -->
 
-<a href="register.html">
-Register
-</a>
 
-<a href="https://evanalmunawar.my.id">
-Portfolio ↗
-</a>
+  <!-- ========================================================
+       NAVBAR
+       ======================================================== -->
 
-</nav>
+  <header class="navbar">
 
-</header>
+    <div class="logo">MEA</div>
 
-<section class="hero">
+    <nav>
+      <a href="#platform">Platform</a>
+      <a href="#status">Status</a>
+      <a href="login.html">Login</a>
+      <a href="register.html">Register</a>
+      <a href="https://evanalmunawar.my.id" target="_blank" rel="noopener noreferrer">Portfolio ↗</a>
+    </nav>
 
-<span class="hero-tag">
-MEA ECOSYSTEM PLATFORM
-</span>
+  </header><!-- /.navbar -->
 
-<h1>
 
-MEA
+  <!-- ========================================================
+       HERO SECTION
+       ======================================================== -->
 
-<span>
-ASSISTANT
-</span>
+  <section class="hero">
 
-</h1>
+    <span class="hero-tag">MEA ECOSYSTEM PLATFORM</span>
 
-<p>
+    <h1>
+      MEA
+      <span>ASSISTANT</span>
+    </h1>
 
-Business Assistant.
-AI Trading.
-AI Developer.
+    <p>
+      Business Assistant.
+      AI Trading.
+      AI Developer.<br>
+      Built for the MEA Ecosystem.
+    </p>
 
-Built for the MEA Ecosystem.
+    <div class="hero-buttons">
+      <a href="login.html" class="btn-primary">ACCESS PLATFORM</a>
+      <a href="#platform" class="btn-secondary">EXPLORE</a>
+    </div>
 
-</p>
+  </section><!-- /.hero -->
 
-<div class="hero-buttons">
 
-<a href="login.html" class="btn-primary">
-ACCESS PLATFORM
-</a>
+  <!-- ========================================================
+       PLATFORM SECTION
+       ======================================================== -->
 
-<a href="#platform" class="btn-secondary">
-EXPLORE
-</a>
+  <section id="platform" class="platform">
 
-</div>
+    <div class="section-head">
+      <span>PLATFORM MODULES</span>
+      <h2>Choose Your Assistant</h2>
+    </div>
 
-</section>
+    <div class="cards">
 
-<section id="platform" class="platform">
+      <!-- Card: Business Assistant -->
+      <div class="card">
+        <div class="card-icon">🏢</div>
+        <h3>Business Assistant</h3>
+        <p>Business planning, strategy, and operational support.</p>
+        <span class="badge">COMING SOON</span>
+      </div>
 
-<div class="section-head">
+      <!-- Card: AI Trading -->
+      <div class="card">
+        <div class="card-icon">📈</div>
+        <h3>AI Trading</h3>
+        <p>Trading analysis, risk management, and market insights.</p>
+        <span class="badge">IN DEVELOPMENT</span>
+      </div>
 
-<span>
-PLATFORM MODULES
-</span>
+      <!-- Card: AI Developer -->
+      <div class="card">
+        <div class="card-icon">💻</div>
+        <h3>AI Developer</h3>
+        <p>Specialized AI for building and maintaining the MEA ecosystem.</p>
+        <span class="badge owner">OWNER ONLY</span>
+      </div>
 
-<h2>
-Choose Your Assistant
-</h2>
+    </div><!-- /.cards -->
 
-</div>
+  </section><!-- /.platform -->
 
-<div class="cards">
 
-<div class="card">
+  <!-- ========================================================
+       STATUS SECTION
+       ======================================================== -->
 
-<div class="card-icon">
-🏢
-</div>
+  <section id="status" class="status">
 
-<h3>
-Business Assistant
-</h3>
+    <div class="status-card">
+      <span>VERSION</span>
+      <h3>V2</h3>
+    </div>
 
-<p>
-Business planning, strategy,
-and operational support.
-</p>
+    <div class="status-card">
+      <span>PLATFORM</span>
+      <h3>ACTIVE</h3>
+    </div>
 
-<span class="badge">
-COMING SOON
-</span>
+    <div class="status-card">
+      <span>ACCESS</span>
+      <h3>REGISTER REQUIRED</h3>
+    </div>
 
-</div>
+  </section><!-- /.status -->
 
-<div class="card">
 
-<div class="card-icon">
-📈
-</div>
+  <!-- ========================================================
+       CTA SECTION
+       ======================================================== -->
 
-<h3>
-AI Trading
-</h3>
+  <section class="cta">
 
-<p>
-Trading analysis,
-risk management,
-and market insights.
-</p>
+    <h2>READY TO ENTER<br>MEA ASSISTANT?</h2>
 
-<span class="badge">
-IN DEVELOPMENT
-</span>
+    <p>Create an account to access the MEA platform.</p>
 
-</div>
+    <div class="hero-buttons">
+      <a href="login.html" class="btn-primary">LOGIN</a>
+      <a href="register.html" class="btn-secondary">REGISTER</a>
+    </div>
 
-<div class="card">
+  </section><!-- /.cta -->
 
-<div class="card-icon">
-💻
-</div>
 
-<h3>
-AI Developer
-</h3>
+  <!-- ========================================================
+       FOOTER
+       ======================================================== -->
 
-<p>
-Specialized AI for building
-and maintaining the MEA ecosystem.
-</p>
+  <footer>
+    <h3>MEA ASSISTANT</h3>
+    <p>Part of the MEA Ecosystem</p>
+  </footer><!-- /footer -->
 
-<span class="badge owner">
-OWNER ONLY
-</span>
 
-</div>
-
-</div>
-
-</section>
-
-<section id="status" class="status">
-
-<div class="status-card">
-
-<span>
-VERSION
-</span>
-
-<h3>
-V2
-</h3>
-
-</div>
-
-<div class="status-card">
-
-<span>
-PLATFORM
-</span>
-
-<h3>
-ACTIVE
-</h3>
-
-</div>
-
-<div class="status-card">
-
-<span>
-ACCESS
-</span>
-
-<h3>
-REGISTER REQUIRED
-</h3>
-
-</div>
-
-</section>
-
-<section class="cta">
-
-<h2>
-
-READY TO ENTER
-MEA ASSISTANT?
-
-</h2>
-
-<p>
-
-Create an account to access
-the MEA platform.
-
-</p>
-
-<div class="hero-buttons">
-
-<a href="login.html" class="btn-primary">
-LOGIN
-</a>
-
-<a href="register.html" class="btn-secondary">
-REGISTER
-</a>
-
-</div>
-
-</section>
-
-<footer>
-
-<h3>
-MEA ASSISTANT
-</h3>
-
-<p>
-Part of the MEA Ecosystem
-</p>
-
-</footer>
-
-<script src="js/script.js"></script>
+  <!-- ========================================================
+       SCRIPTS
+       Load order PENTING:
+         1. config/theme.js  → harus lebih dulu (defines THEME)
+         2. js/script.js     → konsumsi THEME
+       ======================================================== -->
+  <script src="config/theme.js"></script>
+  <script src="js/script.js"></script>
 
 </body>
-  </html>
+</html>
