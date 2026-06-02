@@ -149,7 +149,7 @@ function buildRow(u) {
     <div class="td-actions">
       ${canApprove && !isSelf ? `<button class="btn-action approve" data-action="approve" data-id="${u.ID}">APPROVE</button>` : ""}
       ${canReject  && !isSelf ? `<button class="btn-action reject"  data-action="reject"  data-id="${u.ID}">REJECT</button>`  : ""}
-      ${!isSelf ? `<button class="btn-action role" data-action="role" data-id="${u.ID}" data-name="${esc(u.FullName)}" data-role="${role}">ROLE</button>` : `<span style="font-family:var(--f-mono);font-size:0.5rem;color:var(--clr-grey)">KAMU</span>`}
+      ${isSelf ? `<span style="font-family:var(--f-mono);font-size:0.5rem;color:var(--clr-grey)">KAMU</span>` : ""}
     </div>
   </td>
 </tr>`;
