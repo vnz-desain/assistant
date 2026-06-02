@@ -11,7 +11,7 @@ const CONFIG = {
   VERSION      : "2.1.0",
 
   // ── GANTI dengan URL Apps Script Web App setelah deploy ──
-  API_URL      : "GANTI_DENGAN_URL_APPS_SCRIPT",
+  API_URL      : "https://script.google.com/macros/s/AKfycbyyyHbiZJRsgdTt8iJKAmN_km8DAUHSkqgTQEgkeuYChF6Mi8e7wDb5J1E_uFw1oUmINQ/exec",
 
   // Roles
   ROLES: {
