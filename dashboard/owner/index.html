@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050505">
+  <title>Owner Dashboard — MEA Assistant</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="grain" aria-hidden="true"></div>
+  <div class="dash-bg" aria-hidden="true"></div>
+
+  <!-- ─── TOPBAR ─── -->
+  <header class="topbar" id="topbar">
+    <div class="topbar-inner">
+      <span class="topbar-logo">MEA</span>
+      <div class="topbar-info">
+        <span class="topbar-badge owner">OWNER</span>
+        <span class="topbar-name" id="topbarName">—</span>
+      </div>
+      <button class="topbar-logout" id="logoutBtn" aria-label="Logout">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/>
+        </svg>
+        LOGOUT
+      </button>
+    </div>
+  </header>
+
+  <!-- ─── MAIN ─── -->
+  <main class="dash-main">
+
+    <!-- Page header -->
+    <div class="dash-header">
+      <div>
+        <p class="dash-label">OWNER PANEL</p>
+        <h1 class="dash-title">User <span class="outline">Management</span></h1>
+      </div>
+      <button class="btn-refresh" id="refreshBtn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+          <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+        </svg>
+        REFRESH
+      </button>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="stat-bar" id="statBar">
+      <div class="stat-item">
+        <span class="stat-val" id="statTotal">—</span>
+        <span class="stat-lbl">TOTAL USER</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-val" id="statPending">—</span>
+        <span class="stat-lbl">PENDING</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-val" id="statApproved">—</span>
+        <span class="stat-lbl">APPROVED</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-val" id="statOwner">—</span>
+        <span class="stat-lbl">OWNER</span>
+      </div>
+    </div>
+
+    <!-- Filter bar -->
+    <div class="filter-bar">
+      <div class="filter-tabs" id="filterTabs">
+        <button class="filter-tab active" data-filter="all">SEMUA</button>
+        <button class="filter-tab" data-filter="pending">PENDING</button>
+        <button class="filter-tab" data-filter="approved">APPROVED</button>
+        <button class="filter-tab" data-filter="rejected">REJECTED</button>
+      </div>
+      <input class="filter-search" type="search" id="searchInput" placeholder="Cari nama, username, email...">
+    </div>
+
+    <!-- Alert -->
+    <div class="dash-alert" id="dashAlert" hidden></div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+      <div class="table-loading" id="tableLoading">
+        <span class="spinner"></span>
+        <span>Memuat data...</span>
+      </div>
+
+      <table class="user-table" id="userTable" hidden>
+        <thead>
+          <tr>
+            <th>USER</th>
+            <th>EMAIL</th>
+            <th>ROLE</th>
+            <th>STATUS</th>
+            <th>BERGABUNG</th>
+            <th>AKSI</th>
+          </tr>
+        </thead>
+        <tbody id="userTableBody"></tbody>
+      </table>
+
+      <div class="table-empty" id="tableEmpty" hidden>
+        <p>Tidak ada user ditemukan.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ─── MODAL: Change Role ─── -->
+  <div class="modal-overlay" id="modalOverlay" hidden aria-modal="true" role="dialog">
+    <div class="modal">
+      <h3 class="modal-title">UBAH ROLE</h3>
+      <p class="modal-desc" id="modalDesc">—</p>
+      <input type="hidden" id="modalUserId">
+      <div class="modal-roles">
+        <label class="role-opt">
+          <input type="radio" name="newRole" value="member"> MEMBER
+        </label>
+        <label class="role-opt">
+          <input type="radio" name="newRole" value="admin"> ADMIN
+        </label>
+        <label class="role-opt">
+          <input type="radio" name="newRole" value="owner"> OWNER
+        </label>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-modal-cancel" id="modalCancel">BATAL</button>
+        <button class="btn-modal-confirm" id="modalConfirm">SIMPAN</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/theme/config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
