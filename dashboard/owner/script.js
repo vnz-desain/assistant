@@ -49,16 +49,19 @@ function showAlert(msg, type = "error") {
 async function apiFetch(payload) {
   const formData = new URLSearchParams();
 
-formData.append("action", "getUsers");
-formData.append("sessionUserId", session.userId);
+  Object.keys(payload).forEach(key => {
+    formData.append(key, payload[key]);
+  });
 
-const res = await fetch(CONFIG.API_URL, {
-  method: "POST",
-  body: formData
-});
-  return res.json();
+  formData.append("sessionUserId", session.userId);
+
+  const res = await fetch(CONFIG.API_URL, {
+    method: "POST",
+    body: formData
+  });
+
+  return await res.json();
 }
-
 /* ── Fetch users ────────────────────────────────────────── */
 async function fetchUsers() {
   tableLoading.hidden = false;
@@ -66,7 +69,8 @@ async function fetchUsers() {
   tableEmpty.hidden   = true;
 
   try {
-    const data = await apiFetch({ action: "getUsers" });
+    const data = await apiFetch({ action: "getUsers" }); 
+    console.log(data);
     if (!data.success) throw new Error(data.message);
     allUsers = data.users || [];
     updateStats();
