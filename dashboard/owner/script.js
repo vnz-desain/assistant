@@ -93,6 +93,7 @@ function updateStats() {
 /* ── Render ─────────────────────────────────────────────── */
 function renderTable() {
   tableLoading.hidden = true;
+  tableLoading.style.display = "none";
 
   let filtered = allUsers;
 
