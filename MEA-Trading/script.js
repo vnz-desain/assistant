@@ -3,7 +3,7 @@
 // ==========================================
 
 // MASUKKAN URL GOOGLE APPS SCRIPT WEB APP DI BAWAH INI
-const GAS_API_URL = "MASUKKAN_URL_WEB_APP_DARI_GOOGLE_APPS_SCRIPT_DISINI";
+const GAS_API_URL = "https://script.google.com/macros/s/AKfycbw3rOuckASOEq-ThYO0FcoyaNNkXM7FOH4cgWUBBs39jplrkgAShBQjW8Mq8fSRLdCqMA/exec";
 
 let currentUser = null;
 let currentFullName = null;
