@@ -149,18 +149,18 @@ async function handleRegister() {
   try {
     const hash = await sha256(password);
 
-    const res = await fetch(CONFIG.API_URL, {
-      method  : "POST",
-      headers : { "Content-Type": "application/json" },
-      body    : JSON.stringify({
-        action   : "register",
-        fullName : fullName,
-        username : username,
-        email    : email,
-        password : hash,
-      }),
-    });
+    const formData = new URLSearchParams();
 
+formData.append("action", "register");
+formData.append("fullName", fullName);
+formData.append("username", username);
+formData.append("email", email);
+formData.append("passwordHash", hash);
+
+const res = await fetch(CONFIG.API_URL, {
+  method: "POST",
+  body: formData
+});
     const data = await res.json();
 
     if (!data.success) {
