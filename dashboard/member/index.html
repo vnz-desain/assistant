@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050505">
+  <title>Dashboard — MEA Assistant</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="dash-bg" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <span class="topbar-logo">MEA</span>
+      <div class="topbar-info">
+        <span class="topbar-badge member">MEMBER</span>
+        <span class="topbar-name" id="topbarName">—</span>
+      </div>
+      <button class="topbar-logout" id="logoutBtn" aria-label="Logout">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/>
+        </svg>
+        LOGOUT
+      </button>
+    </div>
+  </header>
+
+  <main class="dash-main">
+    <div class="welcome-wrap">
+      <p class="welcome-tag">MEA ECOSYSTEM PLATFORM</p>
+      <h1 class="welcome-name">
+        HALO,<br><span class="outline" id="welcomeName">—</span>
+      </h1>
+      <p class="welcome-desc">
+        Selamat datang di MEA Assistant V2. Pilih modul yang ingin kamu gunakan.
+      </p>
+
+      <div class="module-grid">
+        <div class="module-card">
+          <div class="module-icon">💼</div>
+          <div class="module-name">BUSINESS</div>
+          <div class="module-desc">AI Business Assistant</div>
+          <div class="module-status">COMING SOON</div>
+        </div>
+        <div class="module-card">
+          <div class="module-icon">📈</div>
+          <div class="module-name">TRADING</div>
+          <div class="module-desc">AI Trading Assistant</div>
+          <div class="module-status">COMING SOON</div>
+        </div>
+        <div class="module-card">
+          <div class="module-icon">💻</div>
+          <div class="module-name">DEVELOPER</div>
+          <div class="module-desc">AI Developer Assistant</div>
+          <div class="module-status">COMING SOON</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../../assets/theme/config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
