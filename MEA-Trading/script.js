@@ -1,0 +1,138 @@
+// ==========================================
+// FILE: script.js (Taruh di root/MEA-Trading/)
+// ==========================================
+
+// MASUKKAN URL GOOGLE APPS SCRIPT WEB APP DI BAWAH INI
+const GAS_API_URL = "MASUKKAN_URL_WEB_APP_DARI_GOOGLE_APPS_SCRIPT_DISINI";
+
+let currentUser = null;
+let currentFullName = null;
+
+// 1. Cek Login Otomatis saat halaman dimuat
+document.addEventListener("DOMContentLoaded", function() {
+    // Asumsi Landing Page Anda menyimpan data login di localStorage dengan key 'mea_username'
+    currentUser = localStorage.getItem("mea_username");
+    currentFullName = localStorage.getItem("mea_fullname") || "Pengguna MEA";
+
+    if (!currentUser) {
+        // Jika belum login, tendang ke folder root/login/
+        window.location.href = "../login/";
+    } else {
+        // Tampilkan data user di sidebar
+        document.getElementById('ui-fullname').innerText = currentFullName;
+        document.getElementById('ui-username').innerText = "@" + currentUser;
+    }
+});
+
+// 2. Fungsi Logout
+function logout() {
+    localStorage.removeItem("mea_username");
+    localStorage.removeItem("mea_fullname");
+    window.location.href = "../login/";
+}
+
+// 3. UI Interactions
+function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebarOverlay').classList.toggle('open');
+}
+
+function newConversation() {
+    document.getElementById('chatArea').innerHTML = '<div class="welcome-message">Sistem direstart. Siap untuk analisis baru.</div>';
+    toggleSidebar();
+}
+
+function updatePriceLabel() {
+    const isChecked = document.getElementById('priceToggle').checked;
+    const label = document.getElementById('priceLabel');
+    label.innerText = isChecked ? "Open" : "Sekarang";
+    label.style.color = isChecked ? "var(--white-dim)" : "var(--white)";
+}
+
+// 4. Submit Analisis ke Backend GAS
+document.getElementById('tradingForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const btn = document.getElementById('submitBtn');
+    btn.innerText = "MENGANALISIS...";
+    btn.disabled = true;
+
+    // Kumpulkan data form
+    const dataPayload = {
+        username: currentUser,
+        ticker: document.getElementById('ticker').value,
+        type: document.getElementById('tradeType').value,
+        style: document.getElementById('riskStyle').value,
+        openPrice: document.getElementById('openPrice').value,
+        closePrice: document.getElementById('closePrice').value,
+        avgPrice: document.getElementById('avgPrice').value || "",
+        lots: document.getElementById('lots').value || "",
+        bidVol: document.getElementById('bidVol').value || "",
+        askVol: document.getElementById('askVol').value || ""
+    };
+
+    appendMessage('user', `REQ: ${dataPayload.ticker.toUpperCase()} | ${dataPayload.type.toUpperCase()} | ${dataPayload.style.toUpperCase()}`);
+
+    try {
+        // Fetch ke Google Apps Script
+        const response = await fetch(GAS_API_URL, {
+            method: 'POST',
+            // Gunakan text/plain untuk bypass CORS preflight pada GAS
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(dataPayload)
+        });
+
+        const result = await response.json();
+        
+        if (result.status === 'success') {
+            appendMessage('ai', result.data, dataPayload.ticker);
+        } else {
+            appendMessage('ai', "Error dari server: " + result.message);
+        }
+    } catch (error) {
+        appendMessage('ai', "Gagal terhubung ke AI. Pastikan URL API sudah benar. Details: " + error.message);
+    } finally {
+        btn.innerText = "ANALISIS SEKARANG";
+        btn.disabled = false;
+    }
+});
+
+// 5. Append Message & Chart UI
+function appendMessage(sender, text, ticker = null) {
+    const chatArea = document.getElementById('chatArea');
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `msg-container msg-${sender}`;
+    
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    
+    if(sender === 'ai') {
+        const chartId = 'chart-' + Math.random().toString(36).substr(2, 9);
+        bubble.innerHTML = `<pre>${text}</pre><div id="${chartId}" class="chart-container"></div>`;
+        msgDiv.appendChild(bubble);
+        chatArea.appendChild(msgDiv);
+        if(ticker) renderDummyChart(chartId);
+    } else {
+        bubble.innerText = text;
+        msgDiv.appendChild(bubble);
+        chatArea.appendChild(msgDiv);
+    }
+    
+    chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+// Render chart dari lightweight-charts
+function renderDummyChart(containerId) {
+    const chartOptions = { layout: { textColor: '#9A9690', background: { type: 'solid', color: '#111111' } }, grid: { vertLines: { color: 'rgba(255, 255, 255, 0.05)' }, horzLines: { color: 'rgba(255, 255, 255, 0.05)' } }, timeScale: { borderColor: 'rgba(255, 255, 255, 0.1)' } };
+    const chart = LightweightCharts.createChart(document.getElementById(containerId), chartOptions);
+    const candlestickSeries = chart.addCandlestickSeries({ upColor: '#F0EDE8', downColor: '#C41E3A', borderVisible: false, wickUpColor: '#F0EDE8', wickDownColor: '#C41E3A' });
+    
+    candlestickSeries.setData([
+        { time: '2026-05-22', open: 120, high: 125, low: 118, close: 122 },
+        { time: '2026-05-23', open: 122, high: 130, low: 120, close: 128 },
+        { time: '2026-05-24', open: 128, high: 135, low: 125, close: 130 },
+        { time: '2026-05-25', open: 130, high: 132, low: 122, close: 125 },
+        { time: '2026-05-26', open: 125, high: 140, low: 124, close: 138 },
+    ]);
+    chart.timeScale().fitContent();
+}
