@@ -121,52 +121,50 @@ function validate() {
 
 /* ── Submit ─────────────────────────────────────────────── */
 async function handleLogin() {
-  if (!validate()) return;
+if (!validate()) return;
 
-  const identifier = document.getElementById("identifier").value.trim();
-  const password   = document.getElementById("password").value;
+const identifier = document.getElementById("identifier").value.trim();
+const password   = document.getElementById("password").value;
 
-  setLoading(true);
+setLoading(true);
 
-  try {
-    const hash = await sha256(password);
+try {
+const hash = await sha256(password);
 
-    const res = await fetch(CONFIG.API_URL, {
-      method  : "POST",
-      headers : { "Content-Type": "application/json" },
-      body    : JSON.stringify({
-        action     : "login",
-        identifier : identifier,
-        password   : hash,
-      }),
-    });
+const formData = new URLSearchParams();
+formData.append("action", "login");
+formData.append("identifier", identifier);
+formData.append("passwordHash", hash);
 
-    const data = await res.json();
+const res = await fetch(CONFIG.API_URL, {
+  method: "POST",
+  body: formData
+});
 
-    if (!data.success) {
-      // Handle specific status codes from Apps Script
-      if (data.code === "PENDING") {
-        showAlert("Akun masih menunggu persetujuan administrator.", "warning");
-      } else if (data.code === "REJECTED") {
-        showAlert("Akun kamu telah ditolak. Hubungi administrator.", "error");
-      } else {
-        showAlert(data.message || "Username/email atau password salah.");
-      }
-      setLoading(false);
-      return;
-    }
+const data = await res.json();
 
-    // Success
-    saveSession(data.user);
-    redirectByRole(data.user.role);
-
-  } catch (err) {
-    console.error("Login error:", err);
-    showAlert("Gagal terhubung ke server. Coba lagi.");
-    setLoading(false);
+if (!data.success) {
+  if (data.code === "PENDING") {
+    showAlert("Akun masih menunggu persetujuan administrator.", "warning");
+  } else if (data.code === "REJECTED") {
+    showAlert("Akun kamu telah ditolak. Hubungi administrator.", "error");
+  } else {
+    showAlert(data.message || "Username/email atau password salah.");
   }
+
+  setLoading(false);
+  return;
 }
 
+saveSession(data.user);
+redirectByRole(data.user.role);
+
+} catch (err) {
+console.error("Login error:", err);
+showAlert("Gagal terhubung ke server. Coba lagi.");
+setLoading(false);
+}
+}
 /* ── Event listeners ────────────────────────────────────── */
 document.getElementById("loginBtn").addEventListener("click", handleLogin);
 
