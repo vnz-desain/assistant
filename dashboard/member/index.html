@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workspace Core — MEA Assistant V2</title>
+  <link rel="stylesheet" href="../owner/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono&display=swap" rel="stylesheet">
+  <style>
+    .welcome-card { background: var(--clr-card); border: 1px solid var(--clr-border); padding: 3rem; text-align: center; margin-top: 4rem; }
+    .welcome-card h1 { font-family: var(--f-display); font-size: 3.5rem; letter-spacing: 0.05em; margin-bottom: 1rem; }
+    .welcome-card p { color: var(--clr-grey); font-size: 0.85rem; max-width: 500px; margin: 0 auto; line-height: 1.8; }
+  </style>
+</head>
+<body>
+  <div class="grain"></div>
+  <header class="dash-nav">
+    <div class="logo">MEA <span class="accent">OPERATOR</span></div>
+    <div class="user-meta">
+      <span id="sessionUser" class="mono">-</span>
+      <button id="btnLogout" class="btn-logout">DISCONNECT</button>
+    </div>
+  </header>
+
+  <main class="dash-container">
+    <div class="welcome-card">
+      <h1>ACCESS EXTENDED <span style="color:var(--clr-red)">ONLINE</span></h1>
+      <p>Welcome back to the operational core grid. Your credentials have verified active state clearance parameters. All assistant operational sub-modules are ready for directive inputs.</p>
+    </div>
+  </main>
+
+  <script src="../../assets/theme/config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
