@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050505">
+  <meta name="description" content="Daftar — MEA Assistant V2">
+  <title>Daftar — MEA Assistant</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="grain" aria-hidden="true"></div>
+  <div class="auth-bg" aria-hidden="true"></div>
+
+  <main class="auth-wrap" id="authWrap">
+
+    <div class="auth-card register-card" role="main">
+
+      <a href="/" class="auth-logo" aria-label="MEA Assistant Home">MEA</a>
+      <p class="auth-sub">ASSISTANT V2</p>
+
+      <h1 class="auth-title">BUAT<br><span class="outline">AKUN</span></h1>
+
+      <div class="auth-alert" id="alertBox" role="alert" aria-live="polite" hidden></div>
+
+      <!-- Success state (hidden by default) -->
+      <div class="success-state" id="successState" hidden>
+        <div class="success-icon" aria-hidden="true">✓</div>
+        <p class="success-msg">Registrasi berhasil. Tunggu persetujuan administrator.</p>
+        <a href="../login/" class="btn-submit" style="text-decoration:none; margin-top:1.5rem; display:flex; justify-content:center">
+          KE HALAMAN LOGIN
+        </a>
+      </div>
+
+      <!-- Form -->
+      <div class="auth-form" id="registerForm" novalidate>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label" for="fullName">NAMA LENGKAP</label>
+            <input
+              class="field-input"
+              type="text"
+              id="fullName"
+              name="fullName"
+              autocomplete="name"
+              placeholder="nama lengkap"
+              required
+            >
+            <span class="field-error" id="fullNameErr"></span>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="username">USERNAME</label>
+            <input
+              class="field-input"
+              type="text"
+              id="username"
+              name="username"
+              autocomplete="username"
+              placeholder="username"
+              required
+            >
+            <span class="field-error" id="usernameErr"></span>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="email">EMAIL</label>
+          <input
+            class="field-input"
+            type="email"
+            id="email"
+            name="email"
+            autocomplete="email"
+            placeholder="email@domain.com"
+            required
+          >
+          <span class="field-error" id="emailErr"></span>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label" for="password">PASSWORD</label>
+            <div class="input-wrap">
+              <input
+                class="field-input"
+                type="password"
+                id="password"
+                name="password"
+                autocomplete="new-password"
+                placeholder="min. 8 karakter"
+                required
+              >
+              <button class="toggle-pw" type="button" aria-label="Toggle password" id="togglePw">
+                <svg id="eyeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+            <span class="field-error" id="passwordErr"></span>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="confirmPassword">KONFIRMASI</label>
+            <div class="input-wrap">
+              <input
+                class="field-input"
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                autocomplete="new-password"
+                placeholder="ulangi password"
+                required
+              >
+              <button class="toggle-pw" type="button" aria-label="Toggle confirm password" id="toggleConfirm">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+            <span class="field-error" id="confirmPasswordErr"></span>
+          </div>
+        </div>
+
+        <!-- Password strength bar -->
+        <div class="pw-strength" id="pwStrength" hidden>
+          <div class="pw-strength-bar">
+            <div class="pw-strength-fill" id="pwFill"></div>
+          </div>
+          <span class="pw-strength-label" id="pwLabel"></span>
+        </div>
+
+        <button class="btn-submit" type="button" id="registerBtn">
+          <span class="btn-text">DAFTAR SEKARANG</span>
+          <span class="btn-loader" aria-hidden="true"></span>
+        </button>
+
+      </div>
+
+      <p class="auth-switch">
+        Sudah punya akun?
+        <a href="../login/" class="auth-link">Login di sini</a>
+      </p>
+
+    </div>
+
+    <div class="auth-deco" aria-hidden="true">
+      <span class="deco-line"></span>
+      <span class="deco-label">MEA ECOSYSTEM</span>
+      <span class="deco-line"></span>
+    </div>
+
+  </main>
+
+  <script src="../assets/theme/config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

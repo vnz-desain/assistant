@@ -1,0 +1,59 @@
+/* Register page imports and extends auth styles */
+@import url('../login/style.css');
+
+/* ─────────────────────────────────────────────────────────
+   REGISTER EXTRAS
+───────────────────────────────────────────────────────── */
+
+/* Password Strength Indicator */
+.pw-strength {
+  display        : flex;
+  align-items    : center;
+  gap            : 0.75rem;
+  margin-top     : -0.4rem;
+}
+.pw-strength-bar {
+  flex        : 1;
+  height      : 2px;
+  background  : var(--clr-border);
+  overflow    : hidden;
+}
+.pw-strength-fill {
+  height     : 100%;
+  width      : 0%;
+  transition : width var(--t-med), background var(--t-med);
+}
+.pw-strength-fill.weak   { width: 33%; background: #e74c3c; }
+.pw-strength-fill.medium { width: 66%; background: #f39c12; }
+.pw-strength-fill.strong { width: 100%; background: #2ecc71; }
+
+.pw-strength-label {
+  font-family    : var(--f-mono);
+  font-size      : 0.5rem;
+  letter-spacing : 0.15em;
+  text-transform : uppercase;
+  min-width      : 48px;
+}
+.pw-strength-label.weak   { color: #e74c3c; }
+.pw-strength-label.medium { color: #f39c12; }
+.pw-strength-label.strong { color: #2ecc71; }
+
+/* Success state */
+.success-state {
+  text-align    : center;
+  padding       : 1rem 0;
+  animation     : fade-in 0.4s var(--ease);
+}
+.success-icon {
+  font-size     : 2.5rem;
+  color         : #2ecc71;
+  font-family   : var(--f-display);
+  margin-bottom : 0.75rem;
+}
+.success-msg {
+  font-family    : var(--f-mono);
+  font-size      : 0.65rem;
+  letter-spacing : 0.08em;
+  color          : var(--clr-grey);
+  line-height    : 1.8;
+}
