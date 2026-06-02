@@ -1,15 +1,45 @@
-const observer = new IntersectionObserver(entries => {
+const observer = new IntersectionObserver(
 
-  entries.forEach(entry => {
+(entries)=>{
 
-    if(entry.isIntersecting){
-      entry.target.classList.add('show');
-    }
+entries.forEach(entry=>{
 
-  });
+if(entry.isIntersecting){
 
-},{threshold:0.2});
+entry.target.animate(
+
+[
+{
+opacity:0,
+transform:"translateY(40px)"
+},
+{
+opacity:1,
+transform:"translateY(0)"
+}
+],
+
+{
+duration:700,
+fill:"forwards"
+}
+
+);
+
+}
+
+});
+
+},
+
+{
+threshold:0.15
+}
+
+);
 
 document
-.querySelectorAll('.card,.status-card')
-.forEach(el => observer.observe(el));
+.querySelectorAll(
+'.card,.status-card,.cta'
+)
+.forEach(el=>observer.observe(el));
