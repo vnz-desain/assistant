@@ -12,6 +12,12 @@
  * ============================================================
  */
 
+/**
+ * ============================================================
+ * MEA ASSISTANT — THEME CONFIG (Fixed Path Version)
+ * ============================================================
+ */
+
 const SITE = {
 
   /* ── Brand ─────────────────────────────── */
@@ -24,7 +30,8 @@ const SITE = {
     heading   : "MEA",
     subheading: "ASSISTANT",
     desc      : "Business Assistant. AI Trading. AI Developer.\nBuilt for the MEA Ecosystem.",
-    ctaPrimary: { label: "ACCESS PLATFORM", href: "login/index.html" },
+    // ── PERBAIKAN: Diubah dari "login.html" menjadi "login/" ──
+    ctaPrimary: { label: "ACCESS PLATFORM", href: "login/" },
     ctaSecond : { label: "EXPLORE",          href: "#platform" },
   },
 
@@ -32,45 +39,21 @@ const SITE = {
   nav: {
     logo : "MEA",
     items: [
-      // type: "link"     → direct anchor/page link
-      // type: "dropdown" → shows children as dropdown
-      // type: "action"   → styled differently (e.g. login/register group)
       {
         type : "link",
         label: "Platform",
         href : "#platform",
-      },
-      {
-        type : "link",
-        label: "Status",
-        href : "#status",
-      },
-      {
-        type    : "dropdown",
-        label   : "Account",
-        children: [
-          { label: "Login",    href: "login/index.html"    },
-          { label: "Register", href: "register/index.html" },
-        ],
-      },
-      {
-        type  : "link",
-        label : "Portfolio ↗",
-        href  : "https://evanalmunawar.my.id",
-        extern: true,
-      },
+      }
     ],
   },
 
-  /* ── Platform cards ────────────────────── */
+  /* ── Platform Modules ──────────────────── */
   platform: {
-    heading : "Choose Your Assistant",
-    sublabel: "PLATFORM MODULES",
-    cards   : [
+    cards: [
       {
-        icon : "🏢",
-        title: "Business Assistant",
-        desc : "Business planning, strategy, and operational support.",
+        icon : "🤖",
+        title: "AI Business",
+        desc : "Automation, finance analysis, and strategic operations.",
         badge: "COMING SOON",
         badgeClass: "",
       },
@@ -103,8 +86,9 @@ const SITE = {
     heading : "READY TO ENTER\nMEA ASSISTANT?",
     sub     : "Create an account to access the MEA platform.",
     buttons : [
-      { label: "LOGIN",    href: "login/index.html",    primary: true  },
-      { label: "REGISTER", href: "register/index.html", primary: false },
+      // ── PERBAIKAN: Diubah dari "login.html" dan "register.html" menjadi "login/" dan "register/" ──
+      { label: "LOGIN",    href: "login/",    primary: true  },
+      { label: "REGISTER", href: "register/", primary: false },
     ],
   },
 
@@ -119,6 +103,8 @@ const SITE = {
     heroBg   : "images/hero-bg.webp",
     heroBgAlt: "images/hero-bg-2.webp",
   },
+};
+
 
   /* ── Scroll animation ──────────────────── */
   animation: {
