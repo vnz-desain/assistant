@@ -11,7 +11,7 @@ const CONFIG = {
   VERSION      : "2.1.0",
 
   // ── GANTI dengan URL Apps Script Web App setelah deploy ──
-  API_URL      : "https://script.google.com/macros/s/AKfycbyyyHbiZJRsgdTt8iJKAmN_km8DAUHSkqgTQEgkeuYChF6Mi8e7wDb5J1E_uFw1oUmINQ/exec",
+  API_URL      : "https://script.google.com/macros/s/AKfycbzFjhP1xA71FgsKVst2XhN7t9ekgumzQ6DJhD8qrig3IpMYswfW0g7GHhd73Qrv9A7XVA/exec",
 
   // Roles
   ROLES: {
