@@ -1,6 +1,0 @@
-@import url("../login/style.css");
-
-/* Overrides opsional untuk kompensasi visual form tinggi */
-.auth-container {
-  max-width: 480px;
-}
