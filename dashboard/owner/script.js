@@ -32,9 +32,6 @@ const userTable     = document.getElementById("userTable");
 const tableBody     = document.getElementById("userTableBody");
 const tableEmpty    = document.getElementById("tableEmpty");
 const dashAlert     = document.getElementById("dashAlert");
-const modalOverlay  = document.getElementById("modalOverlay");
-const modalDesc     = document.getElementById("modalDesc");
-const modalUserId   = document.getElementById("modalUserId");
 
 /* ── Init ───────────────────────────────────────────────── */
 topbarName.textContent = session.username || "—";
@@ -196,42 +193,6 @@ async function handleAction(e) {
     btn.disabled = false;
   }
 }
-
-/* ── Role modal ─────────────────────────────────────────── */
-function openRoleModal(userId, name, currentRole) {
-  modalDesc.textContent = `User: ${name}`;
-  modalUserId.value     = userId;
-  const radios = modalOverlay.querySelectorAll("input[name='newRole']");
-  radios.forEach(r => { r.checked = r.value === currentRole; });
-  modalOverlay.hidden = false;
-}
-function closeModal() {
-  modalOverlay.hidden = true;
-}
-
-document.getElementById("modalCancel").addEventListener("click", closeModal);
-modalOverlay.addEventListener("click", function(e) {
-  if (e.target === modalOverlay) closeModal();
-});
-
-document.getElementById("modalConfirm").addEventListener("click", async function() {
-  const userId  = modalUserId.value;
-  const newRole = modalOverlay.querySelector("input[name='newRole']:checked")?.value;
-  if (!newRole) { alert("Pilih role terlebih dahulu."); return; }
-
-  this.disabled = true;
-  try {
-    const data = await apiFetch({ action: "changeRole", targetId: userId, newRole });
-    if (!data.success) throw new Error(data.message);
-    showAlert("Role berhasil diubah.", "success");
-    closeModal();
-    await fetchUsers();
-  } catch (err) {
-    showAlert("Gagal: " + err.message);
-  } finally {
-    this.disabled = false;
-  }
-});
 
 /* ── Filters ────────────────────────────────────────────── */
 document.getElementById("filterTabs").addEventListener("click", function(e) {
