@@ -24,7 +24,7 @@ const SITE = {
     heading   : "MEA",
     subheading: "ASSISTANT",
     desc      : "Business Assistant. AI Trading. AI Developer.\nBuilt for the MEA Ecosystem.",
-    ctaPrimary: { label: "ACCESS PLATFORM", href: "login.html" },
+    ctaPrimary: { label: "ACCESS PLATFORM", href: "login/index.html" },
     ctaSecond : { label: "EXPLORE",          href: "#platform" },
   },
 
@@ -49,8 +49,8 @@ const SITE = {
         type    : "dropdown",
         label   : "Account",
         children: [
-          { label: "Login",    href: "login.html"    },
-          { label: "Register", href: "register.html" },
+          { label: "Login",    href: "login/index.html"    },
+          { label: "Register", href: "register/index.html" },
         ],
       },
       {
@@ -103,8 +103,8 @@ const SITE = {
     heading : "READY TO ENTER\nMEA ASSISTANT?",
     sub     : "Create an account to access the MEA platform.",
     buttons : [
-      { label: "LOGIN",    href: "login.html",    primary: true  },
-      { label: "REGISTER", href: "register.html", primary: false },
+      { label: "LOGIN",    href: "login/index.html",    primary: true  },
+      { label: "REGISTER", href: "register/index.html", primary: false },
     ],
   },
 
