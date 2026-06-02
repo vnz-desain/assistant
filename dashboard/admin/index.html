@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050505">
+  <title>Admin Dashboard — MEA Assistant</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="dash-bg" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <span class="topbar-logo">MEA</span>
+      <div class="topbar-info">
+        <span class="topbar-badge admin">ADMIN</span>
+        <span class="topbar-name" id="topbarName">—</span>
+      </div>
+      <button class="topbar-logout" id="logoutBtn" aria-label="Logout">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/>
+        </svg>
+        LOGOUT
+      </button>
+    </div>
+  </header>
+
+  <main class="dash-main">
+    <div class="welcome-wrap">
+      <p class="welcome-tag">MEA ADMIN PANEL</p>
+      <h1 class="welcome-name">
+        SELAMAT<br><span class="outline">DATANG</span>
+      </h1>
+      <p class="welcome-desc" id="welcomeDesc">
+        Halo, <strong id="welcomeName">—</strong>. Panel admin sedang dalam pengembangan.
+      </p>
+
+      <div class="module-grid">
+        <div class="module-card">
+          <div class="module-icon">📊</div>
+          <div class="module-name">ANALYTICS</div>
+          <div class="module-desc">Data platform MEA</div>
+          <div class="module-status">COMING SOON</div>
+        </div>
+        <div class="module-card">
+          <div class="module-icon">👥</div>
+          <div class="module-name">USERS</div>
+          <div class="module-desc">Manajemen member</div>
+          <div class="module-status">COMING SOON</div>
+        </div>
+        <div class="module-card">
+          <div class="module-icon">⚙️</div>
+          <div class="module-name">SETTINGS</div>
+          <div class="module-desc">Konfigurasi sistem</div>
+          <div class="module-status">COMING SOON</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../../assets/theme/config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
