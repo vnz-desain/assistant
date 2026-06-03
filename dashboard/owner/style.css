@@ -75,6 +75,13 @@ button { cursor: pointer; }
 /* ═══════════════════════════════════════════
    SIDEBAR
 ═══════════════════════════════════════════ */
+.sidebar-overlay {
+  pointer-events: none;
+}
+
+.sidebar-overlay.visible {
+  pointer-events: auto;
+}
 .sidebar {
   position   : fixed;
   top        : 0;
