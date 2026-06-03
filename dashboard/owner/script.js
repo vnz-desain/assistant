@@ -33,7 +33,8 @@ const tableEmpty   = document.getElementById("tableEmpty");
 const dashAlert    = document.getElementById("dashAlert");
 
 /* ── Set username in sidebar ─────────────────────────────── */
-document.getElementById("sidebarUsername").textContent = session.username || "—";
+document.getElementById("sidebarUsername").textContent = (session && session.username) ? session.username : "—";
+
 
 /* ══════════════════════════════════════════════════════════
    SIDEBAR NAVIGATION
@@ -65,10 +66,10 @@ const PAGE_LABELS = {
 };
 
 
-function openSidebar() {
-  sidebar.classList.add("open");
-  sidebarOverlay.classList.add("visible");
-  document.body.style.overflow = "hidden";
+function toggleSidebar() {
+  const isOpen = sidebar.classList.toggle("open");
+  sidebarOverlay.classList.toggle("visible");
+  document.body.style.overflow = isOpen ? "hidden" : "";
 }
 
 function closeSidebar() {
@@ -77,7 +78,8 @@ function closeSidebar() {
   document.body.style.overflow = "";
 }
 
-hamburgerBtn.addEventListener("click", openSidebar);
+// Tombol hamburger sekarang bisa buka dan tutup
+hamburgerBtn.addEventListener("click", toggleSidebar);
 sidebarOverlay.addEventListener("click", closeSidebar);
 
 /* ── Page switching ─────────────────────────────────────── */
