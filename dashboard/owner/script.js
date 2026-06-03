@@ -351,24 +351,15 @@ document.querySelectorAll(".ai-tab").forEach(tab => {
   });
 });
 
+/* ── Email Center sub-tabs (placeholder) ───────────────── */
+document.querySelectorAll(".ph-sidebar-item").forEach(item => {
+  item.addEventListener("click", function () {
+    const parent = this.closest(".placeholder-sidebar");
+    if (!parent) return;
+    parent.querySelectorAll(".ph-sidebar-item").forEach(i => i.classList.remove("active"));
+    this.classList.add("active");
+  });
+});
+
 /* ── Initial page load ──────────────────────────────────── */
 switchPage("overview");
-
-// MOBILE SIDEBAR
-const hamburgerBtn = document.getElementById("hamburgerBtn");
-const sidebar = document.getElementById("sidebar");
-const sidebarOverlay = document.getElementById("sidebarOverlay");
-
-if (hamburgerBtn && sidebar && sidebarOverlay) {
-
-  hamburgerBtn.addEventListener("click", () => {
-    sidebar.classList.toggle("open");
-    sidebarOverlay.classList.toggle("visible");
-  });
-
-  sidebarOverlay.addEventListener("click", () => {
-    sidebar.classList.remove("open");
-    sidebarOverlay.classList.remove("visible");
-  });
-
-}

@@ -75,13 +75,6 @@ button { cursor: pointer; }
 /* ═══════════════════════════════════════════
    SIDEBAR
 ═══════════════════════════════════════════ */
-.sidebar-overlay {
-  pointer-events: none;
-}
-
-.sidebar-overlay.visible {
-  pointer-events: auto;
-}
 .sidebar {
   position   : fixed;
   top        : 0;
@@ -251,16 +244,18 @@ button { cursor: pointer; }
 
 /* ─── SIDEBAR OVERLAY (mobile) ─── */
 .sidebar-overlay {
-  display    : none;
-  position   : fixed;
-  inset      : 0;
-  z-index    : 199;
-  background : rgba(0,0,0,0.65);
-  opacity    : 0;
-  transition : opacity var(--t-med);
+  display        : none;
+  position       : fixed;
+  inset          : 0;
+  z-index        : 199;
+  background     : rgba(0,0,0,0.65);
+  opacity        : 0;
+  pointer-events : none;          /* FIX: tidak blokir klik saat tersembunyi */
+  transition     : opacity var(--t-med);
 }
 .sidebar-overlay.visible {
-  opacity : 1;
+  opacity        : 1;
+  pointer-events : auto;          /* FIX: aktif hanya saat sidebar terbuka */
 }
 
 
@@ -273,7 +268,7 @@ button { cursor: pointer; }
   top        : 0;
   left       : 0;
   right      : 0;
-  z-index    : 150;
+  z-index    : 210;          /* FIX: harus di atas overlay (199) dan sidebar (200) */
   height     : var(--topbar-mob);
   background : rgba(5,5,5,0.97);
   border-bottom: 1px solid var(--clr-border);
@@ -744,9 +739,14 @@ button { cursor: pointer; }
   font-size     : 0.52rem;
   letter-spacing: 0.08em;
   color         : var(--clr-grey);
-  cursor        : default;
+  cursor        : pointer;          /* FIX: ubah dari default ke pointer */
   transition    : background var(--t-fast), color var(--t-fast);
   border-left   : 2px solid transparent;
+  user-select   : none;
+}
+.ph-sidebar-item:hover {
+  background : rgba(255,255,255,0.03);
+  color      : var(--clr-white);
 }
 .ph-sidebar-item.active {
   color        : var(--clr-white);
