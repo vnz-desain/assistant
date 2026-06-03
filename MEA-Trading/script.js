@@ -8,27 +8,34 @@ const GAS_API_URL = "https://script.google.com/macros/s/AKfycbw3rOuckASOEq-ThYO0
 let currentUser = null;
 let currentFullName = null;
 
-// 1. Cek Login Otomatis saat halaman dimuat
 document.addEventListener("DOMContentLoaded", function() {
-    // Asumsi Landing Page Anda menyimpan data login di localStorage dengan key 'mea_username'
-    currentUser = localStorage.getItem("mea_username");
-    currentFullName = localStorage.getItem("mea_fullname") || "Pengguna MEA";
 
-    if (!currentUser) {
-        // Jika belum login, tendang ke folder root/login/
-        window.location.href = "../login/";
-    } else {
-        // Tampilkan data user di sidebar
-        document.getElementById('ui-fullname').innerText = currentFullName;
-        document.getElementById('ui-username').innerText = "@" + currentUser;
+    const session =
+      JSON.parse(
+        localStorage.getItem("mea_session")
+      );
+
+    if (!session) {
+        window.location.href = "/login/";
+        return;
     }
-});
 
+    currentUser = session.username;
+    currentFullName =
+      session.fullName ||
+      session.username;
+
+    document.getElementById('ui-fullname').innerText =
+      currentFullName;
+
+    document.getElementById('ui-username').innerText =
+      "@" + currentUser;
+
+});
 // 2. Fungsi Logout
 function logout() {
-    localStorage.removeItem("mea_username");
-    localStorage.removeItem("mea_fullname");
-    window.location.href = "../login/";
+    localStorage.removeItem("mea_session");
+    window.location.href = "/login/";
 }
 
 // 3. UI Interactions
