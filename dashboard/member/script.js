@@ -22,3 +22,7 @@ document.getElementById("logoutBtn").addEventListener("click", function () {
   localStorage.removeItem(CONFIG.SESSION_KEY);
   window.location.replace(CONFIG.PATHS.LOGIN);
 });
+
+function openTrading() {
+    window.location.href = "/MEA-Trading/";
+}
