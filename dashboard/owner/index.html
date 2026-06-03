@@ -39,6 +39,10 @@
         <span class="nav-icon">👥</span>
         <span class="nav-label">Users</span>
       </button>
+      <button class="nav-item" data-page="account">
+        <span class="nav-icon">🛡️</span>
+        <span class="nav-label">Account Center</span>
+      </button>
       <button class="nav-item" data-page="email">
         <span class="nav-icon">📧</span>
         <span class="nav-label">Email Center</span>
@@ -164,6 +168,7 @@
         </button>
       </div>
 
+
       <!-- Stats bar -->
       <div class="stat-bar" id="statBar">
         <div class="stat-item">
@@ -222,6 +227,176 @@
         </div>
       </div>
     </div>
+
+
+<!-- ══════════════════════════════════════
+         PAGE: ACCOUNT CENTER
+    ══════════════════════════════════════ -->
+    
+    
+        <div class="page" id="page-account">
+      <div class="page-header">
+        <div class="page-header-text">
+          <p class="page-eyebrow">INTEGRASI GOOGLE</p>
+          <h1 class="page-title">Account <span class="outline">Center</span></h1>
+        </div>
+      </div>
+
+      <div class="stats-grid mb-2">
+        <div class="stat-card">
+          <div class="stat-card-icon">💳</div>
+          <div class="stat-card-body">
+            <span class="stat-card-val" id="accStatTotal">3</span>
+            <span class="stat-card-lbl">Total Accounts</span>
+            <span class="stat-card-desc">Identitas terdaftar</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">✅</div>
+          <div class="stat-card-body">
+            <span class="stat-card-val" id="accStatConnected">2</span>
+            <span class="stat-card-lbl">Connected</span>
+            <span class="stat-card-desc">Token aktif</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">📧</div>
+          <div class="stat-card-body">
+            <span class="stat-card-val" id="accStatGmail">2</span>
+            <span class="stat-card-lbl">Gmail Connected</span>
+            <span class="stat-card-desc">Akses inbox</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">☁️</div>
+          <div class="stat-card-body">
+            <span class="stat-card-val" id="accStatDrive">1</span>
+            <span class="stat-card-lbl">Drive Connected</span>
+            <span class="stat-card-desc">Akses storage</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="account-grid" id="accountGrid">
+        
+        <button class="account-add-card" id="btnConnectAccount">
+          <div class="acc-add-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+          </div>
+          <span class="acc-add-title">PROVISION ACCOUNT</span>
+          <span class="acc-add-desc">Integrasikan identitas Google baru</span>
+        </button>
+
+        <div class="account-card active-card">
+          <div class="acc-header">
+            <div class="acc-avatar">
+              <img src="https://ui-avatars.com/api/?name=Admin+MEA&background=111&color=F0EDE8" alt="Avatar">
+            </div>
+            <div class="acc-info">
+              <span class="acc-name">Admin MEA</span>
+              <span class="acc-email">admin@mea.id</span>
+            </div>
+            <div class="acc-action-wrap" tabindex="0">
+              <button class="acc-action-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="1.5"></circle>
+                  <circle cx="12" cy="5" r="1.5"></circle>
+                  <circle cx="12" cy="19" r="1.5"></circle>
+                </svg>
+              </button>
+              <div class="acc-dropdown">
+                <a href="#" class="acc-dropdown-item">Sync Now</a>
+                <a href="#" class="acc-dropdown-item">Manage Services</a>
+                <div class="acc-dropdown-divider"></div>
+                <a href="#" class="acc-dropdown-item danger">Archive</a>
+              </div>
+            </div>
+          </div>
+          <div class="acc-body">
+            <div class="acc-section-title">SERVICES & LABELS</div>
+            <div class="acc-badges">
+              <span class="acc-badge cat-kerja">KERJA</span>
+              <span class="acc-badge srv-gmail">GMAIL</span>
+              <span class="acc-badge srv-drive">DRIVE</span>
+            </div>
+            <div class="acc-divider"></div>
+            <div class="acc-section-title">METADATA</div>
+            <div class="acc-meta-grid">
+              <div class="meta-row">
+                <span class="meta-lbl">Last Sync</span>
+                <span class="meta-val">Baru saja</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-lbl">Created At</span>
+                <span class="meta-val">04 Jun 2026</span>
+              </div>
+            </div>
+          </div>
+          <div class="acc-footer">
+            <div class="acc-status connected">
+              <span class="acc-status-dot"></span>
+              CONNECTED & SYNCING
+            </div>
+          </div>
+        </div>
+
+        <div class="account-card disconnected-card">
+          <div class="acc-header">
+            <div class="acc-avatar">
+              <img src="https://ui-avatars.com/api/?name=Test+Bot&background=111&color=F0EDE8" alt="Avatar">
+            </div>
+            <div class="acc-info">
+              <span class="acc-name">Spam / Tester Bot</span>
+              <span class="acc-email">bot.random.99@gmail.com</span>
+            </div>
+            <div class="acc-action-wrap" tabindex="0">
+              <button class="acc-action-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="1.5"></circle>
+                  <circle cx="12" cy="5" r="1.5"></circle>
+                  <circle cx="12" cy="19" r="1.5"></circle>
+                </svg>
+              </button>
+              <div class="acc-dropdown">
+                <a href="#" class="acc-dropdown-item" style="color:#2ecc71;">Reconnect</a>
+                <div class="acc-dropdown-divider"></div>
+                <a href="#" class="acc-dropdown-item danger">Archive</a>
+              </div>
+            </div>
+          </div>
+          <div class="acc-body">
+            <div class="acc-section-title">SERVICES & LABELS</div>
+            <div class="acc-badges">
+              <span class="acc-badge cat-random">RANDOM</span>
+              <span class="acc-badge srv-gmail" style="opacity:0.5;">GMAIL</span>
+            </div>
+            <div class="acc-divider"></div>
+            <div class="acc-section-title">METADATA</div>
+            <div class="acc-meta-grid">
+              <div class="meta-row">
+                <span class="meta-lbl">Last Sync</span>
+                <span class="meta-val error-text">Token Expired</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-lbl">Created At</span>
+                <span class="meta-val">01 Jan 2026</span>
+              </div>
+            </div>
+          </div>
+          <div class="acc-footer">
+            <div class="acc-status disconnected">
+              <span class="acc-status-dot"></span>
+              ACTION REQUIRED
+            </div>
+          </div>
+        </div>
+
+      </div>
+  </div>
+    
 
     <!-- ══════════════════════════════════════
          PAGE: EMAIL CENTER
