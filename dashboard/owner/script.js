@@ -353,3 +353,22 @@ document.querySelectorAll(".ai-tab").forEach(tab => {
 
 /* ── Initial page load ──────────────────────────────────── */
 switchPage("overview");
+
+// MOBILE SIDEBAR
+const hamburgerBtn = document.getElementById("hamburgerBtn");
+const sidebar = document.getElementById("sidebar");
+const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+if (hamburgerBtn && sidebar && sidebarOverlay) {
+
+  hamburgerBtn.addEventListener("click", () => {
+    sidebar.classList.toggle("open");
+    sidebarOverlay.classList.toggle("visible");
+  });
+
+  sidebarOverlay.addEventListener("click", () => {
+    sidebar.classList.remove("open");
+    sidebarOverlay.classList.remove("visible");
+  });
+
+}
