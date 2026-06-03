@@ -53,6 +53,18 @@ const PAGE_LABELS = {
   settings  : "Settings"
 };
 
+const PAGE_LABELS = {
+  overview  : "Overview",
+  users     : "Users",
+  account   : "Account Center", /* <--- Tambahkan baris ini */
+  email     : "Email Center",
+  drive     : "Drive Center",
+  ai        : "AI Center",
+  analytics : "Analytics",
+  settings  : "Settings"
+};
+
+
 function openSidebar() {
   sidebar.classList.add("open");
   sidebarOverlay.classList.add("visible");
