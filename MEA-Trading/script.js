@@ -115,10 +115,10 @@ function appendMessage(sender, text, ticker = null) {
     
     if(sender === 'ai') {
         const chartId = 'chart-' + Math.random().toString(36).substr(2, 9);
-        bubble.innerHTML = `<pre>${text}</pre><div id="${chartId}" class="chart-container"></div>`;
+        bubble.innerHTML = `<pre>${text}</pre>`;
         msgDiv.appendChild(bubble);
         chatArea.appendChild(msgDiv);
-        if(ticker) renderDummyChart(chartId);
+       // if(ticker) renderDummyChart(chartId);
     } else {
         bubble.innerText = text;
         msgDiv.appendChild(bubble);
@@ -128,18 +128,5 @@ function appendMessage(sender, text, ticker = null) {
     chatArea.scrollTop = chatArea.scrollHeight;
 }
 
-// Render chart dari lightweight-charts
-function renderDummyChart(containerId) {
-    const chartOptions = { layout: { textColor: '#9A9690', background: { type: 'solid', color: '#111111' } }, grid: { vertLines: { color: 'rgba(255, 255, 255, 0.05)' }, horzLines: { color: 'rgba(255, 255, 255, 0.05)' } }, timeScale: { borderColor: 'rgba(255, 255, 255, 0.1)' } };
-    const chart = LightweightCharts.createChart(document.getElementById(containerId), chartOptions);
-    const candlestickSeries = chart.addCandlestickSeries({ upColor: '#F0EDE8', downColor: '#C41E3A', borderVisible: false, wickUpColor: '#F0EDE8', wickDownColor: '#C41E3A' });
-    
-    candlestickSeries.setData([
-        { time: '2026-05-22', open: 120, high: 125, low: 118, close: 122 },
-        { time: '2026-05-23', open: 122, high: 130, low: 120, close: 128 },
-        { time: '2026-05-24', open: 128, high: 135, low: 125, close: 130 },
-        { time: '2026-05-25', open: 130, high: 132, low: 122, close: 125 },
-        { time: '2026-05-26', open: 125, high: 140, low: 124, close: 138 },
-    ]);
-    chart.timeScale().fitContent();
-}
+
+
