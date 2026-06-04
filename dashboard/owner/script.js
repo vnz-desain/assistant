@@ -113,7 +113,17 @@ function switchPage(pageId) {
   if (pageId === "users" && allUsers.length === 0) {
     fetchUsers();
   }
+if (pageId === "account") {
+  acctInit();
+}
 
+if (pageId === "gmail") {
+  gmailInit();
+}
+
+if (pageId === "drive") {
+  driveInit();
+}
   // Close sidebar on mobile after navigation
   closeSidebar();
 }
