@@ -259,6 +259,16 @@ button { cursor: pointer; }
   color      : #e74c3c;
 }
 
+   .nav-children {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .3s ease;
+}
+
+.nav-group.open .nav-children {
+  max-height: 300px;
+}
+
 
 /* ─── SIDEBAR OVERLAY (mobile) ─── */
 .sidebar-overlay {
