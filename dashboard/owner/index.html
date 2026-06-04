@@ -276,170 +276,183 @@
 <!-- ══════════════════════════════════════
          PAGE: ACCOUNT CENTER
     ══════════════════════════════════════ -->
-    
-    
-        <div class="page" id="page-account">
-      <div class="page-header">
-        <div class="page-header-text">
-          <p class="page-eyebrow">INTEGRASI GOOGLE</p>
-          <h1 class="page-title">Account <span class="outline">Center</span></h1>
-        </div>
-      </div>
+    <div class="page" id="page-account">
 
-      <div class="stats-grid mb-2">
-        <div class="stat-card">
-          <div class="stat-card-icon">💳</div>
-          <div class="stat-card-body">
-            <span class="stat-card-val" id="accStatTotal">3</span>
-            <span class="stat-card-lbl">Total Accounts</span>
-            <span class="stat-card-desc">Identitas terdaftar</span>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-card-icon">✅</div>
-          <div class="stat-card-body">
-            <span class="stat-card-val" id="accStatConnected">2</span>
-            <span class="stat-card-lbl">Connected</span>
-            <span class="stat-card-desc">Token aktif</span>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-card-icon">📧</div>
-          <div class="stat-card-body">
-            <span class="stat-card-val" id="accStatGmail">2</span>
-            <span class="stat-card-lbl">Gmail Connected</span>
-            <span class="stat-card-desc">Akses inbox</span>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-card-icon">☁️</div>
-          <div class="stat-card-body">
-            <span class="stat-card-val" id="accStatDrive">1</span>
-            <span class="stat-card-lbl">Drive Connected</span>
-            <span class="stat-card-desc">Akses storage</span>
-          </div>
-        </div>
-      </div>
+  <div class="page-header">
+    <div class="page-header-text">
+      <p class="page-eyebrow">GOOGLE IDENTITY VAULT</p>
+      <h1 class="page-title">Account <span class="outline">Center</span></h1>
+    </div>
+  </div>
 
-      <div class="account-grid" id="accountGrid">
-        
-        <button class="account-add-card" id="btnConnectAccount">
-          <div class="acc-add-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="12" y1="5" x2="12" y2="19"></line>
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
-          </div>
-          <span class="acc-add-title">PROVISION ACCOUNT</span>
-          <span class="acc-add-desc">Integrasikan identitas Google baru</span>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-card-icon">👤</div>
+      <div class="stat-card-body">
+        <span class="stat-card-val">28</span>
+        <span class="stat-card-lbl">Accounts</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card-icon">🟢</div>
+      <div class="stat-card-body">
+        <span class="stat-card-val">25</span>
+        <span class="stat-card-lbl">Connected</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card-icon">🟡</div>
+      <div class="stat-card-body">
+        <span class="stat-card-val">2</span>
+        <span class="stat-card-lbl">Warning</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card-icon">⚫</div>
+      <div class="stat-card-body">
+        <span class="stat-card-val">1</span>
+        <span class="stat-card-lbl">Archived</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="account-layout">
+
+    <div class="account-list-panel">
+
+      <div class="account-toolbar">
+
+        <input
+          type="text"
+          class="account-search"
+          placeholder="Search account..."
+        >
+
+        <button class="btn-primary">
+          + Connect Account
         </button>
 
-        <div class="account-card active-card">
-          <div class="acc-header">
-            <div class="acc-avatar">
-              <img src="https://ui-avatars.com/api/?name=Admin+MEA&background=111&color=F0EDE8" alt="Avatar">
-            </div>
-            <div class="acc-info">
-              <span class="acc-name">Admin MEA</span>
-              <span class="acc-email">admin@mea.id</span>
-            </div>
-            <div class="acc-action-wrap" tabindex="0">
-              <button class="acc-action-btn">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="1.5"></circle>
-                  <circle cx="12" cy="5" r="1.5"></circle>
-                  <circle cx="12" cy="19" r="1.5"></circle>
-                </svg>
-              </button>
-              <div class="acc-dropdown">
-                <a href="#" class="acc-dropdown-item">Sync Now</a>
-                <a href="#" class="acc-dropdown-item">Manage Services</a>
-                <div class="acc-dropdown-divider"></div>
-                <a href="#" class="acc-dropdown-item danger">Archive</a>
-              </div>
-            </div>
-          </div>
-          <div class="acc-body">
-            <div class="acc-section-title">SERVICES & LABELS</div>
-            <div class="acc-badges">
-              <span class="acc-badge cat-kerja">KERJA</span>
-              <span class="acc-badge srv-gmail">GMAIL</span>
-              <span class="acc-badge srv-drive">DRIVE</span>
-            </div>
-            <div class="acc-divider"></div>
-            <div class="acc-section-title">METADATA</div>
-            <div class="acc-meta-grid">
-              <div class="meta-row">
-                <span class="meta-lbl">Last Sync</span>
-                <span class="meta-val">Baru saja</span>
-              </div>
-              <div class="meta-row">
-                <span class="meta-lbl">Created At</span>
-                <span class="meta-val">04 Jun 2026</span>
-              </div>
-            </div>
-          </div>
-          <div class="acc-footer">
-            <div class="acc-status connected">
-              <span class="acc-status-dot"></span>
-              CONNECTED & SYNCING
-            </div>
-          </div>
+      </div>
+
+      <div class="account-table-wrap">
+
+        <table class="account-table">
+
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Email</th>
+              <th>Label</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr class="account-row active">
+              <td>🟢</td>
+              <td>admin@gmail.com</td>
+              <td><span class="acc-tag primary">UTAMA</span></td>
+            </tr>
+
+            <tr class="account-row">
+              <td>🟢</td>
+              <td>bisnis@gmail.com</td>
+              <td><span class="acc-tag business">BISNIS</span></td>
+            </tr>
+
+            <tr class="account-row">
+              <td>🟢</td>
+              <td>gemini@gmail.com</td>
+              <td><span class="acc-tag ai">AI</span></td>
+            </tr>
+
+            <tr class="account-row">
+              <td>🟡</td>
+              <td>testing@gmail.com</td>
+              <td><span class="acc-tag testing">TESTING</span></td>
+            </tr>
+
+            <tr class="account-row">
+              <td>🟢</td>
+              <td>backup@gmail.com</td>
+              <td><span class="acc-tag backup">BACKUP</span></td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+    <div class="account-detail-panel">
+
+      <h3>Account Detail</h3>
+
+      <div class="detail-grid">
+
+        <div>
+          <span>Email</span>
+          <strong>admin@gmail.com</strong>
         </div>
 
-        <div class="account-card disconnected-card">
-          <div class="acc-header">
-            <div class="acc-avatar">
-              <img src="https://ui-avatars.com/api/?name=Test+Bot&background=111&color=F0EDE8" alt="Avatar">
-            </div>
-            <div class="acc-info">
-              <span class="acc-name">Spam / Tester Bot</span>
-              <span class="acc-email">bot.random.99@gmail.com</span>
-            </div>
-            <div class="acc-action-wrap" tabindex="0">
-              <button class="acc-action-btn">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="1.5"></circle>
-                  <circle cx="12" cy="5" r="1.5"></circle>
-                  <circle cx="12" cy="19" r="1.5"></circle>
-                </svg>
-              </button>
-              <div class="acc-dropdown">
-                <a href="#" class="acc-dropdown-item" style="color:#2ecc71;">Reconnect</a>
-                <div class="acc-dropdown-divider"></div>
-                <a href="#" class="acc-dropdown-item danger">Archive</a>
-              </div>
-            </div>
-          </div>
-          <div class="acc-body">
-            <div class="acc-section-title">SERVICES & LABELS</div>
-            <div class="acc-badges">
-              <span class="acc-badge cat-random">RANDOM</span>
-              <span class="acc-badge srv-gmail" style="opacity:0.5;">GMAIL</span>
-            </div>
-            <div class="acc-divider"></div>
-            <div class="acc-section-title">METADATA</div>
-            <div class="acc-meta-grid">
-              <div class="meta-row">
-                <span class="meta-lbl">Last Sync</span>
-                <span class="meta-val error-text">Token Expired</span>
-              </div>
-              <div class="meta-row">
-                <span class="meta-lbl">Created At</span>
-                <span class="meta-val">01 Jan 2026</span>
-              </div>
-            </div>
-          </div>
-          <div class="acc-footer">
-            <div class="acc-status disconnected">
-              <span class="acc-status-dot"></span>
-              ACTION REQUIRED
-            </div>
-          </div>
+        <div>
+          <span>Category</span>
+          <strong>Utama</strong>
+        </div>
+
+        <div>
+          <span>Status</span>
+          <strong>Connected</strong>
+        </div>
+
+        <div>
+          <span>2FA</span>
+          <strong>Enabled</strong>
+        </div>
+
+        <div>
+          <span>Recovery</span>
+          <strong>Configured</strong>
+        </div>
+
+        <div>
+          <span>Last Login</span>
+          <strong>2 Hari Lalu</strong>
+        </div>
+
+        <div>
+          <span>Last Sync</span>
+          <strong>5 Menit Lalu</strong>
         </div>
 
       </div>
+
+      <div class="detail-actions">
+
+        <button class="btn-primary">
+          Sync
+        </button>
+
+        <button class="btn-secondary">
+          Edit
+        </button>
+
+        <button class="btn-danger">
+          Archive
+        </button>
+
+      </div>
+
+    </div>
+
   </div>
+
+    </div>
     
 
     <!-- ══════════════════════════════════════
