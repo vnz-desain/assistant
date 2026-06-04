@@ -47,16 +47,6 @@ const topbarPageLabel= document.getElementById("topbarPageLabel");
 const PAGE_LABELS = {
   overview  : "Overview",
   users     : "Users",
-  email     : "Email Center",
-  drive     : "Drive Center",
-  ai        : "AI Center",
-  analytics : "Analytics",
-  settings  : "Settings"
-};
-
-const PAGE_LABELS = {
-  overview  : "Overview",
-  users     : "Users",
   account   : "Account Center", /* <--- Tambahkan baris ini */
   email     : "Email Center",
   drive     : "Drive Center",
