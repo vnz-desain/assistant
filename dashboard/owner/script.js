@@ -34,7 +34,17 @@ const dashAlert    = document.getElementById("dashAlert");
 
 /* ── Set username in sidebar ─────────────────────────────── */
 document.getElementById("sidebarUsername").textContent = (session && session.username) ? session.username : "—";
+document.querySelectorAll(".nav-parent").forEach(btn => {
 
+  btn.addEventListener("click", () => {
+
+    const group = btn.closest(".nav-group");
+
+    group.classList.toggle("open");
+
+  });
+
+});
 
 /* ══════════════════════════════════════════════════════════
    SIDEBAR NAVIGATION
