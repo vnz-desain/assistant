@@ -60,6 +60,9 @@ const PAGE_LABELS = {
   drive : "Drive",
   oauth : "OAuth Manager",
   logs : "Logs",
+  models  : "Models",
+  apikeys : "API Keys",
+  usage   : "Usage",
   overview  : "Overview",
   users     : "Users",
   account   : "Account Center", /* <--- Tambahkan baris ini */
