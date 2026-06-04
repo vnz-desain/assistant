@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
 
@@ -276,183 +277,145 @@
 <!-- ══════════════════════════════════════
          PAGE: ACCOUNT CENTER
     ══════════════════════════════════════ -->
-    <div class="page" id="page-account">
-
-  <div class="page-header">
-    <div class="page-header-text">
-      <p class="page-eyebrow">GOOGLE IDENTITY VAULT</p>
-      <h1 class="page-title">Account <span class="outline">Center</span></h1>
-    </div>
-  </div>
-
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-card-icon">👤</div>
-      <div class="stat-card-body">
-        <span class="stat-card-val">28</span>
-        <span class="stat-card-lbl">Accounts</span>
+    
+              <div class="page" id="page-account">
+      
+      <div class="mea-page-header">
+        <p class="mea-eyebrow">Google Identity Vault</p>
+        <h1 class="mea-page-title">Account <span>Center</span></h1>
       </div>
-    </div>
 
-    <div class="stat-card">
-      <div class="stat-card-icon">🟢</div>
-      <div class="stat-card-body">
-        <span class="stat-card-val">25</span>
-        <span class="stat-card-lbl">Connected</span>
+      <div class="mea-stats">
+        <div class="mea-stat">
+          <div class="mea-stat-icon all"><i data-lucide="users"></i></div>
+          <div>
+            <div class="mea-stat-num" id="stat-total">0</div>
+            <div class="mea-stat-lbl">Accounts</div>
+          </div>
+        </div>
+        <div class="mea-stat">
+          <div class="mea-stat-icon ok"><i data-lucide="check-circle-2"></i></div>
+          <div>
+            <div class="mea-stat-num" id="stat-active">0</div>
+            <div class="mea-stat-lbl">Connected</div>
+          </div>
+        </div>
+        <div class="mea-stat">
+          <div class="mea-stat-icon warn"><i data-lucide="alert-triangle"></i></div>
+          <div>
+            <div class="mea-stat-num" id="stat-warn">0</div>
+            <div class="mea-stat-lbl">Warning</div>
+          </div>
+        </div>
+        <div class="mea-stat">
+          <div class="mea-stat-icon arch"><i data-lucide="archive"></i></div>
+          <div>
+            <div class="mea-stat-num" id="stat-arch">0</div>
+            <div class="mea-stat-lbl">Archived</div>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="stat-card">
-      <div class="stat-card-icon">🟡</div>
-      <div class="stat-card-body">
-        <span class="stat-card-val">2</span>
-        <span class="stat-card-lbl">Warning</span>
+      <div class="mea-tg-banner" id="tg-banner">
+        <div class="mea-tg-icon"><i data-lucide="send"></i></div>
+        <div class="mea-tg-text">
+          <strong>Telegram Bot Alert</strong>
+          <span id="tg-status-text">Hubungkan 1 bot Telegram untuk notifikasi akun ini</span>
+        </div>
+        <button class="mea-tg-btn" id="tg-action-btn" onclick="openTgModal()">Hubungkan Bot</button>
       </div>
-    </div>
 
-    <div class="stat-card">
-      <div class="stat-card-icon">⚫</div>
-      <div class="stat-card-body">
-        <span class="stat-card-val">1</span>
-        <span class="stat-card-lbl">Archived</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="account-layout">
-
-    <div class="account-list-panel">
-
-      <div class="account-toolbar">
-
-        <input
-          type="text"
-          class="account-search"
-          placeholder="Search account..."
-        >
-
-        <button class="btn-primary">
-          + Connect Account
+      <div class="mea-toolbar">
+        <div class="mea-search-wrap">
+          <i data-lucide="search"></i>
+          <input type="text" class="mea-search" id="acc-search" placeholder="Cari akun...">
+        </div>
+        <div class="mea-view-toggle">
+          <button class="mea-view-btn active" id="btn-card" onclick="setView('card')" title="Card view">
+            <i data-lucide="layout-list"></i>
+          </button>
+          <button class="mea-view-btn" id="btn-table" onclick="setView('table')" title="Table view">
+            <i data-lucide="table-2"></i>
+          </button>
+        </div>
+        <button class="mea-btn-add" onclick="addAccount()">
+          <i data-lucide="plus"></i> Tambah Akun
         </button>
-
       </div>
 
-      <div class="account-table-wrap">
+      <div class="mea-account-layout" id="account-layout">
 
-        <table class="account-table">
+        <div id="list-panel">
+          <div class="mea-card-list" id="view-card"></div>
+          <div class="mea-table-wrap" id="view-table" style="display:none">
+            <table class="mea-table">
+              <thead>
+                <tr>
+                  <th style="width:24px"></th>
+                  <th>Email</th>
+                  <th>Label</th>
+                  <th style="width:28px"></th>
+                </tr>
+              </thead>
+              <tbody id="table-body"></tbody>
+            </table>
+          </div>
+        </div>
 
-          <thead>
-            <tr>
-              <th>Status</th>
-              <th>Email</th>
-              <th>Label</th>
-            </tr>
-          </thead>
-
-          <tbody>
-
-            <tr class="account-row active">
-              <td>🟢</td>
-              <td>admin@gmail.com</td>
-              <td><span class="acc-tag primary">UTAMA</span></td>
-            </tr>
-
-            <tr class="account-row">
-              <td>🟢</td>
-              <td>bisnis@gmail.com</td>
-              <td><span class="acc-tag business">BISNIS</span></td>
-            </tr>
-
-            <tr class="account-row">
-              <td>🟢</td>
-              <td>gemini@gmail.com</td>
-              <td><span class="acc-tag ai">AI</span></td>
-            </tr>
-
-            <tr class="account-row">
-              <td>🟡</td>
-              <td>testing@gmail.com</td>
-              <td><span class="acc-tag testing">TESTING</span></td>
-            </tr>
-
-            <tr class="account-row">
-              <td>🟢</td>
-              <td>backup@gmail.com</td>
-              <td><span class="acc-tag backup">BACKUP</span></td>
-            </tr>
-
-          </tbody>
-
-        </table>
-
+        <div class="mea-detail-panel" id="detail-panel">
+          <div class="mea-detail-header">
+            <div class="mea-detail-avatar" id="d-avatar">—</div>
+            <div class="mea-detail-name" id="d-email">—</div>
+            <button class="mea-detail-close" onclick="closeDetail()" title="Tutup"><i data-lucide="x"></i></button>
+          </div>
+          <div class="mea-detail-body">
+            <div class="mea-warn-banner" id="d-warn" style="display:none">
+              <i data-lucide="alert-triangle"></i>
+              <p id="d-warn-msg"></p>
+            </div>
+            <div class="mea-detail-grid" id="d-grid"></div>
+            <div class="mea-health-section">
+              <div class="mea-section-title">Kesehatan Akun</div>
+              <div class="mea-pie-wrap">
+                <canvas id="health-pie" width="80" height="80"></canvas>
+                <div class="mea-pie-legend" id="pie-legend"></div>
+              </div>
+            </div>
+          </div>
+          <div class="mea-detail-footer">
+            <button class="mea-btn-sm primary" onclick="syncAccount()"><i data-lucide="refresh-cw"></i> Sync</button>
+            <button class="mea-btn-sm" onclick="editAccount()"><i data-lucide="pen-line"></i> Edit</button>
+            <button class="mea-btn-sm danger" style="margin-left:auto" onclick="archiveAccount()"><i data-lucide="archive-x"></i> Arsip</button>
+          </div>
+        </div>
+      </div><div class="mea-modal-backdrop" id="tg-modal">
+        <div class="mea-modal">
+          <div class="mea-modal-head">
+            <div class="mea-modal-head-icon"><i data-lucide="send"></i></div>
+            <div>
+              <div class="mea-modal-title">Hubungkan Telegram Bot</div>
+              <div class="mea-modal-sub">1 bot · 1 user MEA · semua akun</div>
+            </div>
+            <button class="mea-modal-close" onclick="closeTgModal()"><i data-lucide="x"></i></button>
+          </div>
+          <div class="mea-modal-body">
+            <p>Bot ini mengirim notifikasi saat ada masalah dengan akun.</p>
+            <div class="mea-modal-steps">
+              <div class="mea-step"><div class="mea-step-num">1</div><span>Buat bot di <strong>@BotFather</strong> dan salin token API.</span></div>
+              <div class="mea-step"><div class="mea-step-num">2</div><span>Mulai chat dengan bot Anda (kirim pesan apa saja).</span></div>
+              <div class="mea-step"><div class="mea-step-num">3</div><span>Paste token di bawah, sistem otomatis mencari Chat ID Anda.</span></div>
+            </div>
+            <div class="mea-token-field">
+              <input type="text" class="mea-token-input" id="tg-token-input" placeholder="1234567890:ABCDEF...">
+              <button class="mea-btn-tg-save" id="tg-save-btn" onclick="saveTgToken()">Simpan</button>
+            </div>
+            <div id="tg-token-status" style="font-size:11px;color:var(--mea-text-3);margin-bottom:4px"></div>
+          </div>
+        </div>
       </div>
-
-    </div>
-
-    <div class="account-detail-panel">
-
-      <h3>Account Detail</h3>
-
-      <div class="detail-grid">
-
-        <div>
-          <span>Email</span>
-          <strong>admin@gmail.com</strong>
-        </div>
-
-        <div>
-          <span>Category</span>
-          <strong>Utama</strong>
-        </div>
-
-        <div>
-          <span>Status</span>
-          <strong>Connected</strong>
-        </div>
-
-        <div>
-          <span>2FA</span>
-          <strong>Enabled</strong>
-        </div>
-
-        <div>
-          <span>Recovery</span>
-          <strong>Configured</strong>
-        </div>
-
-        <div>
-          <span>Last Login</span>
-          <strong>2 Hari Lalu</strong>
-        </div>
-
-        <div>
-          <span>Last Sync</span>
-          <strong>5 Menit Lalu</strong>
-        </div>
-
-      </div>
-
-      <div class="detail-actions">
-
-        <button class="btn-primary">
-          Sync
-        </button>
-
-        <button class="btn-secondary">
-          Edit
-        </button>
-
-        <button class="btn-danger">
-          Archive
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
-
-    </div>
+      
+              </div>
+    
     
 
     <!-- ══════════════════════════════════════
