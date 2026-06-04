@@ -396,9 +396,9 @@ switchPage("overview");
 
 
 /* ══════════════════════════════════════════════════════════
-   INTEGRASI ACCOUNT CENTER (MEA)
+   INTEGRASI ACCOUNT CENTER (MEA) - AMAN DARI KONFLIK
 ══════════════════════════════════════════════════════════ */
-const DB = {
+const MEA_DB = {
   async getAccounts() {
     return [
       { id:1, email:'admin@gmail.com',   label:'UTAMA',   tagClass:'tag-utama',  status:'active',   twofa:true,  recovery:true,  lastLogin: 2,   lastSync: 0.08, category:'Utama',   archived:false },
@@ -415,9 +415,9 @@ const DB = {
   }
 };
 
-const TG = {
+const MEA_TG = {
   async notify(message) {
-    const token = await DB.getTgToken();
+    const token = await MEA_DB.getTgToken();
     const chatId = localStorage.getItem('mea_tg_chat_id');
     if (!token || !chatId) return;
     await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
@@ -432,29 +432,32 @@ let meaAccounts = [];
 let meaFiltered = [];
 let meaSelected = null;
 let meaViewMode = 'card';
-let tgConnected = false;
+let meaTgConnected = false;
 
-// Helpers & Render logic
-function statusDot(st) { return st==='active' ? 'dot-green' : (st==='warning' ? 'dot-amber' : (st==='inactive' ? 'dot-red' : 'dot-gray')); }
-function computeStatus(a) { return a.archived ? 'archived' : (a.lastLogin > 360 ? 'warning' : (a.status==='inactive' ? 'inactive' : 'active')); }
-function fmtDays(d) { return d===9999?'Gagal':(d<1/24?'Baru saja':(d<1?Math.round(d*24)+' jam lalu':(d<30?Math.round(d)+' hari lalu':Math.round(d/30)+' bln lalu'))); }
+function meaStatusDot(st) { return st==='active' ? 'dot-green' : (st==='warning' ? 'dot-amber' : (st==='inactive' ? 'dot-red' : 'dot-gray')); }
+function meaComputeStatus(a) { return a.archived ? 'archived' : (a.lastLogin > 360 ? 'warning' : (a.status==='inactive' ? 'inactive' : 'active')); }
 
-function renderStats() {
-  document.getElementById('stat-total').textContent = meaAccounts.length;
-  document.getElementById('stat-active').textContent = meaAccounts.filter(a=>computeStatus(a)==='active').length;
-  document.getElementById('stat-warn').textContent = meaAccounts.filter(a=>computeStatus(a)==='warning').length;
-  document.getElementById('stat-arch').textContent = meaAccounts.filter(a=>computeStatus(a)==='archived').length;
+function meaRenderStats() {
+  const t = document.getElementById('stat-total');
+  const a = document.getElementById('stat-active');
+  const w = document.getElementById('stat-warn');
+  const r = document.getElementById('stat-arch');
+  if(t) t.textContent = meaAccounts.length;
+  if(a) a.textContent = meaAccounts.filter(acc=>meaComputeStatus(acc)==='active').length;
+  if(w) w.textContent = meaAccounts.filter(acc=>meaComputeStatus(acc)==='warning').length;
+  if(r) r.textContent = meaAccounts.filter(acc=>meaComputeStatus(acc)==='archived').length;
 }
 
-function renderCards() {
+function meaRenderCards() {
   const el = document.getElementById('view-card');
+  if(!el) return;
   if (!meaFiltered.length) return el.innerHTML = '<div class="mea-empty"><i data-lucide="inbox"></i><br>Tidak ada akun</div>';
   el.innerHTML = meaFiltered.map(a => {
-    const st = computeStatus(a);
+    const st = meaComputeStatus(a);
     const isWarn = st === 'warning';
     const isSel  = meaSelected && meaSelected.id === a.id;
-    return `<div class="mea-acc-card${isSel?' selected':''}${isWarn?' warn-card':''}" onclick="selectAccount(${a.id})">
-      <span class="mea-status-dot ${statusDot(st)}"></span>
+    return `<div class="mea-acc-card${isSel?' selected':''}${isWarn?' warn-card':''}" onclick="meaSelectAccount(${a.id})">
+      <span class="mea-status-dot ${meaStatusDot(st)}"></span>
       <span class="mea-card-email">${a.email}</span>
       <span class="mea-acc-tag ${a.tagClass}">${a.label}</span>
     </div>`;
@@ -462,14 +465,15 @@ function renderCards() {
   if (window.lucide) lucide.createIcons();
 }
 
-function renderTable() {
+function meaRenderTable() {
   const tbody = document.getElementById('table-body');
+  if(!tbody) return;
   if (!meaFiltered.length) return tbody.innerHTML = `<tr><td colspan="4" class="mea-empty">Tidak ada akun</td></tr>`;
   tbody.innerHTML = meaFiltered.map(a => {
-    const st = computeStatus(a);
+    const st = meaComputeStatus(a);
     const isSel = meaSelected && meaSelected.id === a.id;
-    return `<tr class="${isSel?'selected':''}" onclick="selectAccount(${a.id})">
-      <td><span class="mea-status-dot ${statusDot(st)}"></span></td>
+    return `<tr class="${isSel?'selected':''}" onclick="meaSelectAccount(${a.id})">
+      <td><span class="mea-status-dot ${meaStatusDot(st)}"></span></td>
       <td class="mono">${a.email}</td>
       <td><span class="mea-acc-tag ${a.tagClass}">${a.label}</span></td>
       <td></td>
@@ -478,107 +482,136 @@ function renderTable() {
   if (window.lucide) lucide.createIcons();
 }
 
-function selectAccount(id) {
+function meaSelectAccount(id) {
   meaSelected = meaAccounts.find(a=>a.id===id) || null;
   const layout = document.getElementById('account-layout');
   const detail = document.getElementById('detail-panel');
-  if (meaSelected) {
+  if (meaSelected && layout && detail) {
     layout.classList.add('detail-open');
     detail.classList.add('open');
     document.getElementById('d-avatar').textContent = meaSelected.email.slice(0,2).toUpperCase();
     document.getElementById('d-email').textContent = meaSelected.email;
-    const st = computeStatus(meaSelected);
+    const st = meaComputeStatus(meaSelected);
     if(st === 'warning') {
-      document.getElementById('d-warn').style.display='flex';
+      document.getElementById('d-warn').style.style.display='flex';
       document.getElementById('d-warn-msg').textContent=`Akun tidak terdeteksi login ${Math.round(meaSelected.lastLogin)} hari.`;
-    } else document.getElementById('d-warn').style.display='none';
-  } else { closeDetail(); }
-  renderAll();
+    } else {
+      document.getElementById('d-warn').style.display='none';
+    }
+  } else { meaCloseDetail(); }
+  meaRenderAll();
 }
 
-function closeDetail() {
+function meaCloseDetail() {
   meaSelected = null;
-  document.getElementById('account-layout').classList.remove('detail-open');
-  document.getElementById('detail-panel').classList.remove('open');
-  renderAll();
+  const layout = document.getElementById('account-layout');
+  const detail = document.getElementById('detail-panel');
+  if(layout) layout.classList.remove('detail-open');
+  if(detail) detail.classList.remove('open');
+  meaRenderAll();
 }
 
 function setView(mode) {
   meaViewMode = mode;
-  document.getElementById('view-card').style.display = mode==='card' ? '' : 'none';
-  document.getElementById('view-table').style.display = mode==='table' ? '' : 'none';
-  document.getElementById('btn-card').classList.toggle('active', mode==='card');
-  document.getElementById('btn-table').classList.toggle('active', mode==='table');
-  renderAll();
+  const vc = document.getElementById('view-card');
+  const vt = document.getElementById('view-table');
+  const bc = document.getElementById('btn-card');
+  const bt = document.getElementById('btn-table');
+  if(vc) vc.style.display = mode==='card' ? '' : 'none';
+  if(vt) vt.style.display = mode==='table' ? '' : 'none';
+  if(bc) bc.classList.toggle('active', mode==='card');
+  if(bt) bt.classList.toggle('active', mode==='table');
+  meaRenderAll();
 }
 
-function renderAll() { renderCards(); renderTable(); }
+function meaRenderAll() { meaRenderCards(); meaRenderTable(); }
 
-/* ─── Telegram Bot Logic (Penerapan Real) ─── */
+/* ─── BOT TELEGRAM REAL TIME INTEGRATION ─── */
 function openTgModal() { 
-  document.getElementById('tg-modal').classList.add('open'); 
-  DB.getTgToken().then(t=>{ if(t) document.getElementById('tg-token-input').value=t; });
+  const m = document.getElementById('tg-modal');
+  if(m) m.classList.add('open'); 
+  MEA_DB.getTgToken().then(t=>{ if(t && document.getElementById('tg-token-input')) document.getElementById('tg-token-input').value=t; });
 }
-function closeTgModal() { document.getElementById('tg-modal').classList.remove('open'); }
+function closeTgModal() { 
+  const m = document.getElementById('tg-modal');
+  if(m) m.classList.remove('open'); 
+}
 
 async function saveTgToken() {
-  const token = document.getElementById('tg-token-input').value.trim();
+  const tokenInput = document.getElementById('tg-token-input');
   const statusEl = document.getElementById('tg-token-status');
   const btn = document.getElementById('tg-save-btn');
-  if (!token) return;
+  if(!tokenInput || !statusEl || !btn) return;
   
+  const token = tokenInput.value.trim();
+  if (!token) return;
   btn.textContent = 'Mencari Chat ID...';
   
-  // Mencoba mencari Chat ID dari pesan terakhir bot via getUpdates
   try {
     let res = await fetch(`https://api.telegram.org/bot${token}/getUpdates`);
     let data = await res.json();
     if (data.ok && data.result.length > 0) {
       let chatId = data.result[data.result.length - 1].message.chat.id;
       localStorage.setItem('mea_tg_chat_id', chatId);
-      await DB.saveTgToken(token);
-      tgConnected = true;
+      await MEA_DB.saveTgToken(token);
+      meaTgConnected = true;
       statusEl.textContent = `✓ Bot terhubung (ID: ${chatId})`;
       statusEl.style.color = '#22c55e';
       
       const text = document.getElementById('tg-status-text');
       const actionBtn  = document.getElementById('tg-action-btn');
-      actionBtn.textContent = 'Tersambung';
-      actionBtn.style.background='rgba(34,197,94,.15)';
-      actionBtn.style.borderColor='rgba(34,197,94,.3)';
-      actionBtn.style.color='#22c55e';
-      text.textContent = 'Bot aktif — notifikasi peringatan akan dikirim otomatis.';
+      if(actionBtn) {
+        actionBtn.textContent = 'Tersambung';
+        actionBtn.style.background='rgba(34,197,94,.15)';
+        actionBtn.style.borderColor='rgba(34,197,94,.3)';
+        actionBtn.style.color='#22c55e';
+      }
+      if(text) text.textContent = 'Bot aktif — notifikasi peringatan akan dikirim otomatis.';
       
-      TG.notify("✅ <b>Sukses!</b>\nBot Telegram MEA berhasil dihubungkan ke dashboard Anda.");
+      MEA_TG.notify("✅ <b>Sukses!</b>\nBot Telegram MEA berhasil dihubungkan ke dashboard Anda.");
       setTimeout(closeTgModal, 1500);
     } else {
-      statusEl.textContent = '❌ Chat ID tidak ditemukan. Kirim 1 pesan ke bot Anda sekarang lalu klik Simpan lagi.';
+      statusEl.textContent = '❌ Chat ID tidak ditemukan. Kirim 1 pesan apa saja ke bot Telegram Anda terlebih dahulu, lalu klik Simpan kembali.';
       statusEl.style.color = '#e03535';
     }
   } catch(e) {
-    statusEl.textContent = '❌ Token tidak valid / Error jaringan.';
+    statusEl.textContent = '❌ Token salah atau koneksi bermasalah.';
     statusEl.style.color = '#e03535';
   }
   btn.textContent = 'Simpan';
 }
 
 async function initAccountCenter() {
-  meaAccounts = await DB.getAccounts();
+  meaAccounts = await MEA_DB.getAccounts();
   meaFiltered = meaAccounts.filter(a=>!a.archived);
-  renderStats();
+  meaRenderStats();
   setView('card');
-  if (await DB.getTgToken() && localStorage.getItem('mea_tg_chat_id')) {
-    tgConnected = true;
-    document.getElementById('tg-action-btn').textContent = 'Tersambung';
-    document.getElementById('tg-status-text').textContent = 'Bot aktif — notifikasi akan dikirim saat ada peringatan';
+  const localToken = await MEA_DB.getTgToken();
+  const localChat = localStorage.getItem('mea_tg_chat_id');
+  if (localToken && localChat) {
+    meaTgConnected = true;
+    const ab = document.getElementById('tg-action-btn');
+    const st = document.getElementById('tg-status-text');
+    if(ab) ab.textContent = 'Tersambung';
+    if(st) st.textContent = 'Bot aktif — notifikasi akan dikirim saat ada peringatan akun';
   }
   if (window.lucide) lucide.createIcons();
 }
 
-// Inisialisasi saat window dimuat
-window.addEventListener('DOMContentLoaded', initAccountCenter);
+// Interseptor halaman: JALANKAN SEWAKTU DI-SWITCH KE HALAMAN ACCOUNT CENTER
+const originalSwitchPage = window.switchPage;
+window.switchPage = function(pageId) {
+  if (originalSwitchPage) originalSwitchPage(pageId);
+  if (pageId === "account") {
+    initAccountCenter();
+  }
+};
 
-// Tutup modal jika klik luar
-document.getElementById('tg-modal').addEventListener('click', function(e){
-  if(e.target===this) closeTgModal();
-});
+// Pasang event luar modal
+const tgM = document.getElementById('tg-modal');
+if(tgM) {
+  tgM.addEventListener('click', function(e){
+    if(e.target===this) closeTgModal();
+  });
+      }
+  
