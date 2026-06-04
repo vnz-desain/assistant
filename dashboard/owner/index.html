@@ -277,161 +277,624 @@
 <!-- ══════════════════════════════════════
          PAGE: ACCOUNT CENTER
     ══════════════════════════════════════ -->
-    
-              <div class="page" id="page-account">
-      
-      <div class="mea-page-header">
-        <p class="mea-eyebrow">Google Identity Vault</p>
-        <h1 class="mea-page-title">Account <span>Center</span></h1>
+    <!-- ===================== ACCOUNT CENTER PAGE ===================== -->
+<div class="page" id="page-account">
+
+  <!-- PAGE HEADER -->
+  <div class="dash-page-header">
+    <div>
+      <p class="dash-page-eyebrow">Google Workspace</p>
+      <h1 class="dash-page-title">Account Center</h1>
+      <p class="acct-page-subtitle">Google Identity Vault</p>
+    </div>
+    <div class="acct-header-actions">
+      <div class="acct-sync-badge" id="acctSyncBadge">
+        <span class="acct-sync-dot"></span>
+        <span class="acct-sync-label" id="acctSyncLabel">Vault Secure</span>
+      </div>
+      <button class="acct-btn-ghost" onclick="acctRefresh()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+        Refresh
+      </button>
+      <button class="acct-btn-ghost" onclick="acctToggleView()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="acctViewIcon"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <span id="acctViewLabel">Table</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- SECTION 9 — SEARCH & FILTERS -->
+  <div class="acct-section">
+    <div class="acct-search-row">
+      <div class="acct-search-wrap">
+        <svg class="acct-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input class="acct-search-input" id="acctSearchInput" type="text" placeholder="Search accounts..." oninput="acctFilter()" autocomplete="off"/>
+      </div>
+      <div class="acct-filter-tabs" id="acctFilterTabs">
+        <button class="acct-filter-tab active" data-filter="all" onclick="acctSetFilter('all', this)">All</button>
+        <button class="acct-filter-tab" data-filter="active" onclick="acctSetFilter('active', this)">Active</button>
+        <button class="acct-filter-tab" data-filter="warning" onclick="acctSetFilter('warning', this)">Warning</button>
+        <button class="acct-filter-tab" data-filter="archived" onclick="acctSetFilter('archived', this)">Archived</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1 — ACCOUNT OVERVIEW STATS -->
+  <div class="acct-section">
+    <p class="acct-section-label">Account Overview</p>
+    <div class="acct-stats-grid">
+
+      <div class="acct-stat-card">
+        <div class="acct-stat-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </div>
+        <div class="acct-stat-body">
+          <span class="acct-stat-val" id="acctStatTotal">5</span>
+          
+        </div>
       </div>
 
-      <div class="mea-stats">
-        <div class="mea-stat">
-          <div class="mea-stat-icon all"><i data-lucide="users"></i></div>
+      <div class="acct-stat-card">
+        <div class="acct-stat-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <div class="acct-stat-body">
+          <span class="acct-stat-val" id="acctStatConnected">3</span>
+          <span class="acct-stat-label">Connected</span>
+        </div>
+      </div>
+
+      <div class="acct-stat-card">
+        <div class="acct-stat-icon acct-stat-icon--warn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="acct-stat-body">
+          <span class="acct-stat-val acct-val--warn" id="acctStatWarning">1</span>
+          <span class="acct-stat-label">Warning</span>
+        
+      </div>
+
+      <div class="acct-stat-card">
+        <div class="acct-stat-icon acct-stat-icon--dim">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="acct-stat-body">
+          <span class="acct-stat-val acct-val--dim" id="acctStatArchived">1</span>
+          <span class="acct-stat-label">Archived</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 2 — TELEGRAM SECURITY INTEGRATION -->
+  <div class="acct-section">
+    <p class="acct-section-label">Security Integration</p>
+    <div class="acct-telegram-card" id="acctTelegramCard">
+      <div class="acct-telegram-left">
+        <div class="acct-telegram-orb" id="acctTgOrb">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21.198 2.433a2.242 2.242 0 0 0-1.022.215l-16.5 7.5a2.25 2.25 0 0 0 .126 4.073l3.9 1.205 2.306 6.54a.75.75 0 0 0 1.288.215l2.515-3.044 4.83 3.69a2.254 2.254 0 0 0 3.522-1.528l2.834-16.5a2.248 2.248 0 0 0-3.799-1.366z"/></svg>
+        </div>
+        <div class="acct-telegram-info">
+          <p class="acct-telegram-title" id="acctTgTitle">Telegram Security Bot</p>
+          <p class="acct-telegram-sub" id="acctTgSub">Connect Telegram untuk menerima notifikasi keamanan akun.</p>
+          <div class="acct-telegram-status" id="acctTgStatus">
+            <span class="acct-tg-dot" id="acctTgDot"></span>
+            <span class="acct-tg-status-text" id="acctTgStatusText">Not Connected</span>
+          </div>
+        </div>
+      </div>
+      <div class="acct-telegram-actions" id="acctTgActions">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3 — ACCOUNT SELECTOR -->
+  <div class="acct-section">
+    <p class="acct-section-label">Identity Vault</p>
+    <div class="acct-account-strip" id="acctAccountStrip">
+      <!-- Rendered by JS -->
+    </div>
+  </div>
+
+  <!-- ACCOUNT DETAIL + HEALTH ROW -->
+  <div class="acct-twin-row" id="acctDetailRow" style="display:none;">
+
+    <!-- SECTION 4 — ACCOUNT HEALTH -->
+    <div class="acct-section acct-section--half">
+      <p class="acct-section-label">Account Health</p>
+      <div class="acct-health-card" id="acctHealthCard">
+        <div class="acct-health-status">
+          <div class="acct-health-orb acct-health-orb--ok" id="acctHealthOrb"></div>
           <div>
-            <div class="mea-stat-num" id="stat-total">0</div>
-            <div class="mea-stat-lbl">Accounts</div>
+            <p class="acct-health-title" id="acctHealthTitle">All Systems Operational</p>
+            <p class="acct-health-sub" id="acctHealthSub">No anomalies detected</p>
           </div>
         </div>
-        <div class="mea-stat">
-          <div class="mea-stat-icon ok"><i data-lucide="check-circle-2"></i></div>
-          <div>
-            <div class="mea-stat-num" id="stat-active">0</div>
-            <div class="mea-stat-lbl">Connected</div>
-          </div>
-        </div>
-        <div class="mea-stat">
-          <div class="mea-stat-icon warn"><i data-lucide="alert-triangle"></i></div>
-          <div>
-            <div class="mea-stat-num" id="stat-warn">0</div>
-            <div class="mea-stat-lbl">Warning</div>
-          </div>
-        </div>
-        <div class="mea-stat">
-          <div class="mea-stat-icon arch"><i data-lucide="archive"></i></div>
-          <div>
-            <div class="mea-stat-num" id="stat-arch">0</div>
-            <div class="mea-stat-lbl">Archived</div>
-          </div>
+        <div class="acct-health-checks" id="acctHealthChecks">
+          <!-- Rendered by JS -->
         </div>
       </div>
+    </div>
 
-      <div class="mea-tg-banner" id="tg-banner">
-        <div class="mea-tg-icon"><i data-lucide="send"></i></div>
-        <div class="mea-tg-text">
-          <strong>Telegram Bot Alert</strong>
-          <span id="tg-status-text">Hubungkan 1 bot Telegram untuk notifikasi akun ini</span>
-        </div>
-        <button class="mea-tg-btn" id="tg-action-btn" onclick="openTgModal()">Hubungkan Bot</button>
+    <!-- SECTION 6 — ACCOUNT DETAIL INSPECTOR -->
+    <div class="acct-section acct-section--half">
+      <p class="acct-section-label">Identity Inspector</p>
+      <div class="acct-detail-card" id="acctDetailCard">
+        <!-- Rendered by JS -->
       </div>
+    </div>
 
-      <div class="mea-toolbar">
-        <div class="mea-search-wrap">
-          <i data-lucide="search"></i>
-          <input type="text" class="mea-search" id="acc-search" placeholder="Cari akun...">
-        </div>
-        <div class="mea-view-toggle">
-          <button class="mea-view-btn active" id="btn-card" onclick="setView('card')" title="Card view">
-            <i data-lucide="layout-list"></i>
-          </button>
-          <button class="mea-view-btn" id="btn-table" onclick="setView('table')" title="Table view">
-            <i data-lucide="table-2"></i>
-          </button>
-        </div>
-        <button class="mea-btn-add" onclick="addAccount()">
-          <i data-lucide="plus"></i> Tambah Akun
-        </button>
+  </div>
+
+  <!-- SECTION 5 — ACCOUNT STORAGE & ACTIVITY (shown when account selected) -->
+  <div class="acct-section" id="acctActivitySection" style="display:none;">
+    <p class="acct-section-label">Storage & Activity</p>
+    <div class="acct-activity-card" id="acctActivityCard">
+      <div class="acct-activity-grid" id="acctActivityGrid">
+        <!-- Rendered by JS -->
       </div>
+    </div>
+  </div>
 
-      <div class="mea-account-layout" id="account-layout">
+  <!-- SECTION 7 — ACCOUNT ACTIONS -->
+  <div class="acct-section" id="acctActionsSection" style="display:none;">
+    <div class="acct-section-top">
+      <p class="acct-section-label">Account Actions</p>
+      <span class="acct-actions-target" id="acctActionsTarget"></span>
+    </div>
+    <div class="acct-actions-bar">
+      <button class="acct-btn-ghost" onclick="acctSync()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+        Sync
+      </button>
+      <button class="acct-btn-ghost" onclick="acctEdit()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Edit
+      </button>
+      <button class="acct-btn-ghost" onclick="acctReauthorize()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Reauthorize
+      </button>
+      <button class="acct-btn-ghost acct-btn-ghost--danger" onclick="acctArchive()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+        Archive
+      </button>
+    </div>
+  </div>
 
-        <div id="list-panel">
-          <div class="mea-card-list" id="view-card"></div>
-          <div class="mea-table-wrap" id="view-table" style="display:none">
-            <table class="mea-table">
-              <thead>
-                <tr>
-                  <th style="width:24px"></th>
-                  <th>Email</th>
-                  <th>Label</th>
-                  <th style="width:28px"></th>
-                </tr>
-              </thead>
-              <tbody id="table-body"></tbody>
-            </table>
-          </div>
+  <!-- CARD / TABLE VIEW (Section 10 + 3 combined display) -->
+  <div class="acct-section" id="acctListSection">
+    <div class="acct-section-top">
+      <p class="acct-section-label">All Accounts</p>
+      <div class="acct-count-badge" id="acctCountBadge">5 accounts</div>
+    </div>
+    <!-- Card View -->
+    <div id="acctCardView" class="acct-cards-grid">
+      <!-- Rendered by JS -->
+    </div>
+    <!-- Table View -->
+    <div id="acctTableView" style="display:none;">
+      <div class="acct-files-table">
+        <div class="acct-table-head">
+          <span>Account</span>
+          <span>Category</span>
+          <span>2FA</span>
+          <span>Last Login</span>
+          <span>Status</span>
+          <span></span>
         </div>
-
-        <div class="mea-detail-panel" id="detail-panel">
-          <div class="mea-detail-header">
-            <div class="mea-detail-avatar" id="d-avatar">—</div>
-            <div class="mea-detail-name" id="d-email">—</div>
-            <button class="mea-detail-close" onclick="closeDetail()" title="Tutup"><i data-lucide="x"></i></button>
-          </div>
-          <div class="mea-detail-body">
-            <div class="mea-warn-banner" id="d-warn" style="display:none">
-              <i data-lucide="alert-triangle"></i>
-              <p id="d-warn-msg"></p>
-            </div>
-            <div class="mea-detail-grid" id="d-grid"></div>
-            <div class="mea-health-section">
-              <div class="mea-section-title">Kesehatan Akun</div>
-              <div class="mea-pie-wrap">
-                <canvas id="health-pie" width="80" height="80"></canvas>
-                <div class="mea-pie-legend" id="pie-legend"></div>
-              </div>
-            </div>
-          </div>
-          <div class="mea-detail-footer">
-            <button class="mea-btn-sm primary" onclick="syncAccount()"><i data-lucide="refresh-cw"></i> Sync</button>
-            <button class="mea-btn-sm" onclick="editAccount()"><i data-lucide="pen-line"></i> Edit</button>
-            <button class="mea-btn-sm danger" style="margin-left:auto" onclick="archiveAccount()"><i data-lucide="archive-x"></i> Arsip</button>
-          </div>
-        </div>
-      </div><div class="mea-modal-backdrop" id="tg-modal">
-        <div class="mea-modal">
-          <div class="mea-modal-head">
-            <div class="mea-modal-head-icon"><i data-lucide="send"></i></div>
-            <div>
-              <div class="mea-modal-title">Hubungkan Telegram Bot</div>
-              <div class="mea-modal-sub">1 bot · 1 user MEA · semua akun</div>
-            </div>
-            <button class="mea-modal-close" onclick="closeTgModal()"><i data-lucide="x"></i></button>
-          </div>
-          <div class="mea-modal-body">
-            <p>Bot ini mengirim notifikasi saat ada masalah dengan akun.</p>
-            <div class="mea-modal-steps">
-              <div class="mea-step"><div class="mea-step-num">1</div><span>Buat bot di <strong>@BotFather</strong> dan salin token API.</span></div>
-              <div class="mea-step"><div class="mea-step-num">2</div><span>Mulai chat dengan bot Anda (kirim pesan apa saja).</span></div>
-              <div class="mea-step"><div class="mea-step-num">3</div><span>Paste token di bawah, sistem otomatis mencari Chat ID Anda.</span></div>
-            </div>
-            <div class="mea-token-field">
-              <input type="text" class="mea-token-input" id="tg-token-input" placeholder="1234567890:ABCDEF...">
-              <button class="mea-btn-tg-save" id="tg-save-btn" onclick="saveTgToken()">Simpan</button>
-            </div>
-            <div id="tg-token-status" style="font-size:11px;color:var(--mea-text-3);margin-bottom:4px"></div>
-          </div>
+        <div class="acct-table-body" id="acctTableBody">
+          <!-- Rendered by JS -->
         </div>
       </div>
-      
-              </div>
-    
-    
+    </div>
+  </div>
+
+  <!-- SECTION 8 — RECENT ACCOUNT ACTIVITY -->
+  <div class="acct-section">
+    <p class="acct-section-label">Recent Activity</p>
+    <div class="acct-timeline-card">
+      <div class="acct-timeline" id="acctTimeline">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- TELEGRAM MODAL -->
+<div class="acct-modal-overlay" id="acctTgModal" onclick="acctModalOverlayClick(event)">
+  <div class="acct-modal" id="acctTgModalInner">
+    <div class="acct-modal-header">
+      <div>
+        <p class="acct-modal-eyebrow">Security Integration</p>
+        <h2 class="acct-modal-title">Telegram Connect</h2>
+      </div>
+      <button class="acct-modal-close" onclick="closeTgModal()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="acct-modal-body">
+      <div class="acct-modal-instruction">
+        <div class="acct-modal-step">
+          <span class="acct-modal-step-num">01</span>
+          <p class="acct-modal-step-text">Buka <strong>@MEAAssistantBot</strong> di Telegram dan kirim <code>/start</code> untuk memulai sesi.</p>
+        </div>
+        <div class="acct-modal-step">
+          <span class="acct-modal-step-num">02</span>
+          <p class="acct-modal-step-text">Bot akan mengirimkan kode verifikasi 6 digit. Masukkan kode di bawah.</p>
+        </div>
+        <div class="acct-modal-step">
+          <span class="acct-modal-step-num">03</span>
+          <p class="acct-modal-step-text">Setelah terhubung, notifikasi keamanan akan dikirim otomatis ke akun Telegram Anda.</p>
+        </div>
+      </div>
+      <div class="acct-modal-field">
+        <label class="acct-modal-label">Verification Code</label>
+        <input class="acct-modal-input" id="tgCodeInput" type="text" placeholder="_ _ _ _ _ _" maxlength="6" autocomplete="off"/>
+      </div>
+      <div class="acct-modal-field">
+        <label class="acct-modal-label">Telegram Username (optional)</label>
+        <input class="acct-modal-input" id="tgUsernameInput" type="text" placeholder="@username" autocomplete="off"/>
+      </div>
+      <div class="acct-modal-feedback" id="tgFeedback" style="display:none;"></div>
+    </div>
+    <div class="acct-modal-footer">
+      <button class="acct-btn-ghost" onclick="closeTgModal()">Cancel</button>
+      <button class="acct-btn-primary" onclick="bindTelegramUser()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.198 2.433a2.242 2.242 0 0 0-1.022.215l-16.5 7.5a2.25 2.25 0 0 0 .126 4.073l3.9 1.205 2.306 6.54a.75.75 0 0 0 1.288.215l2.515-3.044 4.83 3.69a2.254 2.254 0 0 0 3.522-1.528l2.834-16.5a2.248 2.248 0 0 0-3.799-1.366z"/></svg>
+        Connect
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== END ACCOUNT CENTER PAGE ===================== -->
 
     <!-- ══════════════════════════════════════
          PAGE: EMAIL CENTER
     ══════════════════════════════════════ -->
-    <div class="page" id="page-gmail">
+    <!-- ===================== GMAIL CENTER PAGE ===================== -->
+<div class="page" id="page-gmail">
 
-  <div class="page-header">
-    <h1>Gmail Center</h1>
+  <div class="dash-page-header">
+    <div>
+      <p class="dash-page-eyebrow">Google Workspace</p>
+      <h1 class="dash-page-title">Gmail Center</h1>
+    </div>
+    <div class="drive-header-actions">
+      <div class="gmail-sync-badge" id="gmailSyncBadge">
+        <span class="gmail-sync-dot"></span>
+        <span class="gmail-sync-label" id="gmailSyncLabel">Synced</span>
+      </div>
+      <button class="drive-btn-ghost" onclick="gmailRefresh()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+        Refresh
+      </button>
+      <button class="drive-btn-ghost" onclick="gmailCompose()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Compose
+      </button>
+    </div>
   </div>
 
-  <div class="empty-state">
-    Belum ada akun Gmail terhubung
+  <!-- ACCOUNT SELECTOR -->
+  <div class="drive-section">
+    <p class="drive-section-label">Active Account</p>
+    <div class="drive-account-strip">
+      <div class="drive-account-cards" id="gmailAccountCards">
+        <!-- Rendered by JS -->
+      </div>
+      <button class="drive-add-account" onclick="gmailAddAccount()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add Account
+      </button>
+    </div>
   </div>
+
+  <!-- INBOX STATISTICS -->
+  <div class="drive-section">
+    <p class="drive-section-label">Inbox Statistics</p>
+    <div class="gmail-stats-grid">
+
+      <div class="drive-stat-card">
+        <div class="drive-stat-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div class="drive-stat-body">
+          <span class="drive-stat-val" id="statTotalInbox">2,847</span>
+          <span class="drive-stat-label">Total Inbox</span>
+        </div>
+      </div>
+
+      <div class="drive-stat-card">
+        <div class="drive-stat-icon gmail-stat-icon--unread">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/><circle cx="18" cy="5" r="4" fill="var(--red-bright)" stroke="none"/></svg>
+        </div>
+        <div class="drive-stat-body">
+          <span class="drive-stat-val gmail-val--accent" id="statUnread">124</span>
+          <span class="drive-stat-label">Unread Mail</span>
+        </div>
+      </div>
+
+      <div class="drive-stat-card">
+        <div class="drive-stat-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </div>
+        <div class="drive-stat-body">
+          <span class="drive-stat-val" id="statSentToday">18</span>
+          <span class="drive-stat-label">Sent Today</span>
+        </div>
+      </div>
+
+      <div class="drive-stat-card">
+        <div class="drive-stat-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div class="drive-stat-body">
+          <span class="drive-stat-val gmail-val--warn" id="statSpam">37</span>
+          <span class="drive-stat-label">Spam</span>
+        </div>
+      </div>
+
+      <div class="drive-stat-card">
+        <div class="drive-stat-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+        </div>
+        <div class="drive-stat-body">
+          <span class="drive-stat-val" id="statGmailTrash">9</span>
+          <span class="drive-stat-label">In Trash</span>
+        </div>
+      </div>
 
     </div>
+  </div>
+
+  <!-- EMAIL CATEGORIES -->
+  <div class="drive-section">
+    <p class="drive-section-label">Email Categories</p>
+    <div class="gmail-categories-grid">
+
+      <div class="gmail-category-card gmail-cat--primary">
+        <div class="gmail-cat-header">
+          <div class="gmail-cat-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          </div>
+          <span class="gmail-cat-badge" id="catPrimaryBadge">42</span>
+        </div>
+        <p class="gmail-cat-name">Primary</p>
+        <p class="gmail-cat-sub" id="catPrimaryUnread">12 unread</p>
+      </div>
+
+      <div class="gmail-category-card gmail-cat--social">
+        <div class="gmail-cat-header">
+          <div class="gmail-cat-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <span class="gmail-cat-badge" id="catSocialBadge">18</span>
+        </div>
+        <p class="gmail-cat-name">Social</p>
+        <p class="gmail-cat-sub" id="catSocialUnread">6 unread</p>
+      </div>
+
+      <div class="gmail-category-card gmail-cat--promo">
+        <div class="gmail-cat-header">
+          <div class="gmail-cat-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+          </div>
+          <span class="gmail-cat-badge" id="catPromoBadge">86</span>
+        </div>
+        <p class="gmail-cat-name">Promotions</p>
+        <p class="gmail-cat-sub" id="catPromoUnread">71 unread</p>
+      </div>
+
+      <div class="gmail-category-card gmail-cat--updates">
+        <div class="gmail-cat-header">
+          <div class="gmail-cat-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </div>
+          <span class="gmail-cat-badge" id="catUpdatesBadge">31</span>
+        </div>
+        <p class="gmail-cat-name">Updates</p>
+        <p class="gmail-cat-sub" id="catUpdatesUnread">14 unread</p>
+      </div>
+
+      <div class="gmail-category-card gmail-cat--forums">
+        <div class="gmail-cat-header">
+          <div class="gmail-cat-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <span class="gmail-cat-badge" id="catForumsBadge">7</span>
+        </div>
+        <p class="gmail-cat-name">Forums</p>
+        <p class="gmail-cat-sub" id="catForumsUnread">3 unread</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STORAGE + SYNC ROW -->
+  <div class="drive-twin-row">
+
+    <!-- STORAGE USAGE -->
+    <div class="drive-section drive-section--half">
+      <p class="drive-section-label">Gmail Storage</p>
+      <div class="drive-storage-card" id="gmailStorageCard">
+        <div class="drive-storage-header">
+          <div>
+            <span class="drive-storage-used" id="gmailStorageUsed">2.9 GB</span>
+            <span class="drive-storage-of"> of </span>
+            <span class="drive-storage-total" id="gmailStorageTotal">15 GB</span>
+          </div>
+          <div class="drive-storage-pct" id="gmailStoragePct">19%</div>
+        </div>
+        <div class="drive-bar-track">
+          <div class="drive-bar-fill" id="gmailBarFill" style="width: 19%"></div>
+        </div>
+        <div class="gmail-storage-breakdown">
+          <div class="drive-breakdown-item">
+            <span class="drive-breakdown-dot" style="background:#3a7bd5"></span>
+            <span class="drive-breakdown-label">Messages</span>
+            <span class="drive-breakdown-val" id="gmailBreakMsg">1.8 GB</span>
+          </div>
+          <div class="drive-breakdown-item">
+            <span class="drive-breakdown-dot" style="background:var(--red-bright)"></span>
+            <span class="drive-breakdown-label">Attachments</span>
+            <span class="drive-breakdown-val" id="gmailBreakAttach">0.9 GB</span>
+          </div>
+          <div class="drive-breakdown-item">
+            <span class="drive-breakdown-dot" style="background:rgba(240,237,232,0.25)"></span>
+            <span class="drive-breakdown-label">Free</span>
+            <span class="drive-breakdown-val" id="gmailBreakFree">12.1 GB</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SYNC CENTER -->
+    <div class="drive-section drive-section--half">
+      <p class="drive-section-label">Sync Center</p>
+      <div class="drive-sync-card">
+        <div class="drive-sync-row">
+          <span class="drive-sync-key">Last Sync</span>
+          <span class="drive-sync-val" id="gmailLastSync">Today, 14:47</span>
+        </div>
+        <div class="drive-sync-row">
+          <span class="drive-sync-key">Sync Status</span>
+          <span class="drive-sync-val drive-sync-val--ok" id="gmailSyncStatus">Active</span>
+        </div>
+        <div class="drive-sync-row">
+          <span class="drive-sync-key">Pending Emails</span>
+          <span class="drive-sync-val" id="gmailPending">0 messages</span>
+        </div>
+        <div class="drive-sync-row">
+          <span class="drive-sync-key">Sync Interval</span>
+          <span class="drive-sync-val" id="gmailInterval">5 minutes</span>
+        </div>
+        <div class="drive-sync-row">
+          <span class="drive-sync-key">Data Fetched</span>
+          <span class="drive-sync-val" id="gmailBandwidth">48 MB today</span>
+        </div>
+        <button class="drive-btn-primary" onclick="gmailForceSync()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+          Sync Now
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- INBOX HEALTH + QUICK ACTIONS ROW -->
+  <div class="drive-twin-row">
+
+    <!-- INBOX HEALTH -->
+    <div class="drive-section drive-section--half">
+      <p class="drive-section-label">Inbox Health</p>
+      <div class="drive-health-card" id="gmailHealthCard">
+        <div class="drive-health-status">
+          <div class="drive-health-orb drive-health-orb--ok" id="gmailHealthOrb"></div>
+          <div>
+            <p class="drive-health-title" id="gmailHealthTitle">All Systems Operational</p>
+            <p class="drive-health-sub" id="gmailHealthSub">No anomalies detected</p>
+          </div>
+        </div>
+        <div class="drive-health-checks">
+          <div class="drive-check-item" id="gmailCheckApi">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Gmail API Connected</span>
+          </div>
+          <div class="drive-check-item" id="gmailCheckAuth">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>OAuth Token Valid</span>
+          </div>
+          <div class="drive-check-item" id="gmailCheckSync">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>IMAP Sync Active</span>
+          </div>
+          <div class="drive-check-item" id="gmailCheckQuota">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Quota Within Limit</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="drive-section drive-section--half">
+      <p class="drive-section-label">Quick Actions</p>
+      <div class="gmail-actions-card">
+        <button class="gmail-action-btn" onclick="gmailCompose()">
+          <div class="gmail-action-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </div>
+          <div class="gmail-action-body">
+            <span class="gmail-action-label">Compose Mail</span>
+            <span class="gmail-action-sub">Create new message</span>
+          </div>
+          <svg class="gmail-action-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+        <button class="gmail-action-btn" onclick="gmailRefresh()">
+          <div class="gmail-action-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+          </div>
+          <div class="gmail-action-body">
+            <span class="gmail-action-label">Refresh Inbox</span>
+            <span class="gmail-action-sub">Fetch latest mail</span>
+          </div>
+          <svg class="gmail-action-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+        <button class="gmail-action-btn" onclick="gmailSearch()">
+          <div class="gmail-action-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <div class="gmail-action-body">
+            <span class="gmail-action-label">Search Email</span>
+            <span class="gmail-action-sub">Full-text search</span>
+          </div>
+          <svg class="gmail-action-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+        <button class="gmail-action-btn" onclick="gmailOpen()">
+          <div class="gmail-action-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </div>
+          <div class="gmail-action-body">
+            <span class="gmail-action-label">Open Gmail</span>
+            <span class="gmail-action-sub">Launch in browser</span>
+          </div>
+          <svg class="gmail-action-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RECENT EMAILS -->
+  <div class="drive-section">
+    <div class="drive-section-top">
+      <p class="drive-section-label">Recent Emails</p>
+      <button class="drive-btn-ghost drive-btn-ghost--sm" onclick="gmailOpenAll()">
+        View All
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+    <div class="drive-files-table">
+      <div class="gmail-table-head">
+        <span>Sender</span>
+        <span>Subject</span>
+        <span>Category</span>
+        <span>Date</span>
+        <span>Status</span>
+      </div>
+      <div class="drive-table-body" id="gmailEmailsList">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- ===================== END GMAIL CENTER PAGE ===================== -->
 
     <!-- ══════════════════════════════════════
          PAGE: DRIVE CENTER
