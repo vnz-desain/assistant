@@ -39,22 +39,66 @@
         <span class="nav-icon">👥</span>
         <span class="nav-label">Users</span>
       </button>
-      <button class="nav-item" data-page="account">
-        <span class="nav-icon">🛡️</span>
-        <span class="nav-label">Account Center</span>
-      </button>
-      <button class="nav-item" data-page="email">
-        <span class="nav-icon">📧</span>
-        <span class="nav-label">Email Center</span>
-      </button>
-      <button class="nav-item" data-page="drive">
-        <span class="nav-icon">☁️</span>
-        <span class="nav-label">Drive Center</span>
-      </button>
-      <button class="nav-item" data-page="ai">
-        <span class="nav-icon">🤖</span>
-        <span class="nav-label">AI Center</span>
-      </button>
+      <div class="nav-group">
+
+  <button class="nav-item nav-parent" data-group="account">
+    <span class="nav-icon">🔑</span>
+    <span class="nav-label">Account Center</span>
+    <span class="nav-arrow">▼</span>
+  </button>
+
+  <div class="nav-children">
+
+    <button class="nav-sub-item" data-page="account">
+      👤 Accounts
+    </button>
+
+    <button class="nav-sub-item" data-page="gmail">
+      📧 Gmail
+    </button>
+
+    <button class="nav-sub-item" data-page="drive">
+      ☁️ Drive
+    </button>
+
+    <button class="nav-sub-item" data-page="oauth">
+      🔐 OAuth
+    </button>
+
+    <button class="nav-sub-item" data-page="logs">
+      📜 Logs
+    </button>
+
+  </div>
+
+      </div>
+      
+      <div class="nav-group">
+
+  <button class="nav-item nav-parent" data-group="ai">
+    <span class="nav-icon">🤖</span>
+    <span class="nav-label">AI Center</span>
+    <span class="nav-arrow">▼</span>
+  </button>
+
+  <div class="nav-children">
+
+    <button class="nav-sub-item" data-page="models">
+      🧠 Models
+    </button>
+
+    <button class="nav-sub-item" data-page="apikeys">
+      🔑 API Keys
+    </button>
+
+    <button class="nav-sub-item" data-page="usage">
+      📈 Usage
+    </button>
+
+  </div>
+
+      </div>
+      
       <button class="nav-item" data-page="analytics">
         <span class="nav-icon">📊</span>
         <span class="nav-label">Analytics</span>
