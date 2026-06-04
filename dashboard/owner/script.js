@@ -55,6 +55,11 @@ const hamburgerBtn   = document.getElementById("hamburgerBtn");
 const topbarPageLabel= document.getElementById("topbarPageLabel");
 
 const PAGE_LABELS = {
+  account : "Accounts",
+  gmail : "Gmail",
+  drive : "Drive",
+  oauth : "OAuth Manager",
+  logs : "Logs",
   overview  : "Overview",
   users     : "Users",
   account   : "Account Center", /* <--- Tambahkan baris ini */
@@ -111,7 +116,15 @@ function switchPage(pageId) {
   closeSidebar();
 }
 
+// Menu utama
 document.querySelectorAll(".nav-item[data-page]").forEach(btn => {
+  btn.addEventListener("click", function () {
+    switchPage(this.dataset.page);
+  });
+});
+
+// Submenu
+document.querySelectorAll(".nav-sub-item").forEach(btn => {
   btn.addEventListener("click", function () {
     switchPage(this.dataset.page);
   });
