@@ -151,15 +151,12 @@ async function handleRegister() {
   try {
 
   const { data, error } = await MEASupabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: {
-        full_name: fullName,
-        username: username
-      }
-    }
-  });
+  email,
+  password,
+  options: {
+    emailRedirectTo: "https://assistant.evanalmunawar.my.id"
+  }
+});
 
   if (error) {
     throw error;
