@@ -111,7 +111,9 @@ function validate() {
   if (!email) {
     setError("email", "Email wajib diisi.");
     ok = false;
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  } else if (
+  !/^[^\s@]+@(gmail\.com|yahoo\.com)$/i.test(email)
+) {
     setError("email", "Format email tidak valid.");
     ok = false;
   }
