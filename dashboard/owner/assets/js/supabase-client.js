@@ -1,0 +1,66 @@
+/**
+ * supabase-client.js
+ * ─────────────────────────────────────────────────────────
+ * Shared Supabase client for MEA Assistant V2.
+ * Import / include this file ONCE per page before any
+ * module that needs database access.
+ *
+ * Usage (any page):
+ *   const { data, error } = await MEASupabase.from('users').select('*');
+ * ─────────────────────────────────────────────────────────
+ */
+
+(function (global) {
+  'use strict';
+
+  // ── Configuration ────────────────────────────────────────
+  // Replace these two values with your actual Supabase project credentials.
+  // Do NOT commit real keys to public repos — use environment injection
+  // or a build-time secret manager for production.
+  const SUPABASE_URL  = 'https://YOUR_PROJECT_ID.supabase.co';
+  const SUPABASE_ANON = 'YOUR_ANON_PUBLIC_KEY';
+  // ─────────────────────────────────────────────────────────
+
+  let _client = null;
+
+  /**
+   * Returns the Supabase client, creating it on first call.
+   * Depends on the Supabase JS v2 CDN being loaded before this script:
+   *   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+   */
+  function getClient() {
+    if (_client) return _client;
+
+    if (!global.supabase) {
+      console.error('[MEASupabase] Supabase JS library not found. '
+        + 'Add the CDN <script> tag before supabase-client.js.');
+      return null;
+    }
+
+    _client = global.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+      },
+    });
+
+    return _client;
+  }
+
+  // Expose a thin proxy so call-sites can write:
+  //   MEASupabase.from(...)   instead of   MEASupabase.client().from(...)
+  const handler = {
+    get(_, prop) {
+      const client = getClient();
+      if (!client) return () => Promise.resolve({ data: null, error: new Error('No client') });
+      const value = client[prop];
+      return typeof value === 'function' ? value.bind(client) : value;
+    },
+  };
+
+  global.MEASupabase = new Proxy({}, handler);
+
+  // Also expose raw client getter for edge cases
+  global.MEASupabase.getClient = getClient;
+
+})(window);
