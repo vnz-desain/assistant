@@ -3,60 +3,168 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MEA Assistant — Logs</title>
-  <link rel="stylesheet" href="../../assets/css/theme.css" />
-  <link rel="stylesheet" href="../../assets/css/layout.css" />
-  <link rel="stylesheet" href="../../assets/css/components.css" />
+  <title>Logs Center — MEA Assistant</title>
+
+  <!-- depth 2: account/logs/ → ../../ -->
+  <link rel="stylesheet" href="../../assets/css/sidebar.css" />
+  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="style.css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
-<body data-page="account">
-<div class="app-shell">
+<body>
 
-  <aside class="sidebar expanded" id="sidebar"></aside>
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <aside class="sidebar" id="sidebar"></aside>
 
-  <div class="main-content">
-    <header class="page-header">
-      <span class="page-header-title">LOGS</span>
-      <span class="page-header-breadcrumb">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-        MEA Assistant &rsaquo; Owner &rsaquo; Logs
-      </span>
-      <div class="page-header-actions">
-        <span class="badge neutral">Coming Soon</span>
+  <main class="main" id="main">
+
+    <header class="topbar">
+      <button class="menu-btn" id="menuBtn" aria-label="Open navigation">
+        <i data-lucide="menu"></i>
+      </button>
+      <div class="topbar-left">
+        <div class="page-breadcrumb">
+          <span class="breadcrumb-parent">Account Center</span>
+          <i data-lucide="chevron-right"></i>
+          <span class="breadcrumb-current">Logs Center</span>
+        </div>
+        <h1 class="greeting">Logs Center</h1>
+        <p class="date-line">Monitor system activity, events, integrations and security logs across MEA Assistant.</p>
+      </div>
+      <div class="topbar-right">
+        <div class="live-clock" id="liveClock"></div>
+        <button class="icon-btn" id="btn-refresh-header" aria-label="Refresh">
+          <i data-lucide="refresh-cw"></i>
+        </button>
+        <button class="icon-btn" aria-label="Notifications">
+          <i data-lucide="bell"></i>
+        </button>
       </div>
     </header>
 
-    <div class="page-body" style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:calc(100vh - var(--header-height)); text-align:center; gap:var(--space-4);">
-      <div style="opacity:0.12;">
-        <svg width="48" height="42" viewBox="0 0 64 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="elg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#e02020"/><stop offset="100%" stop-color="#3d0a0a"/></linearGradient>
-            <linearGradient id="erg" x1="1" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e02020"/><stop offset="100%" stop-color="#3d0a0a"/></linearGradient>
-          </defs>
-          <polygon points="4,0 28,0 28,4 16,22 4,14" fill="url(#elg)"/>
-          <polygon points="4,14 16,22 4,28" fill="#9b1515"/>
-          <polygon points="4,32 16,26 28,34 28,40 16,48 4,40" fill="#6b0f0f"/>
-          <polygon points="4,40 16,48 8,56 0,56" fill="#3d0a0a"/>
-          <polygon points="60,0 36,0 36,4 48,22 60,14" fill="url(#erg)"/>
-          <polygon points="60,14 48,22 60,28" fill="#9b1515"/>
-          <polygon points="60,32 48,26 36,34 36,40 48,48 60,40" fill="#6b0f0f"/>
-          <polygon points="60,40 48,48 56,56 64,56" fill="#3d0a0a"/>
-        </svg>
+    <div class="content">
+
+      <!-- Summary Cards -->
+      <section aria-label="Summary">
+        <div class="lc-stats-grid" id="summary-grid">
+          <!-- Rendered by script.js -->
+        </div>
+      </section>
+
+      <!-- Quick Actions -->
+      <section aria-label="Quick Actions">
+        <div class="gc-actions-bar" id="actions-bar">
+          <!-- Rendered by script.js -->
+        </div>
+      </section>
+
+      <!-- Event Overview -->
+      <section aria-label="Event Overview">
+        <div class="section-header-row">
+          <h2 class="section-title">
+            <i data-lucide="bar-chart-2"></i> Event Overview
+          </h2>
+          <button class="btn btn-ghost btn-sm" id="btn-view-all-events">View All</button>
+        </div>
+        <div class="lc-events-grid" id="events-grid">
+          <!-- Rendered by script.js -->
+        </div>
+      </section>
+
+      <!-- Row: Log Filters + System Health -->
+      <div class="row-2">
+
+        <div class="card" aria-label="Log Filters">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i data-lucide="filter"></i> Log Filters
+            </h2>
+            <button class="btn btn-ghost btn-sm" id="btn-clear-filters">Clear</button>
+          </div>
+          <div class="lc-filter-list" id="filter-list">
+            <!-- Rendered by script.js -->
+          </div>
+        </div>
+
+        <div class="card" aria-label="System Health">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i data-lucide="heart-pulse"></i> System Health
+            </h2>
+            <span class="badge-pill badge-pill--blue" id="health-status-badge">All Systems</span>
+          </div>
+          <div class="gc-sync-list" id="health-list">
+            <!-- Rendered by script.js -->
+          </div>
+        </div>
+
       </div>
-      <div style="font-family:var(--font-display); font-size:28px; letter-spacing:0.1em; color:var(--text-primary);">LOGS</div>
-      <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-tertiary); letter-spacing:0.08em; text-transform:uppercase;">Module under development</div>
-      <a href="../../index.html" class="btn btn-secondary btn-sm" style="margin-top:var(--space-4);">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-        Back to Overview
-      </a>
-    </div>
-  </div>
 
-</div>
+      <!-- Recent Activity Logs -->
+      <section aria-label="Recent Activity Logs">
+        <div class="section-header-row">
+          <h2 class="section-title">
+            <i data-lucide="activity"></i> Recent Activity Logs
+          </h2>
+          <button class="btn btn-ghost btn-sm" id="btn-view-all-activity">View All</button>
+        </div>
+        <div class="card lc-activity-card">
+          <div class="lc-activity-list" id="activity-list">
+            <!-- Rendered by script.js -->
+          </div>
+        </div>
+      </section>
 
-<nav class="mobile-nav"><div class="mobile-nav-inner"></div></nav>
+      <!-- Row: Security Events + API Activity -->
+      <div class="row-2">
 
-<script src="../../assets/js/shell.js"></script>
-<script>MEAShell.init('../../', 'account', 'logs', 'Logs');</script>
-<script src="../../assets/js/utils.js"></script>
+        <div class="card" aria-label="Security Events">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i data-lucide="shield-alert"></i> Security Events
+            </h2>
+            <span class="badge-pill badge-pill--red" id="security-count">5 Events</span>
+          </div>
+          <div class="lc-security-list" id="security-list">
+            <!-- Rendered by script.js -->
+          </div>
+        </div>
+
+        <div class="card" aria-label="API Activity">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i data-lucide="zap"></i> API Activity
+            </h2>
+          </div>
+          <div class="lc-api-body" id="api-body">
+            <!-- Rendered by script.js -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Top Active Modules -->
+      <section aria-label="Top Active Modules">
+        <div class="section-header-row">
+          <h2 class="section-title">
+            <i data-lucide="trending-up"></i> Top Active Modules
+          </h2>
+        </div>
+        <div class="card">
+          <div class="lc-modules-list" id="modules-list">
+            <!-- Rendered by script.js -->
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /content -->
+  </main>
+
+  <script src="../../assets/js/sidebar.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
