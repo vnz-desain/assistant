@@ -413,11 +413,11 @@ function openViewModal(user) {
 }
 
 /* ════════════════════════════════════════════════
-   SUPABASE MUTATIONS
+   MEASupabase MUTATIONS
 ════════════════════════════════════════════════ */
 async function updateUserStatus(id, status) {
   try {
-    const { error } = await supabase
+    const { error } = await MEASupabase
       .from('users')
       .update({ status })
       .eq('id', id);
@@ -456,7 +456,7 @@ async function updateUserRole(id, role, name) {
 
 async function deleteUser(id, name) {
   try {
-    const { error } = await supabase
+    const { error } = await MEASupabase
       .from('users')
       .delete()
       .eq('id', id);
