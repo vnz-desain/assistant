@@ -94,11 +94,12 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  transition: box-shadow .18s, transform .18s;
+  transition: box-shadow .18s;
+  isolation: isolate;
+  will-change: box-shadow;
 }
 .gc-stat-card:hover {
   box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
 }
 
 .gc-stat-top {
@@ -203,6 +204,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 12px;
+  contain: layout;
 }
 
 .oc-service-card {
@@ -214,11 +216,12 @@
   display: flex;
   flex-direction: column;
   gap: 0;
-  transition: box-shadow .18s, transform .18s;
+  transition: box-shadow .18s;
+  isolation: isolate;
+  will-change: box-shadow;
 }
 .oc-service-card:hover {
   box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
 }
 
 .oc-svc-top {
