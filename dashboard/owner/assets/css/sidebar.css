@@ -1,0 +1,151 @@
+/* ════════════════════════════════════════════════
+   MEA Assistant — Shared Sidebar Styles
+   Included by every sub-page via relative path
+════════════════════════════════════════════════ */
+
+:root {
+  --sidebar-w:         212px;
+  --sidebar-bg:        #111827;
+  --sidebar-text:      #9ca3af;
+  --sidebar-hover:     rgba(255,255,255,0.05);
+  --sidebar-active-bg: rgba(59,130,246,0.12);
+  --sidebar-active:    #f9fafb;
+  --blue-400: #60a5fa;
+  --blue-500: #3b82f6;
+  --indigo:   #6366f1;
+  --rose:     #f43f5e;
+  --ease:     cubic-bezier(.4,0,.2,1);
+}
+
+/* ── Sidebar shell ── */
+.sidebar {
+  width: var(--sidebar-w);
+  min-height: 100vh;
+  background: var(--sidebar-bg);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+  z-index: 100;
+  transition: transform .28s var(--ease);
+  overflow: hidden;
+}
+
+/* ── Header / Logo ── */
+.sidebar-header {
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.sidebar-header > a.logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 14px 13px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.logo-img-wrap {
+  position: relative;
+  width: 36px; height: 28px;
+  flex-shrink: 0;
+}
+
+/* PNG logo */
+.mea-logo-img {
+  width: 36px; height: 28px;
+  object-fit: contain;
+  position: relative; z-index: 2;
+  filter: drop-shadow(0 0 5px rgba(200,0,0,0.45));
+}
+/* Fallback SVG */
+.mea-logo-svg {
+  width: 36px; height: 28px;
+  position: relative; z-index: 2;
+  filter: drop-shadow(0 0 5px rgba(200,0,0,0.45));
+}
+
+.logo-glow {
+  position: absolute; inset: -8px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(190,0,0,0.28) 0%, transparent 68%);
+  animation: logoGlow 3.5s ease-in-out infinite;
+  z-index: 1;
+  pointer-events: none;
+}
+@keyframes logoGlow {
+  0%, 100% { opacity: .55; transform: scale(1); }
+  50%       { opacity: .95; transform: scale(1.12); }
+}
+
+.logo-text {
+  display: flex; flex-direction: column; line-height: 1;
+}
+.logo-name {
+  font-size: 14px; font-weight: 700; color: #fff; letter-spacing: .05em;
+}
+.logo-sub {
+  font-size: 9px; color: var(--sidebar-text);
+  letter-spacing: .08em; text-transform: uppercase; margin-top: 2px;
+}
+
+/* ── Nav ── */
+.sidebar-nav {
+  flex: 1; padding: 12px 8px; overflow-y: auto;
+}
+.sidebar-nav::-webkit-scrollbar { display: none; }
+
+.nav-item a {
+  display: flex; align-items: center; gap: 9px;
+  padding: 8px 9px; border-radius: 6px;
+  color: var(--sidebar-text); font-size: 13px; font-weight: 500;
+  transition: background .13s, color .13s;
+  text-decoration: none;
+}
+.nav-item a svg { width: 15px; height: 15px; stroke-width: 2; flex-shrink: 0; }
+.nav-item a:hover { background: var(--sidebar-hover); color: #e5e7eb; }
+.nav-item.active a { background: var(--sidebar-active-bg); color: var(--sidebar-active); }
+.nav-item.active a svg { color: var(--blue-400); }
+
+/* ── Footer ── */
+.sidebar-footer {
+  padding: 10px 8px 14px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.sidebar-footer .nav-item a { color: var(--sidebar-text); }
+
+.sidebar-profile {
+  display: flex; align-items: center; gap: 9px;
+  margin-top: 12px; padding: 9px; border-radius: 6px;
+  background: rgba(255,255,255,0.04);
+}
+.profile-avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue-500), var(--indigo));
+  color: #fff; font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.profile-info { flex: 1; overflow: hidden; }
+.profile-name { font-size: 12px; font-weight: 600; color: #e5e7eb; display: block; }
+.profile-role { font-size: 10px; color: var(--sidebar-text); display: block; }
+.profile-logout {
+  color: var(--sidebar-text); padding: 3px; border-radius: 5px;
+  border: none; background: none; cursor: pointer;
+  transition: color .13s;
+}
+.profile-logout:hover { color: var(--rose); }
+.profile-logout svg { width: 13px; height: 13px; display: block; }
+
+/* ── Drawer overlay (mobile) ── */
+.drawer-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(17,24,39,.4); z-index: 99;
+  opacity: 0; transition: opacity .22s;
+}
+.drawer-overlay.open { display: block; opacity: 1; }
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .sidebar { transform: translateX(calc(-1 * var(--sidebar-w))); }
+  .sidebar.open { transform: translateX(0); box-shadow: 0 4px 32px rgba(17,24,39,.18); }
+}
