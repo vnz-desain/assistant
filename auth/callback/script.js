@@ -51,6 +51,10 @@ function setUI(state, title, desc, actions = "") {
   }
 
   /* ── 1. Baca hash dari URL (Supabase kirim di fragment #) ────── */
+  
+  const hash = window.location.hash.substring(1);
+const params = new URLSearchParams(hash);
+  
   console.log("HASH:", hash);
 console.log("TYPE:", params.get("type"));
 console.log("URL:", window.location.href);
