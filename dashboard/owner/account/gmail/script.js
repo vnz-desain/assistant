@@ -496,7 +496,8 @@ const GmailUI = (() => {
   /* ── Sidebar ── */
   function renderSidebar() {
     if (typeof MEASidebar !== 'undefined') {
-      MEASidebar.render('sidebar-mount', { activeItem: 'gmail-center' });
+      MEASidebar.init();
+      if (typeof lucide !== 'undefined') lucide.createIcons();
     }
   }
 

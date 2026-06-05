@@ -6,7 +6,7 @@
   <title>Gmail Center — MEA Assistant V2</title>
 
   <!-- Shared sidebar styles -->
-  <link rel="stylesheet" href="../owner/assets/css/sidebar.css" />
+  <link rel="stylesheet" href="../../assets/css/sidebar.css" />
   <!-- Dashboard global styles -->
   <link rel="stylesheet" href="../../style.css" />
   <!-- Account-level styles -->
@@ -17,7 +17,8 @@
 <body class="layout">
 
   <!-- ── Sidebar (shared component) ── -->
-  <aside id="sidebar-mount"></aside>
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <aside class="sidebar" id="sidebar"></aside>
 
   <!-- ── Main content ── -->
   <main class="main-content" id="main-content">
@@ -174,7 +175,7 @@
   </main><!-- /main-content -->
 
   <!-- Scripts -->
-  <script src="../owner/assets/js/sidebar.js"></script>
-<script src="script.js"></script>
+  <script src="../../assets/js/sidebar.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
