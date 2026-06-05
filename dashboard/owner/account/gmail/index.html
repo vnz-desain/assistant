@@ -1,339 +1,178 @@
-<!-- ===================== GMAIL CENTER PAGE ===================== -->
-<div class="page" id="page-gmail">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gmail Center — MEA Assistant V2</title>
 
-  <div class="dash-page-header">
-    <div>
-      <p class="dash-page-eyebrow">Google Workspace</p>
-      <h1 class="dash-page-title">Gmail Center</h1>
-    </div>
-    <div class="drive-header-actions">
-      <div class="gmail-sync-badge" id="gmailSyncBadge">
-        <span class="gmail-sync-dot"></span>
-        <span class="gmail-sync-label" id="gmailSyncLabel">Synced</span>
-      </div>
-      <button class="drive-btn-ghost" onclick="gmailRefresh()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
-        Refresh
-      </button>
-      <button class="drive-btn-ghost" onclick="gmailCompose()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-        Compose
-      </button>
-    </div>
-  </div>
+  <!-- Global styles (assumed to exist at project root) -->
+  <link rel="stylesheet" href="../../../style.css" />
+  <!-- Account-level styles -->
+  <link rel="stylesheet" href="../style.css" />
+  <!-- Gmail Center styles -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="layout">
 
-  <!-- ACCOUNT SELECTOR -->
-  <div class="drive-section">
-    <p class="drive-section-label">Active Account</p>
-    <div class="drive-account-strip">
-      <div class="drive-account-cards" id="gmailAccountCards">
-        <!-- Rendered by JS -->
-      </div>
-      <button class="drive-add-account" onclick="gmailAddAccount()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Add Account
-      </button>
-    </div>
-  </div>
+  <!-- ── Sidebar (shared component) ── -->
+  <aside id="sidebar-mount"></aside>
 
-  <!-- INBOX STATISTICS -->
-  <div class="drive-section">
-    <p class="drive-section-label">Inbox Statistics</p>
-    <div class="gmail-stats-grid">
+  <!-- ── Main content ── -->
+  <main class="main-content" id="main-content">
 
-      <div class="drive-stat-card">
-        <div class="drive-stat-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        </div>
-        <div class="drive-stat-body">
-          <span class="drive-stat-val" id="statTotalInbox">2,847</span>
-          <span class="drive-stat-label">Total Inbox</span>
-        </div>
-      </div>
-
-      <div class="drive-stat-card">
-        <div class="drive-stat-icon gmail-stat-icon--unread">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/><circle cx="18" cy="5" r="4" fill="var(--red-bright)" stroke="none"/></svg>
-        </div>
-        <div class="drive-stat-body">
-          <span class="drive-stat-val gmail-val--accent" id="statUnread">124</span>
-          <span class="drive-stat-label">Unread Mail</span>
-        </div>
-      </div>
-
-      <div class="drive-stat-card">
-        <div class="drive-stat-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        </div>
-        <div class="drive-stat-body">
-          <span class="drive-stat-val" id="statSentToday">18</span>
-          <span class="drive-stat-label">Sent Today</span>
-        </div>
-      </div>
-
-      <div class="drive-stat-card">
-        <div class="drive-stat-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        </div>
-        <div class="drive-stat-body">
-          <span class="drive-stat-val gmail-val--warn" id="statSpam">37</span>
-          <span class="drive-stat-label">Spam</span>
-        </div>
-      </div>
-
-      <div class="drive-stat-card">
-        <div class="drive-stat-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
-        </div>
-        <div class="drive-stat-body">
-          <span class="drive-stat-val" id="statGmailTrash">9</span>
-          <span class="drive-stat-label">In Trash</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- EMAIL CATEGORIES -->
-  <div class="drive-section">
-    <p class="drive-section-label">Email Categories</p>
-    <div class="gmail-categories-grid">
-
-      <div class="gmail-category-card gmail-cat--primary">
-        <div class="gmail-cat-header">
-          <div class="gmail-cat-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+    <!-- Page Header -->
+    <header class="page-header fadeUp">
+      <div class="page-header-inner">
+        <div class="page-header-text">
+          <div class="ac-section-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            Account Center
           </div>
-          <span class="gmail-cat-badge" id="catPrimaryBadge">42</span>
+          <h1 class="page-title">Gmail Center</h1>
+          <p class="page-subtitle">Manage connected Gmail accounts, monitoring, synchronization and automation.</p>
         </div>
-        <p class="gmail-cat-name">Primary</p>
-        <p class="gmail-cat-sub" id="catPrimaryUnread">12 unread</p>
-      </div>
-
-      <div class="gmail-category-card gmail-cat--social">
-        <div class="gmail-cat-header">
-          <div class="gmail-cat-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          </div>
-          <span class="gmail-cat-badge" id="catSocialBadge">18</span>
-        </div>
-        <p class="gmail-cat-name">Social</p>
-        <p class="gmail-cat-sub" id="catSocialUnread">6 unread</p>
-      </div>
-
-      <div class="gmail-category-card gmail-cat--promo">
-        <div class="gmail-cat-header">
-          <div class="gmail-cat-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-          </div>
-          <span class="gmail-cat-badge" id="catPromoBadge">86</span>
-        </div>
-        <p class="gmail-cat-name">Promotions</p>
-        <p class="gmail-cat-sub" id="catPromoUnread">71 unread</p>
-      </div>
-
-      <div class="gmail-category-card gmail-cat--updates">
-        <div class="gmail-cat-header">
-          <div class="gmail-cat-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-          </div>
-          <span class="gmail-cat-badge" id="catUpdatesBadge">31</span>
-        </div>
-        <p class="gmail-cat-name">Updates</p>
-        <p class="gmail-cat-sub" id="catUpdatesUnread">14 unread</p>
-      </div>
-
-      <div class="gmail-category-card gmail-cat--forums">
-        <div class="gmail-cat-header">
-          <div class="gmail-cat-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          </div>
-          <span class="gmail-cat-badge" id="catForumsBadge">7</span>
-        </div>
-        <p class="gmail-cat-name">Forums</p>
-        <p class="gmail-cat-sub" id="catForumsUnread">3 unread</p>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- STORAGE + SYNC ROW -->
-  <div class="drive-twin-row">
-
-    <!-- STORAGE USAGE -->
-    <div class="drive-section drive-section--half">
-      <p class="drive-section-label">Gmail Storage</p>
-      <div class="drive-storage-card" id="gmailStorageCard">
-        <div class="drive-storage-header">
-          <div>
-            <span class="drive-storage-used" id="gmailStorageUsed">2.9 GB</span>
-            <span class="drive-storage-of"> of </span>
-            <span class="drive-storage-total" id="gmailStorageTotal">15 GB</span>
-          </div>
-          <div class="drive-storage-pct" id="gmailStoragePct">19%</div>
-        </div>
-        <div class="drive-bar-track">
-          <div class="drive-bar-fill" id="gmailBarFill" style="width: 19%"></div>
-        </div>
-        <div class="gmail-storage-breakdown">
-          <div class="drive-breakdown-item">
-            <span class="drive-breakdown-dot" style="background:#3a7bd5"></span>
-            <span class="drive-breakdown-label">Messages</span>
-            <span class="drive-breakdown-val" id="gmailBreakMsg">1.8 GB</span>
-          </div>
-          <div class="drive-breakdown-item">
-            <span class="drive-breakdown-dot" style="background:var(--red-bright)"></span>
-            <span class="drive-breakdown-label">Attachments</span>
-            <span class="drive-breakdown-val" id="gmailBreakAttach">0.9 GB</span>
-          </div>
-          <div class="drive-breakdown-item">
-            <span class="drive-breakdown-dot" style="background:rgba(240,237,232,0.25)"></span>
-            <span class="drive-breakdown-label">Free</span>
-            <span class="drive-breakdown-val" id="gmailBreakFree">12.1 GB</span>
-          </div>
+        <div class="page-header-actions">
+          <button class="btn btn-ghost btn-sm" id="btn-refresh-header" title="Refresh">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15">
+              <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+              <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+            </svg>
+            Refresh
+          </button>
         </div>
       </div>
-    </div>
+    </header>
 
-    <!-- SYNC CENTER -->
-    <div class="drive-section drive-section--half">
-      <p class="drive-section-label">Sync Center</p>
-      <div class="drive-sync-card">
-        <div class="drive-sync-row">
-          <span class="drive-sync-key">Last Sync</span>
-          <span class="drive-sync-val" id="gmailLastSync">Today, 14:47</span>
+    <!-- ── Summary Cards ── -->
+    <section class="content-section" aria-label="Summary">
+      <div class="gc-summary-grid" id="summary-grid">
+        <!-- Rendered by script.js -->
+      </div>
+    </section>
+
+    <!-- ── Quick Actions ── -->
+    <section class="content-section" aria-label="Quick Actions">
+      <div class="gc-actions-bar" id="actions-bar">
+        <!-- Rendered by script.js -->
+      </div>
+    </section>
+
+    <!-- ── Connected Accounts ── -->
+    <section class="content-section" aria-label="Connected Accounts">
+      <div class="section-header">
+        <div class="ac-section-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+          </svg>
+          Connected Accounts
         </div>
-        <div class="drive-sync-row">
-          <span class="drive-sync-key">Sync Status</span>
-          <span class="drive-sync-val drive-sync-val--ok" id="gmailSyncStatus">Active</span>
-        </div>
-        <div class="drive-sync-row">
-          <span class="drive-sync-key">Pending Emails</span>
-          <span class="drive-sync-val" id="gmailPending">0 messages</span>
-        </div>
-        <div class="drive-sync-row">
-          <span class="drive-sync-key">Sync Interval</span>
-          <span class="drive-sync-val" id="gmailInterval">5 minutes</span>
-        </div>
-        <div class="drive-sync-row">
-          <span class="drive-sync-key">Data Fetched</span>
-          <span class="drive-sync-val" id="gmailBandwidth">48 MB today</span>
-        </div>
-        <button class="drive-btn-primary" onclick="gmailForceSync()">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-          Sync Now
+        <button class="btn btn-ghost btn-xs" id="btn-add-account">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add Account
         </button>
       </div>
-    </div>
+      <div class="gc-accounts-grid" id="accounts-grid">
+        <!-- Rendered by script.js -->
+      </div>
+    </section>
 
-  </div>
+    <!-- ── Two-Column Row: Automation + Sync Status ── -->
+    <section class="content-section gc-two-col" aria-label="Automation and Sync">
 
-  <!-- INBOX HEALTH + QUICK ACTIONS ROW -->
-  <div class="drive-twin-row">
-
-    <!-- INBOX HEALTH -->
-    <div class="drive-section drive-section--half">
-      <p class="drive-section-label">Inbox Health</p>
-      <div class="drive-health-card" id="gmailHealthCard">
-        <div class="drive-health-status">
-          <div class="drive-health-orb drive-health-orb--ok" id="gmailHealthOrb"></div>
-          <div>
-            <p class="drive-health-title" id="gmailHealthTitle">All Systems Operational</p>
-            <p class="drive-health-sub" id="gmailHealthSub">No anomalies detected</p>
+      <!-- Automation Center -->
+      <div class="card gc-auto-card fadeUp" style="animation-delay:.18s">
+        <div class="card-header">
+          <div class="card-header-left">
+            <div class="ac-section-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/>
+              </svg>
+              Automation Center
+            </div>
+            <h3 class="card-title">Gmail Automation</h3>
           </div>
+          <span class="gc-auto-count" id="auto-active-count">3 Active</span>
         </div>
-        <div class="drive-health-checks">
-          <div class="drive-check-item" id="gmailCheckApi">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            <span>Gmail API Connected</span>
-          </div>
-          <div class="drive-check-item" id="gmailCheckAuth">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            <span>OAuth Token Valid</span>
-          </div>
-          <div class="drive-check-item" id="gmailCheckSync">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            <span>IMAP Sync Active</span>
-          </div>
-          <div class="drive-check-item" id="gmailCheckQuota">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            <span>Quota Within Limit</span>
-          </div>
+        <div class="gc-toggle-list" id="automation-list">
+          <!-- Rendered by script.js -->
         </div>
       </div>
-    </div>
 
-    <!-- QUICK ACTIONS -->
-    <div class="drive-section drive-section--half">
-      <p class="drive-section-label">Quick Actions</p>
-      <div class="gmail-actions-card">
-        <button class="gmail-action-btn" onclick="gmailCompose()">
-          <div class="gmail-action-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      <!-- Sync Status -->
+      <div class="card gc-sync-card fadeUp" style="animation-delay:.22s">
+        <div class="card-header">
+          <div class="card-header-left">
+            <div class="ac-section-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+                <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+              </svg>
+              Sync Monitor
+            </div>
+            <h3 class="card-title">Synchronization Status</h3>
           </div>
-          <div class="gmail-action-body">
-            <span class="gmail-action-label">Compose Mail</span>
-            <span class="gmail-action-sub">Create new message</span>
-          </div>
-          <svg class="gmail-action-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </button>
-        <button class="gmail-action-btn" onclick="gmailRefresh()">
-          <div class="gmail-action-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
-          </div>
-          <div class="gmail-action-body">
-            <span class="gmail-action-label">Refresh Inbox</span>
-            <span class="gmail-action-sub">Fetch latest mail</span>
-          </div>
-          <svg class="gmail-action-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </button>
-        <button class="gmail-action-btn" onclick="gmailSearch()">
-          <div class="gmail-action-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          </div>
-          <div class="gmail-action-body">
-            <span class="gmail-action-label">Search Email</span>
-            <span class="gmail-action-sub">Full-text search</span>
-          </div>
-          <svg class="gmail-action-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </button>
-        <button class="gmail-action-btn" onclick="gmailOpen()">
-          <div class="gmail-action-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          </div>
-          <div class="gmail-action-body">
-            <span class="gmail-action-label">Open Gmail</span>
-            <span class="gmail-action-sub">Launch in browser</span>
-          </div>
-          <svg class="gmail-action-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </button>
+        </div>
+        <div class="gc-sync-list" id="sync-list">
+          <!-- Rendered by script.js -->
+        </div>
       </div>
-    </div>
 
-  </div>
+    </section>
 
-  <!-- RECENT EMAILS -->
-  <div class="drive-section">
-    <div class="drive-section-top">
-      <p class="drive-section-label">Recent Emails</p>
-      <button class="drive-btn-ghost drive-btn-ghost--sm" onclick="gmailOpenAll()">
-        View All
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </button>
-    </div>
-    <div class="drive-files-table">
-      <div class="gmail-table-head">
-        <span>Sender</span>
-        <span>Subject</span>
-        <span>Category</span>
-        <span>Date</span>
-        <span>Status</span>
+    <!-- ── Two-Column Row: Activity + Storage ── -->
+    <section class="content-section gc-two-col" aria-label="Activity and Storage">
+
+      <!-- Recent Activity -->
+      <div class="card fadeUp" style="animation-delay:.26s">
+        <div class="card-header">
+          <div class="card-header-left">
+            <div class="ac-section-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+              Recent Activity
+            </div>
+            <h3 class="card-title">Activity Timeline</h3>
+          </div>
+          <button class="btn btn-ghost btn-xs" id="btn-view-all-activity">View All</button>
+        </div>
+        <div class="gc-timeline" id="activity-timeline">
+          <!-- Rendered by script.js -->
+        </div>
       </div>
-      <div class="drive-table-body" id="gmailEmailsList">
-        <!-- Rendered by JS -->
-      </div>
-    </div>
-  </div>
 
-</div>
-<!-- ===================== END GMAIL CENTER PAGE ===================== -->
+      <!-- Storage Overview -->
+      <div class="card fadeUp" style="animation-delay:.30s">
+        <div class="card-header">
+          <div class="card-header-left">
+            <div class="ac-section-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+              </svg>
+              Storage Overview
+            </div>
+            <h3 class="card-title">Gmail Storage</h3>
+          </div>
+        </div>
+        <div class="gc-storage-body" id="storage-body">
+          <!-- Rendered by script.js -->
+        </div>
+      </div>
+
+    </section>
+
+  </main><!-- /main-content -->
+
+  <!-- Scripts -->
+  <script src="../../../components/sidebar.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
