@@ -3,178 +3,147 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gmail Center — MEA Assistant V2</title>
+  <title>Gmail Center — MEA Assistant</title>
 
-  <!-- Shared sidebar styles -->
+  <!-- depth 2: account/gmail/ → ../../ -->
   <link rel="stylesheet" href="../../assets/css/sidebar.css" />
-  <!-- Dashboard global styles -->
   <link rel="stylesheet" href="../../style.css" />
-  <!-- Account-level styles -->
-  <link rel="stylesheet" href="../style.css" />
-  <!-- Gmail Center styles -->
   <link rel="stylesheet" href="style.css" />
-</head>
-<body class="layout">
 
-  <!-- ── Sidebar (shared component) ── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Lucide — WAJIB ada di setiap halaman -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+
+  <!-- Wajib: drawer overlay untuk mobile -->
   <div class="drawer-overlay" id="drawerOverlay"></div>
+
+  <!-- Wajib: sidebar shell — diisi otomatis oleh sidebar.js -->
   <aside class="sidebar" id="sidebar"></aside>
 
-  <!-- ── Main content ── -->
-  <main class="main-content" id="main-content">
+  <!-- Main — gunakan class "main" sesuai style.css global -->
+  <main class="main" id="main">
 
-    <!-- Page Header -->
-    <header class="page-header fadeUp">
-      <div class="page-header-inner">
-        <div class="page-header-text">
-          <div class="ac-section-label">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-              <polyline points="22,6 12,13 2,6"/>
-            </svg>
-            Account Center
-          </div>
-          <h1 class="page-title">Gmail Center</h1>
-          <p class="page-subtitle">Manage connected Gmail accounts, monitoring, synchronization and automation.</p>
+    <!-- Topbar — wajib ada menu-btn untuk mobile -->
+    <header class="topbar">
+      <button class="menu-btn" id="menuBtn" aria-label="Open navigation">
+        <i data-lucide="menu"></i>
+      </button>
+      <div class="topbar-left">
+        <div class="page-breadcrumb">
+          <span class="breadcrumb-parent">Account Center</span>
+          <i data-lucide="chevron-right"></i>
+          <span class="breadcrumb-current">Gmail Center</span>
         </div>
-        <div class="page-header-actions">
-          <button class="btn btn-ghost btn-sm" id="btn-refresh-header" title="Refresh">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15">
-              <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
-              <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
-            </svg>
-            Refresh
-          </button>
-        </div>
+        <h1 class="greeting">Gmail Center</h1>
+        <p class="date-line">Manage connected Gmail accounts, monitoring and automation.</p>
+      </div>
+      <div class="topbar-right">
+        <div class="live-clock" id="liveClock"></div>
+        <button class="icon-btn" id="btn-refresh-header" aria-label="Refresh">
+          <i data-lucide="refresh-cw"></i>
+        </button>
+        <button class="icon-btn" aria-label="Notifications">
+          <i data-lucide="bell"></i>
+        </button>
       </div>
     </header>
 
-    <!-- ── Summary Cards ── -->
-    <section class="content-section" aria-label="Summary">
-      <div class="gc-summary-grid" id="summary-grid">
-        <!-- Rendered by script.js -->
-      </div>
-    </section>
+    <!-- Page Content -->
+    <div class="content">
 
-    <!-- ── Quick Actions ── -->
-    <section class="content-section" aria-label="Quick Actions">
-      <div class="gc-actions-bar" id="actions-bar">
-        <!-- Rendered by script.js -->
-      </div>
-    </section>
-
-    <!-- ── Connected Accounts ── -->
-    <section class="content-section" aria-label="Connected Accounts">
-      <div class="section-header">
-        <div class="ac-section-label">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
-            <circle cx="9" cy="7" r="4"/>
-            <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
-          </svg>
-          Connected Accounts
-        </div>
-        <button class="btn btn-ghost btn-xs" id="btn-add-account">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Add Account
-        </button>
-      </div>
-      <div class="gc-accounts-grid" id="accounts-grid">
-        <!-- Rendered by script.js -->
-      </div>
-    </section>
-
-    <!-- ── Two-Column Row: Automation + Sync Status ── -->
-    <section class="content-section gc-two-col" aria-label="Automation and Sync">
-
-      <!-- Automation Center -->
-      <div class="card gc-auto-card fadeUp" style="animation-delay:.18s">
-        <div class="card-header">
-          <div class="card-header-left">
-            <div class="ac-section-label">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="3"/>
-                <path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/>
-              </svg>
-              Automation Center
-            </div>
-            <h3 class="card-title">Gmail Automation</h3>
-          </div>
-          <span class="gc-auto-count" id="auto-active-count">3 Active</span>
-        </div>
-        <div class="gc-toggle-list" id="automation-list">
+      <!-- Summary Cards -->
+      <section aria-label="Summary">
+        <div class="stats-grid" id="summary-grid">
           <!-- Rendered by script.js -->
         </div>
-      </div>
+      </section>
 
-      <!-- Sync Status -->
-      <div class="card gc-sync-card fadeUp" style="animation-delay:.22s">
-        <div class="card-header">
-          <div class="card-header-left">
-            <div class="ac-section-label">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
-                <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
-              </svg>
-              Sync Monitor
-            </div>
-            <h3 class="card-title">Synchronization Status</h3>
-          </div>
-        </div>
-        <div class="gc-sync-list" id="sync-list">
+      <!-- Quick Actions -->
+      <section aria-label="Quick Actions">
+        <div class="gc-actions-bar" id="actions-bar">
           <!-- Rendered by script.js -->
         </div>
-      </div>
+      </section>
 
-    </section>
-
-    <!-- ── Two-Column Row: Activity + Storage ── -->
-    <section class="content-section gc-two-col" aria-label="Activity and Storage">
-
-      <!-- Recent Activity -->
-      <div class="card fadeUp" style="animation-delay:.26s">
-        <div class="card-header">
-          <div class="card-header-left">
-            <div class="ac-section-label">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-              </svg>
-              Recent Activity
-            </div>
-            <h3 class="card-title">Activity Timeline</h3>
-          </div>
-          <button class="btn btn-ghost btn-xs" id="btn-view-all-activity">View All</button>
+      <!-- Connected Accounts -->
+      <section aria-label="Connected Accounts">
+        <div class="section-header-row">
+          <h2 class="section-title">
+            <i data-lucide="users"></i> Connected Accounts
+          </h2>
+          <button class="btn btn-ghost btn-sm" id="btn-add-account">
+            <i data-lucide="plus"></i> Add Account
+          </button>
         </div>
-        <div class="gc-timeline" id="activity-timeline">
+        <div class="gc-accounts-grid" id="accounts-grid">
           <!-- Rendered by script.js -->
         </div>
-      </div>
+      </section>
 
-      <!-- Storage Overview -->
-      <div class="card fadeUp" style="animation-delay:.30s">
-        <div class="card-header">
-          <div class="card-header-left">
-            <div class="ac-section-label">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <ellipse cx="12" cy="5" rx="9" ry="3"/>
-                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
-                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
-              </svg>
-              Storage Overview
-            </div>
-            <h3 class="card-title">Gmail Storage</h3>
+      <!-- Row: Automation + Sync Status -->
+      <div class="row-2">
+
+        <div class="card" aria-label="Automation Center">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i data-lucide="settings-2"></i> Gmail Automation
+            </h2>
+            <span class="badge-pill badge-pill--blue" id="auto-active-count">3 Active</span>
+          </div>
+          <div class="gc-toggle-list" id="automation-list">
+            <!-- Rendered by script.js -->
           </div>
         </div>
-        <div class="gc-storage-body" id="storage-body">
-          <!-- Rendered by script.js -->
+
+        <div class="card" aria-label="Sync Status">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i data-lucide="refresh-cw"></i> Synchronization Status
+            </h2>
+          </div>
+          <div class="gc-sync-list" id="sync-list">
+            <!-- Rendered by script.js -->
+          </div>
         </div>
+
       </div>
 
-    </section>
+      <!-- Row: Activity + Storage -->
+      <div class="row-2">
 
-  </main><!-- /main-content -->
+        <div class="card" aria-label="Recent Activity">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i data-lucide="activity"></i> Activity Timeline
+            </h2>
+            <button class="btn btn-ghost btn-sm" id="btn-view-all-activity">View All</button>
+          </div>
+          <div class="gc-timeline" id="activity-timeline">
+            <!-- Rendered by script.js -->
+          </div>
+        </div>
 
-  <!-- Scripts -->
+        <div class="card" aria-label="Storage Overview">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i data-lucide="database"></i> Gmail Storage
+            </h2>
+          </div>
+          <div class="gc-storage-body" id="storage-body">
+            <!-- Rendered by script.js -->
+          </div>
+        </div>
+
+      </div>
+
+    </div><!-- /content -->
+  </main>
+
+  <!-- Scripts — depth 2: ../../ -->
   <script src="../../assets/js/sidebar.js"></script>
   <script src="script.js"></script>
 </body>
