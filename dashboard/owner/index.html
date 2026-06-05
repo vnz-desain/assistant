@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — MEA Assistant</title>
+  <!-- Favicon injected by sidebar.js -->
+  <link rel="stylesheet" href="assets/css/sidebar.css" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <!-- ── Supabase JS v2 (must load before supabase-client.js) ── -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <!-- Shared client — available as MEASupabase on every page -->
+  <script src="assets/js/supabase-client.js"></script>
+</head>
+<body>
+
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<!-- Sidebar — HTML injected by sidebar.js -->
+<aside class="sidebar" id="sidebar"></aside>
+
+<!-- ── MAIN ── -->
+<main class="main" id="main">
+
+  <header class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Open navigation">
+      <i data-lucide="menu"></i>
+    </button>
+    <div class="topbar-left">
+      <h1 class="greeting" id="greeting">Good morning, Owner</h1>
+      <p class="date-line" id="dateLine"></p>
+    </div>
+    <div class="topbar-right">
+      <div class="live-clock" id="liveClock" aria-live="polite"></div>
+      <button class="icon-btn" aria-label="Notifications">
+        <i data-lucide="bell"></i>
+        <span class="badge">3</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- Quick Stats -->
+    <section class="stats-grid" aria-label="Quick statistics">
+      <article class="stat-card">
+        <span class="stat-label">Users</span>
+        <span class="stat-value" data-count="1284">0</span>
+        <span class="stat-delta positive"><i data-lucide="trending-up"></i> +12% this week</span>
+      </article>
+      <article class="stat-card">
+        <span class="stat-label">Accounts</span>
+        <span class="stat-value" data-count="347">0</span>
+        <span class="stat-delta positive"><i data-lucide="trending-up"></i> +5 today</span>
+      </article>
+      <article class="stat-card">
+        <span class="stat-label">AI Requests</span>
+        <span class="stat-value" data-count="98412">0</span>
+        <span class="stat-delta positive"><i data-lucide="trending-up"></i> +2.3k today</span>
+      </article>
+      <article class="stat-card">
+        <span class="stat-label">System Health</span>
+        <span class="stat-value">99.8<small>%</small></span>
+        <span class="stat-delta positive"><i data-lucide="check-circle"></i> Nominal</span>
+      </article>
+    </section>
+
+    <!-- Row: Owner + Telegram -->
+    <div class="row-2">
+      <section class="card owner-card" aria-label="Owner profile">
+        <div class="owner-row">
+          <div class="owner-avatar-wrap">
+            <div class="owner-avatar">O</div>
+            <span class="owner-status-dot"></span>
+          </div>
+          <div class="owner-details">
+            <div class="owner-top">
+              <h2 class="owner-name">Owner</h2>
+              <span class="badge-pill badge-pill--blue">Super Admin</span>
+            </div>
+            <p class="owner-status-line">
+              <span class="status-dot-inline"></span> Online
+            </p>
+            <p class="owner-login">Last login: <span id="lastLogin"></span></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card telegram-card" aria-label="Telegram integration">
+        <div class="card-header">
+          <h2 class="card-title"><i data-lucide="send"></i> Telegram</h2>
+          <label class="toggle-switch" aria-label="Toggle Telegram">
+            <input type="checkbox" checked id="telegramToggle" />
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+        <div class="tg-status">
+          <div class="tg-dot active"></div>
+          <span>Bot connected &amp; polling</span>
+        </div>
+        <ul class="tg-stats">
+          <li><span class="tg-stat-label">Bot</span><span class="tg-stat-value">@MEAAssistantBot</span></li>
+          <li><span class="tg-stat-label">Messages today</span><span class="tg-stat-value">4,218</span></li>
+          <li><span class="tg-stat-label">Active chats</span><span class="tg-stat-value">182</span></li>
+        </ul>
+      </section>
+    </div>
+
+    <!-- Row: Account Summary + AI Summary -->
+    <div class="row-2">
+      <section class="card" aria-label="Account summary">
+        <div class="card-header">
+          <h2 class="card-title"><i data-lucide="briefcase"></i> Accounts</h2>
+          <a href="account/" class="card-link">View all <i data-lucide="arrow-right"></i></a>
+        </div>
+        <ul class="summary-list">
+          <li class="summary-item">
+            <div class="summary-icon summary-icon--blue"><i data-lucide="mail"></i></div>
+            <div class="summary-info"><span class="summary-name">Gmail</span><span class="summary-sub">12 connected</span></div>
+            <span class="summary-badge">Active</span>
+          </li>
+          <li class="summary-item">
+            <div class="summary-icon summary-icon--green"><i data-lucide="hard-drive"></i></div>
+            <div class="summary-info"><span class="summary-name">Google Drive</span><span class="summary-sub">247 GB used</span></div>
+            <span class="summary-badge">Active</span>
+          </li>
+          <li class="summary-item">
+            <div class="summary-icon summary-icon--orange"><i data-lucide="key"></i></div>
+            <div class="summary-info"><span class="summary-name">OAuth Tokens</span><span class="summary-sub">9 valid · 2 expiring</span></div>
+            <span class="summary-badge summary-badge--warn">Review</span>
+          </li>
+          <li class="summary-item">
+            <div class="summary-icon summary-icon--slate"><i data-lucide="file-text"></i></div>
+            <div class="summary-info"><span class="summary-name">Logs</span><span class="summary-sub">Last: 2 min ago</span></div>
+            <span class="summary-badge">Synced</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="card" aria-label="AI summary">
+        <div class="card-header">
+          <h2 class="card-title"><i data-lucide="cpu"></i> AI</h2>
+          <a href="ai/" class="card-link">View all <i data-lucide="arrow-right"></i></a>
+        </div>
+        <div class="ai-model-row">
+          <div class="ai-model-label">Primary Model</div>
+          <div class="ai-model-name">GPT-4o</div>
+        </div>
+        <ul class="ai-metrics">
+          <li><span>Requests / hr</span><div class="metric-bar-wrap"><div class="metric-bar" style="--pct:72%"></div></div><span class="metric-val">72%</span></li>
+          <li><span>Token usage</span><div class="metric-bar-wrap"><div class="metric-bar metric-bar--indigo" style="--pct:58%"></div></div><span class="metric-val">58%</span></li>
+          <li><span>Cache hits</span><div class="metric-bar-wrap"><div class="metric-bar metric-bar--emerald" style="--pct:84%"></div></div><span class="metric-val">84%</span></li>
+          <li><span>Errors</span><div class="metric-bar-wrap"><div class="metric-bar metric-bar--rose" style="--pct:2%"></div></div><span class="metric-val">2%</span></li>
+        </ul>
+        <p class="ai-cost-row"><i data-lucide="zap"></i> Est. cost today: <strong>$4.82</strong></p>
+      </section>
+    </div>
+
+    <!-- Row: Timeline + Quick Actions -->
+    <div class="row-2 row-2--wide">
+      <section class="card timeline-card" aria-label="Activity timeline">
+        <div class="card-header">
+          <h2 class="card-title"><i data-lucide="clock"></i> Recent Activity</h2>
+          <span class="timeline-today">Today</span>
+        </div>
+        <ol class="timeline">
+          <li class="tl-item tl-item--blue">
+            <time class="tl-time">09:42</time>
+            <div class="tl-dot"></div>
+            <div class="tl-body"><p class="tl-title">New user registered</p><p class="tl-sub">budi.santoso@gmail.com joined MEA</p></div>
+          </li>
+          <li class="tl-item tl-item--indigo">
+            <time class="tl-time">09:15</time>
+            <div class="tl-dot"></div>
+            <div class="tl-body"><p class="tl-title">AI request spike detected</p><p class="tl-sub">+340 requests in 5 min — auto-scaled</p></div>
+          </li>
+          <li class="tl-item tl-item--emerald">
+            <time class="tl-time">08:50</time>
+            <div class="tl-dot"></div>
+            <div class="tl-body"><p class="tl-title">OAuth token refreshed</p><p class="tl-sub">drive.user@company.com — token renewed</p></div>
+          </li>
+        </ol>
+        <a href="analytics/" class="view-all-link">View all activity <i data-lucide="arrow-right"></i></a>
+      </section>
+
+      <section class="card quick-actions-card" aria-label="Quick actions">
+        <div class="card-header">
+          <h2 class="card-title"><i data-lucide="zap"></i> Quick Actions</h2>
+        </div>
+        <div class="qa-grid">
+          <a href="users/"     class="qa-btn"><i data-lucide="users"></i><span>Manajemen Users</span></a>
+          <a href="account/"   class="qa-btn"><i data-lucide="briefcase"></i><span>Account Center</span></a>
+          <a href="ai/"        class="qa-btn"><i data-lucide="cpu"></i><span>AI Center</span></a>
+          <a href="settings/"  class="qa-btn"><i data-lucide="settings"></i><span>Settings</span></a>
+        </div>
+      </section>
+    </div>
+
+  </div>
+</main>
+
+<script src="assets/js/sidebar.js"></script>
+<!-- Phase 1: live stats fetcher (fires mea:stats-ready when done) -->
+<script src="assets/js/dashboard-stats.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
