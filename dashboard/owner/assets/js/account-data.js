@@ -39,12 +39,30 @@
 
       try {
         // Eksekusi kueri secara paralel untuk performa yang optimal
-        const [gmailRes, driveRes, oauthRes, logsRes] = await Promise.all([
-          global.MEASupabase.from('gmail_accounts').select('*').order('created_at', { ascending: false }),
-          global.MEASupabase.from('drive_accounts').select('*').order('created_at', { ascending: false }),
-          global.MEASupabase.from('oauth_services').select('*').order('created_at', { ascending: false }),
-          global.MEASupabase.from('system_logs').select('*').order('created_at', { ascending: false })
-        ]);
+        const results = await Promise.allSettled([
+  global.MEASupabase.from('gmail_accounts').select('*'),
+  global.MEASupabase.from('drive_accounts').select('*'),
+  global.MEASupabase.from('oauth_services').select('*'),
+  global.MEASupabase.from('system_logs').select('*')
+]);
+
+console.log(results);
+
+const gmailRes = results[0].status === 'fulfilled'
+  ? results[0].value
+  : { data: [] };
+
+const driveRes = results[1].status === 'fulfilled'
+  ? results[1].value
+  : { data: [] };
+
+const oauthRes = results[2].status === 'fulfilled'
+  ? results[2].value
+  : { data: [] };
+
+const logsRes = results[3].status === 'fulfilled'
+  ? results[3].value
+  : { data: [] };
 
         // Menangkap dan mencatat error pada masing-masing tabel dengan aman
         if (gmailRes.error) console.error('[AccountData] Error memuat gmail_accounts:', gmailRes.error);
