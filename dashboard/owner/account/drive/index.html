@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Drive Center — MEA Assistant</title>
+  <title>Gmail Center — MEA Assistant</title>
 
-  <!-- depth 2: account/drive/ → ../../ -->
+  <!-- depth 2: account/gmail/ → ../../ -->
   <link rel="stylesheet" href="../../assets/css/sidebar.css" />
   <link rel="stylesheet" href="../../style.css" />
   <link rel="stylesheet" href="style.css" />
@@ -24,10 +24,10 @@
   <!-- Wajib: sidebar shell — diisi otomatis oleh sidebar.js -->
   <aside class="sidebar" id="sidebar"></aside>
 
-  <!-- Main -->
+  <!-- Main — gunakan class "main" sesuai style.css global -->
   <main class="main" id="main">
 
-    <!-- Topbar -->
+    <!-- Topbar — wajib ada menu-btn untuk mobile -->
     <header class="topbar">
       <button class="menu-btn" id="menuBtn" aria-label="Open navigation">
         <i data-lucide="menu"></i>
@@ -36,10 +36,10 @@
         <div class="page-breadcrumb">
           <span class="breadcrumb-parent">Account Center</span>
           <i data-lucide="chevron-right"></i>
-          <span class="breadcrumb-current">Drive Center</span>
+          <span class="breadcrumb-current">Gmail Center</span>
         </div>
-        <h1 class="greeting">Drive Center</h1>
-        <p class="date-line">Manage connected Google Drive accounts, storage, synchronization and automation.</p>
+        <h1 class="greeting">Gmail Center</h1>
+        <p class="date-line">Manage connected Gmail accounts, monitoring and automation.</p>
       </div>
       <div class="topbar-right">
         <div class="live-clock" id="liveClock"></div>
@@ -69,33 +69,18 @@
         </div>
       </section>
 
-      <!-- Connected Drives -->
-      <section aria-label="Connected Drives">
+      <!-- Connected Accounts -->
+      <section aria-label="Connected Accounts">
         <div class="section-header-row">
           <h2 class="section-title">
-            <i data-lucide="hard-drive"></i> Connected Drives
+            <i data-lucide="users"></i> Connected Accounts
           </h2>
-          <button class="btn btn-ghost btn-sm" id="btn-add-drive">
-            <i data-lucide="plus"></i> Add Drive
+          <button class="btn btn-ghost btn-sm" id="btn-add-account">
+            <i data-lucide="plus"></i> Add Account
           </button>
         </div>
-        <div class="gc-accounts-grid" id="drives-grid">
+        <div class="gc-accounts-grid" id="accounts-grid">
           <!-- Rendered by script.js -->
-        </div>
-      </section>
-
-      <!-- Row: Storage Overview (full width) -->
-      <section aria-label="Storage Overview">
-        <div class="card" id="storage-overview-card">
-          <div class="card-header">
-            <h2 class="card-title">
-              <i data-lucide="database"></i> Storage Overview
-            </h2>
-            <span class="badge-pill badge-pill--blue">2.4 TB Total</span>
-          </div>
-          <div id="storage-overview-body">
-            <!-- Rendered by script.js -->
-          </div>
         </div>
       </section>
 
@@ -105,7 +90,7 @@
         <div class="card" aria-label="Automation Center">
           <div class="card-header">
             <h2 class="card-title">
-              <i data-lucide="settings-2"></i> Drive Automation
+              <i data-lucide="settings-2"></i> Gmail Automation
             </h2>
             <span class="badge-pill badge-pill--blue" id="auto-active-count">3 Active</span>
           </div>
@@ -127,7 +112,7 @@
 
       </div>
 
-      <!-- Row: Activity + Top Storage Users -->
+      <!-- Row: Activity + Storage -->
       <div class="row-2">
 
         <div class="card" aria-label="Recent Activity">
@@ -142,13 +127,13 @@
           </div>
         </div>
 
-        <div class="card" aria-label="Top Storage Users">
+        <div class="card" aria-label="Storage Overview">
           <div class="card-header">
             <h2 class="card-title">
-              <i data-lucide="bar-chart-2"></i> Top Storage Users
+              <i data-lucide="database"></i> Gmail Storage
             </h2>
           </div>
-          <div id="top-users-body">
+          <div class="gc-storage-body" id="storage-body">
             <!-- Rendered by script.js -->
           </div>
         </div>

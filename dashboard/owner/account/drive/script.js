@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════
-   Drive Center — script.js
-   owner/account/drive/script.js
+   Gmail Center — script.js
+   owner/account/gmail/script.js
    Architecture: Data Layer → UI Layer → Actions Layer
    Supabase integration: NOT YET — placeholder arrays only
 ════════════════════════════════════════════════ */
@@ -11,35 +11,45 @@
    DATA LAYER
    Replace with Supabase queries when integrating
 ════════════════════════════════════════════════ */
-const DriveData = (() => {
+const GmailData = (() => {
 
   const summaryStats = [
     {
-      id: 'connected-drives',
-      label: 'Connected Drives',
+      id: 'connected-accounts',
+      label: 'Connected Accounts',
       value: '12',
       trend: '+2 this month',
       trendType: 'up',
-      icon: 'hard-drive',
       iconColor: 'blue',
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+               <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+               <circle cx="9" cy="7" r="4"/>
+               <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+             </svg>`,
     },
     {
-      id: 'total-storage',
-      label: 'Total Storage',
-      value: '2.4 TB',
-      trend: '1.6 TB used',
-      trendType: 'neutral',
-      icon: 'database',
-      iconColor: 'indigo',
-    },
-    {
-      id: 'files-managed',
-      label: 'Files Managed',
-      value: '84,312',
-      trend: '+1,204 today',
+      id: 'unread-messages',
+      label: 'Unread Messages',
+      value: '248',
+      trend: '18 new today',
       trendType: 'up',
-      icon: 'files',
+      iconColor: 'red',
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+               <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+               <polyline points="22,6 12,13 2,6"/>
+             </svg>`,
+    },
+    {
+      id: 'automation-rules',
+      label: 'Automation Rules',
+      value: '16',
+      trend: '3 active now',
+      trendType: 'neutral',
       iconColor: 'violet',
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+               <circle cx="12" cy="12" r="3"/>
+               <path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/>
+             </svg>`,
     },
     {
       id: 'last-sync',
@@ -47,111 +57,143 @@ const DriveData = (() => {
       value: '2m',
       trend: 'All synced',
       trendType: 'up',
-      icon: 'refresh-cw',
       iconColor: 'emerald',
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+               <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+               <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+             </svg>`,
     },
   ];
 
   const quickActions = [
-    { id: 'add-drive',        label: 'Add Drive',          icon: 'plus',         variant: 'primary' },
-    { id: 'sync-all',         label: 'Sync All Drives',    icon: 'refresh-cw',   variant: '' },
-    { id: 'generate-report',  label: 'Generate Report',    icon: 'file-text',    variant: '' },
-    { id: 'open-drive',       label: 'Open Google Drive',  icon: 'external-link',variant: '' },
+    {
+      id: 'add-account',
+      label: 'Add Gmail Account',
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+               <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+             </svg>`,
+      variant: 'primary',
+    },
+    {
+      id: 'sync-all',
+      label: 'Sync All Accounts',
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+               <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+               <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+             </svg>`,
+      variant: '',
+    },
+    {
+      id: 'generate-report',
+      label: 'Generate Report',
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+               <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+               <polyline points="14 2 14 8 20 8"/>
+               <line x1="16" y1="13" x2="8" y2="13"/>
+               <line x1="16" y1="17" x2="8" y2="17"/>
+               <polyline points="10 9 9 9 8 9"/>
+             </svg>`,
+      variant: '',
+    },
+    {
+      id: 'open-gmail',
+      label: 'Open Gmail',
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+               <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+               <polyline points="15 3 21 3 21 9"/>
+               <line x1="10" y1="14" x2="21" y2="3"/>
+             </svg>`,
+      variant: '',
+    },
   ];
 
-  const connectedDrives = [
+  const connectedAccounts = [
     {
-      id: 'drv-1',
+      id: 'acc-1',
       email: 'owner@mea.id',
       role: 'Primary Owner',
       status: 'active',
       avatarColor: '#2563eb',
-      storageUsed: 820,
-      storageTotal: 1000,
-      storageUnit: 'GB',
-      storageBarColor: '#3b82f6',
+      storageUsed: 15.2,
+      storageTotal: 30,
+      storageBarColor: 'blue',
       lastSync: '2 min ago',
     },
     {
-      id: 'drv-2',
+      id: 'acc-2',
       email: 'admin@mea.id',
       role: 'Admin',
       status: 'active',
       avatarColor: '#6366f1',
-      storageUsed: 430,
-      storageTotal: 1000,
-      storageUnit: 'GB',
-      storageBarColor: '#6366f1',
+      storageUsed: 8.7,
+      storageTotal: 30,
+      storageBarColor: 'indigo',
       lastSync: '5 min ago',
     },
     {
-      id: 'drv-3',
+      id: 'acc-3',
       email: 'ops@mea.id',
       role: 'Operations',
       status: 'warning',
       avatarColor: '#8b5cf6',
-      storageUsed: 390,
-      storageTotal: 400,
-      storageUnit: 'GB',
-      storageBarColor: '#8b5cf6',
-      lastSync: '42 min ago',
+      storageUsed: 22.1,
+      storageTotal: 30,
+      storageBarColor: 'violet',
+      lastSync: '38 min ago',
     },
   ];
 
-  const storageOverview = {
-    usedTB: 1.64,
-    totalTB: 2.4,
-    breakdown: [
-      { label: 'owner@mea.id', size: '820 GB', pct: 82, color: '#3b82f6', avatarColor: '#2563eb' },
-      { label: 'admin@mea.id', size: '430 GB', pct: 43, color: '#6366f1', avatarColor: '#6366f1' },
-      { label: 'ops@mea.id',   size: '390 GB', pct: 98, color: '#8b5cf6', avatarColor: '#8b5cf6' },
-    ],
-    meta: [
-      { label: 'Used Storage',      value: '1.64 TB', dot: '#3b82f6' },
-      { label: 'Remaining Storage', value: '0.76 TB', dot: '#e2e8f0' },
-      { label: 'Total Storage',     value: '2.4 TB',  dot: '#94a3b8' },
-    ],
-  };
-
   const automationRules = [
     {
-      id: 'auto-backup',
-      name: 'Automatic Backup',
-      desc: 'Daily backup at 02:00 WIB',
+      id: 'auto-forward',
+      name: 'Auto Forwarding',
+      desc: 'Forward emails to Telegram',
       enabled: true,
-      icon: 'save',
       iconColor: 'blue',
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+               <polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 00-4-4H4"/>
+             </svg>`,
     },
     {
-      id: 'folder-monitoring',
-      name: 'Folder Monitoring',
-      desc: 'Watch shared folders for changes',
+      id: 'smart-labels',
+      name: 'Smart Labels',
+      desc: 'Auto-label by sender & keyword',
       enabled: true,
-      icon: 'folder-open',
       iconColor: 'violet',
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+               <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
+               <line x1="7" y1="7" x2="7.01" y2="7"/>
+             </svg>`,
+    },
+    {
+      id: 'daily-summary',
+      name: 'Daily Summary',
+      desc: 'Send digest at 08:00 WIB',
+      enabled: true,
+      iconColor: 'emerald',
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+               <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+               <line x1="16" y1="2" x2="16" y2="6"/>
+               <line x1="8" y1="2" x2="8" y2="6"/>
+               <line x1="3" y1="10" x2="21" y2="10"/>
+             </svg>`,
     },
     {
       id: 'telegram-alerts',
       name: 'Telegram Alerts',
-      desc: 'Push storage alerts to bot',
-      enabled: true,
-      icon: 'send',
-      iconColor: 'emerald',
-    },
-    {
-      id: 'daily-reports',
-      name: 'Daily Reports',
-      desc: 'Send usage report at 08:00 WIB',
+      desc: 'Push priority emails to bot',
       enabled: false,
-      icon: 'bar-chart-2',
       iconColor: 'orange',
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+               <path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/>
+             </svg>`,
     },
   ];
 
   const syncStatus = [
     {
-      id: 'drive-api',
-      name: 'Google Drive API Status',
+      id: 'google-api',
+      name: 'Google API Status',
       sub: 'OAuth2 connection',
       status: 'healthy',
       value: null,
@@ -160,7 +202,7 @@ const DriveData = (() => {
     {
       id: 'last-sync',
       name: 'Last Sync',
-      sub: 'Full drive synchronization',
+      sub: 'Full inbox synchronization',
       status: 'healthy',
       value: '2 min ago',
       badge: null,
@@ -170,7 +212,7 @@ const DriveData = (() => {
       name: 'Successful Syncs',
       sub: 'Last 30 days',
       status: 'healthy',
-      value: '2,841',
+      value: '1,284',
       badge: null,
     },
     {
@@ -178,34 +220,82 @@ const DriveData = (() => {
       name: 'Failed Syncs',
       sub: 'Last 30 days',
       status: 'warning',
-      value: '2',
+      value: '3',
       badge: 'Warning',
     },
   ];
 
   const activityItems = [
-    { id: 'act-1', text: 'Folder synchronized',           time: '2 min ago',  icon: 'refresh-cw',   dotColor: 'blue'   },
-    { id: 'act-2', text: 'Backup completed',               time: '1 hr ago',   icon: 'save',          dotColor: 'emerald'},
-    { id: 'act-3', text: 'Storage report generated',       time: '8 hr ago',   icon: 'file-text',     dotColor: 'violet' },
-    { id: 'act-4', text: 'New shared folder detected',     time: '1 day ago',  icon: 'folder-plus',   dotColor: 'orange' },
-    { id: 'act-5', text: 'Security verification completed',time: '2 days ago', icon: 'shield-check',  dotColor: 'indigo' },
+    {
+      id: 'act-1',
+      text: 'Inbox synchronized',
+      time: '2 min ago',
+      dotColor: 'blue',
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+               <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+               <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+             </svg>`,
+    },
+    {
+      id: 'act-2',
+      text: 'New forwarding rule created',
+      time: '18 min ago',
+      dotColor: 'violet',
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+               <circle cx="12" cy="12" r="3"/>
+               <path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/>
+             </svg>`,
+    },
+    {
+      id: 'act-3',
+      text: 'Daily summary generated',
+      time: '8 hr ago',
+      dotColor: 'emerald',
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+               <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+               <polyline points="14 2 14 8 20 8"/>
+             </svg>`,
+    },
+    {
+      id: 'act-4',
+      text: 'Spam cleanup completed',
+      time: '1 day ago',
+      dotColor: 'orange',
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+               <polyline points="3 6 5 6 21 6"/>
+               <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+               <path d="M10 11v6M14 11v6"/>
+             </svg>`,
+    },
+    {
+      id: 'act-5',
+      text: 'Security verification completed',
+      time: '2 days ago',
+      dotColor: 'indigo',
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+             </svg>`,
+    },
   ];
 
-  const topUsers = [
-    { rank: 1, email: 'owner@mea.id', size: '820 GB', pct: 82, avatarColor: '#2563eb', barColor: '#3b82f6' },
-    { rank: 2, email: 'admin@mea.id', size: '430 GB', pct: 43, avatarColor: '#6366f1', barColor: '#6366f1' },
-    { rank: 3, email: 'ops@mea.id',   size: '390 GB', pct: 98, avatarColor: '#8b5cf6', barColor: '#8b5cf6' },
-  ];
+  const storageData = {
+    usedGB: 46,
+    totalGB: 90,
+    breakdown: [
+      { label: 'Primary', size: '15.2 GB', pct: 33, color: '#3b82f6', dotColor: '#3b82f6' },
+      { label: 'Admin',   size: '8.7 GB',  pct: 19, color: '#6366f1', dotColor: '#6366f1' },
+      { label: 'Ops',     size: '22.1 GB', pct: 48, color: '#8b5cf6', dotColor: '#8b5cf6' },
+    ],
+  };
 
   return {
     getSummaryStats:    () => summaryStats,
     getQuickActions:    () => quickActions,
-    getConnectedDrives: () => connectedDrives,
-    getStorageOverview: () => storageOverview,
+    getConnectedAccounts: () => connectedAccounts,
     getAutomationRules: () => automationRules,
     getSyncStatus:      () => syncStatus,
     getActivityItems:   () => activityItems,
-    getTopUsers:        () => topUsers,
+    getStorageData:     () => storageData,
   };
 })();
 
@@ -213,59 +303,57 @@ const DriveData = (() => {
 /* ════════════════════════════════════════════════
    UI LAYER
 ════════════════════════════════════════════════ */
-const DriveUI = (() => {
+const GmailUI = (() => {
 
   /* ── Summary Cards ── */
   function renderSummary() {
     const grid = document.getElementById('summary-grid');
     if (!grid) return;
-    grid.innerHTML = DriveData.getSummaryStats().map(s => `
-      <div class="stat-card" data-stat="${s.id}">
-        <div class="stat-top">
-          <div class="stat-icon stat-icon--${s.iconColor}">
-            <i data-lucide="${s.icon}"></i>
-          </div>
-          <span class="stat-trend stat-trend--${s.trendType}">${s.trend}</span>
+    grid.innerHTML = GmailData.getSummaryStats().map(s => `
+      <div class="gc-stat-card" data-stat="${s.id}">
+        <div class="gc-stat-top">
+          <div class="gc-stat-icon gc-stat-icon--${s.iconColor}">${s.icon}</div>
+          <span class="gc-stat-trend gc-stat-trend--${s.trendType}">${s.trend}</span>
         </div>
-        <div class="stat-value">${s.value}</div>
-        <div class="stat-label">${s.label}</div>
+        <div>
+          <div class="gc-stat-value">${s.value}</div>
+          <div class="gc-stat-label">${s.label}</div>
+        </div>
       </div>
     `).join('');
-    lucide.createIcons();
   }
 
   /* ── Quick Actions Bar ── */
   function renderActions() {
     const bar = document.getElementById('actions-bar');
     if (!bar) return;
-    const btns = DriveData.getQuickActions().map(a => `
+    const btns = GmailData.getQuickActions().map(a => `
       <button class="gc-action-btn${a.variant ? ' gc-action-btn--' + a.variant : ''}" data-action="${a.id}">
-        <i data-lucide="${a.icon}"></i>
+        ${a.icon}
         <span>${a.label}</span>
       </button>
     `).join('');
     bar.innerHTML = `<span class="gc-actions-label">Quick Actions</span>${btns}`;
-    lucide.createIcons();
   }
 
-  /* ── Connected Drives ── */
-  function renderDrives() {
-    const grid = document.getElementById('drives-grid');
+  /* ── Connected Accounts ── */
+  function renderAccounts() {
+    const grid = document.getElementById('accounts-grid');
     if (!grid) return;
-    grid.innerHTML = DriveData.getConnectedDrives().map(drv => {
-      const initials = drv.email.split('@')[0].slice(0, 2).toUpperCase();
-      const pct = Math.round((drv.storageUsed / drv.storageTotal) * 100);
+    grid.innerHTML = GmailData.getConnectedAccounts().map(acc => {
+      const initials = acc.email.split('@')[0].slice(0, 2).toUpperCase();
+      const pct = Math.round((acc.storageUsed / acc.storageTotal) * 100);
       return `
-        <div class="gc-account-card" data-drive="${drv.id}">
+        <div class="gc-account-card" data-account="${acc.id}">
           <div class="gc-acct-top">
-            <div class="gc-acct-avatar" style="background:${drv.avatarColor}">${initials}</div>
+            <div class="gc-acct-avatar" style="background:${acc.avatarColor}">${initials}</div>
             <div class="gc-acct-info">
-              <div class="gc-acct-email" title="${drv.email}">${drv.email}</div>
-              <div class="gc-acct-role">${drv.role}</div>
+              <div class="gc-acct-email" title="${acc.email}">${acc.email}</div>
+              <div class="gc-acct-role">${acc.role}</div>
             </div>
-            <span class="gc-status-badge gc-status-badge--${drv.status}">
+            <span class="gc-status-badge gc-status-badge--${acc.status}">
               <span class="gc-status-dot"></span>
-              ${drv.status === 'active' ? 'Active' : 'Warning'}
+              ${acc.status === 'active' ? 'Active' : 'Warning'}
             </span>
           </div>
 
@@ -273,98 +361,40 @@ const DriveUI = (() => {
             <div class="gc-mini-bar-wrap">
               <div class="gc-mini-bar-row">
                 <span class="gc-acct-stat-label">Storage</span>
-                <span class="gc-acct-stat-val">${drv.storageUsed} ${drv.storageUnit} / ${drv.storageTotal} ${drv.storageUnit}</span>
+                <span class="gc-acct-stat-val">${acc.storageUsed} GB / ${acc.storageTotal} GB</span>
               </div>
               <div class="gc-mini-bar-track">
-                <div class="gc-mini-bar-fill" style="width:${pct}%; background:${drv.storageBarColor}"></div>
+                <div class="gc-mini-bar-fill gc-mini-bar-fill--${acc.storageBarColor}" style="width:${pct}%"></div>
               </div>
             </div>
             <div class="gc-acct-stat-row">
               <span class="gc-acct-stat-label">Last Sync</span>
-              <span class="gc-acct-stat-val">${drv.lastSync}</span>
+              <span class="gc-acct-stat-val">${acc.lastSync}</span>
             </div>
           </div>
 
           <div class="gc-acct-footer">
-            <button class="gc-manage-btn" data-drive-manage="${drv.id}">
-              <i data-lucide="settings-2"></i>
-              Manage Drive
+            <button class="gc-manage-btn" data-account-manage="${acc.id}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/>
+              </svg>
+              Manage Account
             </button>
           </div>
         </div>
       `;
     }).join('');
-    lucide.createIcons();
-  }
-
-  /* ── Storage Overview ── */
-  function renderStorageOverview() {
-    const body = document.getElementById('storage-overview-body');
-    if (!body) return;
-    const d = DriveData.getStorageOverview();
-    const pct = Math.round((d.usedTB / d.totalTB) * 100);
-    const circ = 2 * Math.PI * 54; // r=54
-    const offset = circ - (pct / 100) * circ;
-
-    const metaRows = d.meta.map(m => `
-      <div class="dc-storage-meta-row">
-        <span class="dc-storage-meta-label">
-          <span class="dc-storage-meta-dot" style="background:${m.dot}"></span>
-          ${m.label}
-        </span>
-        <span class="dc-storage-meta-val">${m.value}</span>
-      </div>
-    `).join('');
-
-    const accountBars = d.breakdown.map(b => {
-      const initials = b.label.split('@')[0].slice(0, 2).toUpperCase();
-      return `
-        <div class="dc-storage-account-row">
-          <div class="dc-storage-account-meta">
-            <div class="dc-storage-account-info">
-              <div class="dc-storage-avatar" style="background:${b.avatarColor}">${initials}</div>
-              <span class="dc-storage-account-email">${b.label}</span>
-            </div>
-            <span class="dc-storage-account-size">${b.size}</span>
-          </div>
-          <div class="dc-storage-bar-track">
-            <div class="dc-storage-bar-prog" style="width:${b.pct}%; background:${b.color}"></div>
-          </div>
-        </div>
-      `;
-    }).join('');
-
-    body.innerHTML = `
-      <div class="dc-storage-overview">
-        <div class="dc-storage-left">
-          <div class="dc-donut-wrap">
-            <svg viewBox="0 0 120 120">
-              <circle class="dc-donut-ring" cx="60" cy="60" r="54"/>
-              <circle class="dc-donut-fill" cx="60" cy="60" r="54"
-                style="stroke-dasharray:${circ.toFixed(1)};stroke-dashoffset:${offset.toFixed(1)}"
-              />
-            </svg>
-            <div class="dc-donut-label">
-              <span class="dc-donut-pct">${pct}%</span>
-              <span class="dc-donut-sub">Used</span>
-            </div>
-          </div>
-          <div class="dc-storage-meta">${metaRows}</div>
-        </div>
-        <div class="dc-storage-right">${accountBars}</div>
-      </div>
-    `;
   }
 
   /* ── Automation Toggles ── */
   function renderAutomation() {
     const list = document.getElementById('automation-list');
     if (!list) return;
-    list.innerHTML = DriveData.getAutomationRules().map(r => `
+    const rules = GmailData.getAutomationRules();
+    list.innerHTML = rules.map(r => `
       <div class="gc-toggle-item" data-rule="${r.id}">
-        <div class="gc-toggle-icon gc-toggle-icon--${r.iconColor}">
-          <i data-lucide="${r.icon}"></i>
-        </div>
+        <div class="gc-toggle-icon gc-toggle-icon--${r.iconColor}">${r.icon}</div>
         <div class="gc-toggle-info">
           <div class="gc-toggle-name">${r.name}</div>
           <div class="gc-toggle-desc">${r.desc}</div>
@@ -376,7 +406,8 @@ const DriveUI = (() => {
         </label>
       </div>
     `).join('');
-    lucide.createIcons();
+
+    // Update active count label
     updateAutoCount();
   }
 
@@ -390,7 +421,7 @@ const DriveUI = (() => {
   function renderSyncStatus() {
     const list = document.getElementById('sync-list');
     if (!list) return;
-    list.innerHTML = DriveData.getSyncStatus().map(item => `
+    list.innerHTML = GmailData.getSyncStatus().map(item => `
       <div class="gc-sync-item" data-sync="${item.id}">
         <span class="gc-sync-indicator gc-sync-indicator--${item.status}"></span>
         <div class="gc-sync-info">
@@ -409,57 +440,57 @@ const DriveUI = (() => {
   function renderActivity() {
     const tl = document.getElementById('activity-timeline');
     if (!tl) return;
-    tl.innerHTML = DriveData.getActivityItems().map(item => `
+    tl.innerHTML = GmailData.getActivityItems().map(item => `
       <div class="gc-timeline-item">
-        <div class="gc-timeline-dot gc-timeline-dot--${item.dotColor}">
-          <i data-lucide="${item.icon}"></i>
-        </div>
+        <div class="gc-timeline-dot gc-timeline-dot--${item.dotColor}">${item.icon}</div>
         <div class="gc-timeline-info">
           <div class="gc-timeline-text">${item.text}</div>
           <div class="gc-timeline-time">${item.time}</div>
         </div>
       </div>
     `).join('');
-    lucide.createIcons();
   }
 
-  /* ── Top Storage Users ── */
-  function renderTopUsers() {
-    const body = document.getElementById('top-users-body');
+  /* ── Storage Overview ── */
+  function renderStorage() {
+    const body = document.getElementById('storage-body');
     if (!body) return;
-    body.innerHTML = `
-      <div class="dc-top-users">
-        ${DriveData.getTopUsers().map(u => {
-          const initials = u.email.split('@')[0].slice(0, 2).toUpperCase();
-          return `
-            <div class="dc-top-user-item">
-              <span class="dc-top-user-rank">#${u.rank}</span>
-              <div class="dc-top-user-avatar" style="background:${u.avatarColor}">${initials}</div>
-              <div class="dc-top-user-info">
-                <div class="dc-top-user-email">${u.email}</div>
-              </div>
-              <div class="dc-top-user-bar-wrap">
-                <div class="dc-top-user-bar-track">
-                  <div class="dc-top-user-bar-fill" style="width:${u.pct}%; background:${u.barColor}"></div>
-                </div>
-                <div class="dc-top-user-size">${u.size}</div>
-              </div>
-            </div>
-          `;
-        }).join('')}
-      </div>
-    `;
-  }
+    const d = GmailData.getStorageData();
+    const pct = Math.round((d.usedGB / d.totalGB) * 100);
+    // SVG donut: circumference for r=28 ≈ 175.9
+    const circ = 2 * Math.PI * 28;
+    const offset = circ - (pct / 100) * circ;
 
-  /* ── Live Clock ── */
-  function startClock() {
-    const el = document.getElementById('liveClock');
-    if (!el) return;
-    const tick = () => {
-      el.textContent = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    };
-    tick();
-    setInterval(tick, 1000);
+    const bars = d.breakdown.map(b => `
+      <div class="gc-storage-bar-item">
+        <div class="gc-storage-bar-meta">
+          <span class="gc-storage-bar-name">
+            <span class="gc-storage-bar-dot" style="background:${b.dotColor}"></span>
+            ${b.label}
+          </span>
+          <span class="gc-storage-bar-size">${b.size}</span>
+        </div>
+        <div class="gc-storage-bar-track">
+          <div class="gc-storage-bar-prog" style="width:${b.pct}%; background:${b.color}"></div>
+        </div>
+      </div>
+    `).join('');
+
+    body.innerHTML = `
+      <div class="gc-storage-donut-row">
+        <svg class="gc-storage-donut" viewBox="0 0 80 80">
+          <circle class="gc-storage-donut-ring" cx="40" cy="40" r="28"/>
+          <circle class="gc-storage-donut-fill" cx="40" cy="40" r="28"
+            style="stroke-dasharray:${circ.toFixed(1)};stroke-dashoffset:${offset.toFixed(1)}"
+          />
+        </svg>
+        <div class="gc-storage-summary">
+          <div class="gc-storage-pct">${pct}%</div>
+          <div class="gc-storage-pct-label">${d.usedGB} GB used of ${d.totalGB} GB</div>
+        </div>
+      </div>
+      <div class="gc-storage-bars">${bars}</div>
+    `;
   }
 
   /* ── Sidebar ── */
@@ -474,13 +505,11 @@ const DriveUI = (() => {
     renderSidebar();
     renderSummary();
     renderActions();
-    renderDrives();
-    renderStorageOverview();
+    renderAccounts();
     renderAutomation();
     renderSyncStatus();
     renderActivity();
-    renderTopUsers();
-    startClock();
+    renderStorage();
   }
 
   return { renderAll, updateAutoCount };
@@ -490,52 +519,52 @@ const DriveUI = (() => {
 /* ════════════════════════════════════════════════
    ACTIONS LAYER
 ════════════════════════════════════════════════ */
-const DriveActions = (() => {
+const GmailActions = (() => {
 
   function onActionClick(actionId) {
     const handlers = {
-      'add-drive':       () => console.log('[Drive] Add Drive'),
+      'add-account':     () => console.log('[Gmail] Add Gmail Account'),
       'sync-all':        () => {
-        console.log('[Drive] Sync All Drives');
-        // TODO: call Apps Script trigger / Supabase function
+        console.log('[Gmail] Sync All Accounts');
+        // TODO: call Supabase function / Apps Script trigger
       },
-      'generate-report': () => console.log('[Drive] Generate Report'),
-      'open-drive':      () => window.open('https://drive.google.com', '_blank'),
+      'generate-report': () => console.log('[Gmail] Generate Report'),
+      'open-gmail':      () => window.open('https://mail.google.com', '_blank'),
     };
     const fn = handlers[actionId];
     if (fn) fn();
   }
 
-  function onManageDrive(driveId) {
-    console.log(`[Drive] Manage drive: ${driveId}`);
-    // TODO: navigate to drive detail or open modal
+  function onManageAccount(accountId) {
+    console.log(`[Gmail] Manage account: ${accountId}`);
+    // TODO: navigate to account detail page or open modal
   }
 
   function onToggleRule(ruleId, enabled) {
-    console.log(`[Drive] Toggle rule "${ruleId}": ${enabled}`);
-    DriveUI.updateAutoCount();
+    console.log(`[Gmail] Toggle rule "${ruleId}": ${enabled}`);
+    GmailUI.updateAutoCount();
     // TODO: update Supabase row for automation rule
   }
 
   function onRefresh() {
-    console.log('[Drive] Refresh requested');
+    console.log('[Gmail] Refresh requested');
     // TODO: re-fetch from Supabase
   }
 
   function bindAll() {
-    // Quick actions
+    // Quick action buttons
     document.getElementById('actions-bar')?.addEventListener('click', e => {
       const btn = e.target.closest('[data-action]');
       if (btn) onActionClick(btn.dataset.action);
     });
 
-    // Add drive shortcut
-    document.getElementById('btn-add-drive')?.addEventListener('click', () => onActionClick('add-drive'));
+    // Add account (section header shortcut)
+    document.getElementById('btn-add-account')?.addEventListener('click', () => onActionClick('add-account'));
 
-    // Manage drive buttons
-    document.getElementById('drives-grid')?.addEventListener('click', e => {
-      const btn = e.target.closest('[data-drive-manage]');
-      if (btn) onManageDrive(btn.dataset.driveManage);
+    // Manage account buttons
+    document.getElementById('accounts-grid')?.addEventListener('click', e => {
+      const btn = e.target.closest('[data-account-manage]');
+      if (btn) onManageAccount(btn.dataset.accountManage);
     });
 
     // Automation toggles
@@ -544,12 +573,12 @@ const DriveActions = (() => {
       if (input) onToggleRule(input.dataset.toggleRule, input.checked);
     });
 
-    // Refresh
+    // Refresh header button
     document.getElementById('btn-refresh-header')?.addEventListener('click', onRefresh);
 
-    // View all activity
+    // View all activity (placeholder)
     document.getElementById('btn-view-all-activity')?.addEventListener('click', () => {
-      console.log('[Drive] View all activity');
+      console.log('[Gmail] View all activity');
     });
   }
 
@@ -561,6 +590,6 @@ const DriveActions = (() => {
    INIT
 ════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
-  DriveUI.renderAll();
-  DriveActions.bindAll();
+  GmailUI.renderAll();
+  GmailActions.bindAll();
 });
