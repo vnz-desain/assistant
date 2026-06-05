@@ -136,12 +136,12 @@ function bindEvents() {
 }
 
 /* ════════════════════════════════════════════════
-   DATA — SUPABASE
+   DATA — MEASupabase
 ════════════════════════════════════════════════ */
 async function loadUsers() {
   setLoading(true);
   try {
-    const { data, error } = await supabase
+    const { data, error } = await MEASupabase
       .from('users')
       .select('id, full_name, username, email, role, status, created_at, last_login')
       .order('created_at', { ascending: false });
@@ -437,7 +437,7 @@ async function updateUserStatus(id, status) {
 
 async function updateUserRole(id, role, name) {
   try {
-    const { error } = await supabase
+    const { error } = await MEASupabase
       .from('users')
       .update({ role })
       .eq('id', id);
