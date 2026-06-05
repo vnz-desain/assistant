@@ -247,7 +247,23 @@ async function handleRegister() {
      *   Pastikan anon key memiliki izin INSERT ke public.users,
      *   atau gunakan service-role key di server (jangan di client!).
      */
-
+    // ── OPSI B — Aktifkan jika trigger belum ada ──────────────────
+    const { error: insertError } = await MEASupabase
+      .from("users")
+      .insert({
+        auth_id        : authData.user.id,
+        full_name      : fullName,
+        username       : username,
+        email          : email,
+        role           : "member", // Pastikan CONFIG.DEFAULT_ROLE terdefinisi atau ganti manual
+        status         : initialStatus,
+        email_verified : false,
+      });
+    
+    if (insertError) {
+      console.error("[Register] Insert public.users gagal:", insertError);
+    }
+     
     // ── OPSI B — aktifkan jika trigger belum ada ──────────────────
     // const { error: insertError } = await MEASupabase
     //   .from("users")
