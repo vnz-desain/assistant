@@ -51,16 +51,20 @@ function setUI(state, title, desc, actions = "") {
   }
 
   /* ── 1. Baca hash dari URL (Supabase kirim di fragment #) ────── */
-  const hash   = window.location.hash.substring(1);
-  const params = new URLSearchParams(hash);
+  console.log("HASH:", hash);
+console.log("TYPE:", params.get("type"));
+console.log("URL:", window.location.href);
   const type   = params.get("type");
 
   /*
    * Supabase JS v2 secara otomatis memproses token dari URL hash
    * saat halaman load — cukup panggil getSession() setelah itu.
    */
+  console.log("Checking session...");
   const { data: { session }, error: sessionError } =
     await client.auth.getSession();
+  console.log("Session:", session);
+console.log("Session Error:", sessionError);
 
   if (sessionError || !session) {
     setUI(
