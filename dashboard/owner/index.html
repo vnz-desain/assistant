@@ -3,133 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MEA Assistant — Owner Dashboard</title>
+  <title>Dashboard — MEA Assistant</title>
+  <!-- Favicon injected by sidebar.js -->
+  <link rel="stylesheet" href="assets/css/sidebar.css" />
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
 
 <div class="drawer-overlay" id="drawerOverlay"></div>
 
-<!-- ── SIDEBAR ── -->
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-header">
-    <div class="logo-wrap">
-      <!--
-        MEA Logo — two mirrored diamond wings
-        Each wing: upper rhombus (bright red) + lower pentagon (dark crimson)
-        with a narrow white gap between wings and between upper/lower halves
-      -->
-      <svg class="mea-logo" viewBox="0 0 72 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="MEA Logo">
-        <defs>
-          <linearGradient id="wingL-top" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#FF1A1A"/>
-            <stop offset="100%" stop-color="#CC0000"/>
-          </linearGradient>
-          <linearGradient id="wingL-bot" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#990000"/>
-            <stop offset="100%" stop-color="#5C0000"/>
-          </linearGradient>
-          <linearGradient id="wingR-top" x1="1" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#FF1A1A"/>
-            <stop offset="100%" stop-color="#CC0000"/>
-          </linearGradient>
-          <linearGradient id="wingR-bot" x1="1" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#990000"/>
-            <stop offset="100%" stop-color="#5C0000"/>
-          </linearGradient>
-        </defs>
-
-        <!-- LEFT WING — upper rhombus (bright red face) -->
-        <polygon points="2,2  33,2  26,25  9,25" fill="url(#wingL-top)"/>
-        <!-- LEFT WING — upper inner shadow face -->
-        <polygon points="26,2  33,2  26,25" fill="#B80000" opacity="0.6"/>
-
-        <!-- gap row (white = body bg) -->
-
-        <!-- LEFT WING — lower pentagon (dark crimson) -->
-        <polygon points="9,28  26,28  33,54  2,54" fill="url(#wingL-bot)"/>
-        <!-- LEFT WING — lower inner highlight -->
-        <polygon points="26,28  33,28  33,54" fill="#7A0000" opacity="0.5"/>
-
-        <!-- RIGHT WING — upper rhombus -->
-        <polygon points="70,2  39,2  46,25  63,25" fill="url(#wingR-top)"/>
-        <!-- RIGHT WING — upper inner shadow face -->
-        <polygon points="46,2  39,2  46,25" fill="#B80000" opacity="0.6"/>
-
-        <!-- RIGHT WING — lower pentagon -->
-        <polygon points="63,28  46,28  39,54  70,54" fill="url(#wingR-bot)"/>
-        <!-- RIGHT WING — lower inner highlight -->
-        <polygon points="46,28  39,28  39,54" fill="#7A0000" opacity="0.5"/>
-      </svg>
-      <div class="logo-glow"></div>
-    </div>
-    <div class="logo-text">
-      <span class="logo-name">MEA</span>
-      <span class="logo-sub">Assistant</span>
-    </div>
-  </div>
-
-  <nav class="sidebar-nav" aria-label="Main navigation">
-    <ul>
-      <li class="nav-item active">
-        <a href="index.html" aria-current="page">
-          <i data-lucide="layout-dashboard"></i>
-          <span>Overview</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="users/">
-          <i data-lucide="users"></i>
-          <span>Users</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="account/">
-          <i data-lucide="briefcase"></i>
-          <span>Account</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="ai/">
-          <i data-lucide="cpu"></i>
-          <span>AI</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="analytics/">
-          <i data-lucide="bar-chart-2"></i>
-          <span>Analytics</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
-
-  <div class="sidebar-footer">
-    <nav aria-label="Settings navigation">
-      <ul>
-        <li class="nav-item">
-          <a href="settings/">
-            <i data-lucide="settings"></i>
-            <span>Settings</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
-    <div class="sidebar-profile">
-      <div class="profile-avatar">O</div>
-      <div class="profile-info">
-        <span class="profile-name">Owner</span>
-        <span class="profile-role">Super Admin</span>
-      </div>
-      <button class="profile-logout" aria-label="Logout">
-        <i data-lucide="log-out"></i>
-      </button>
-    </div>
-  </div>
-</aside>
+<!-- Sidebar — HTML injected by sidebar.js -->
+<aside class="sidebar" id="sidebar"></aside>
 
 <!-- ── MAIN ── -->
 <main class="main" id="main">
@@ -143,7 +30,7 @@
       <p class="date-line" id="dateLine"></p>
     </div>
     <div class="topbar-right">
-      <div class="live-clock" id="liveClock" aria-live="polite" aria-label="Current time"></div>
+      <div class="live-clock" id="liveClock" aria-live="polite"></div>
       <button class="icon-btn" aria-label="Notifications">
         <i data-lucide="bell"></i>
         <span class="badge">3</span>
@@ -179,8 +66,6 @@
 
     <!-- Row: Owner + Telegram -->
     <div class="row-2">
-
-      <!-- Owner Card — simplified -->
       <section class="card owner-card" aria-label="Owner profile">
         <div class="owner-row">
           <div class="owner-avatar-wrap">
@@ -200,12 +85,9 @@
         </div>
       </section>
 
-      <!-- Telegram Card -->
       <section class="card telegram-card" aria-label="Telegram integration">
         <div class="card-header">
-          <h2 class="card-title">
-            <i data-lucide="send"></i> Telegram
-          </h2>
+          <h2 class="card-title"><i data-lucide="send"></i> Telegram</h2>
           <label class="toggle-switch" aria-label="Toggle Telegram">
             <input type="checkbox" checked id="telegramToggle" />
             <span class="toggle-track"></span>
@@ -216,25 +98,15 @@
           <span>Bot connected &amp; polling</span>
         </div>
         <ul class="tg-stats">
-          <li>
-            <span class="tg-stat-label">Bot</span>
-            <span class="tg-stat-value">@MEAAssistantBot</span>
-          </li>
-          <li>
-            <span class="tg-stat-label">Messages today</span>
-            <span class="tg-stat-value">4,218</span>
-          </li>
-          <li>
-            <span class="tg-stat-label">Active chats</span>
-            <span class="tg-stat-value">182</span>
-          </li>
+          <li><span class="tg-stat-label">Bot</span><span class="tg-stat-value">@MEAAssistantBot</span></li>
+          <li><span class="tg-stat-label">Messages today</span><span class="tg-stat-value">4,218</span></li>
+          <li><span class="tg-stat-label">Active chats</span><span class="tg-stat-value">182</span></li>
         </ul>
       </section>
     </div>
 
     <!-- Row: Account Summary + AI Summary -->
     <div class="row-2">
-
       <section class="card" aria-label="Account summary">
         <div class="card-header">
           <h2 class="card-title"><i data-lucide="briefcase"></i> Accounts</h2>
@@ -243,34 +115,22 @@
         <ul class="summary-list">
           <li class="summary-item">
             <div class="summary-icon summary-icon--blue"><i data-lucide="mail"></i></div>
-            <div class="summary-info">
-              <span class="summary-name">Gmail</span>
-              <span class="summary-sub">12 connected</span>
-            </div>
+            <div class="summary-info"><span class="summary-name">Gmail</span><span class="summary-sub">12 connected</span></div>
             <span class="summary-badge">Active</span>
           </li>
           <li class="summary-item">
             <div class="summary-icon summary-icon--green"><i data-lucide="hard-drive"></i></div>
-            <div class="summary-info">
-              <span class="summary-name">Google Drive</span>
-              <span class="summary-sub">247 GB used</span>
-            </div>
+            <div class="summary-info"><span class="summary-name">Google Drive</span><span class="summary-sub">247 GB used</span></div>
             <span class="summary-badge">Active</span>
           </li>
           <li class="summary-item">
             <div class="summary-icon summary-icon--orange"><i data-lucide="key"></i></div>
-            <div class="summary-info">
-              <span class="summary-name">OAuth Tokens</span>
-              <span class="summary-sub">9 valid · 2 expiring</span>
-            </div>
+            <div class="summary-info"><span class="summary-name">OAuth Tokens</span><span class="summary-sub">9 valid · 2 expiring</span></div>
             <span class="summary-badge summary-badge--warn">Review</span>
           </li>
           <li class="summary-item">
             <div class="summary-icon summary-icon--slate"><i data-lucide="file-text"></i></div>
-            <div class="summary-info">
-              <span class="summary-name">Logs</span>
-              <span class="summary-sub">Last: 2 min ago</span>
-            </div>
+            <div class="summary-info"><span class="summary-name">Logs</span><span class="summary-sub">Last: 2 min ago</span></div>
             <span class="summary-badge">Synced</span>
           </li>
         </ul>
@@ -286,95 +146,51 @@
           <div class="ai-model-name">GPT-4o</div>
         </div>
         <ul class="ai-metrics">
-          <li>
-            <span>Requests / hr</span>
-            <div class="metric-bar-wrap"><div class="metric-bar" style="--pct: 72%"></div></div>
-            <span class="metric-val">72%</span>
-          </li>
-          <li>
-            <span>Token usage</span>
-            <div class="metric-bar-wrap"><div class="metric-bar metric-bar--indigo" style="--pct: 58%"></div></div>
-            <span class="metric-val">58%</span>
-          </li>
-          <li>
-            <span>Cache hits</span>
-            <div class="metric-bar-wrap"><div class="metric-bar metric-bar--emerald" style="--pct: 84%"></div></div>
-            <span class="metric-val">84%</span>
-          </li>
-          <li>
-            <span>Errors</span>
-            <div class="metric-bar-wrap"><div class="metric-bar metric-bar--rose" style="--pct: 2%"></div></div>
-            <span class="metric-val">2%</span>
-          </li>
+          <li><span>Requests / hr</span><div class="metric-bar-wrap"><div class="metric-bar" style="--pct:72%"></div></div><span class="metric-val">72%</span></li>
+          <li><span>Token usage</span><div class="metric-bar-wrap"><div class="metric-bar metric-bar--indigo" style="--pct:58%"></div></div><span class="metric-val">58%</span></li>
+          <li><span>Cache hits</span><div class="metric-bar-wrap"><div class="metric-bar metric-bar--emerald" style="--pct:84%"></div></div><span class="metric-val">84%</span></li>
+          <li><span>Errors</span><div class="metric-bar-wrap"><div class="metric-bar metric-bar--rose" style="--pct:2%"></div></div><span class="metric-val">2%</span></li>
         </ul>
-        <p class="ai-cost-row">
-          <i data-lucide="zap"></i> Est. cost today: <strong>$4.82</strong>
-        </p>
+        <p class="ai-cost-row"><i data-lucide="zap"></i> Est. cost today: <strong>$4.82</strong></p>
       </section>
     </div>
 
     <!-- Row: Timeline + Quick Actions -->
     <div class="row-2 row-2--wide">
-
-      <!-- Activity Timeline — 3 items + View All -->
       <section class="card timeline-card" aria-label="Activity timeline">
         <div class="card-header">
           <h2 class="card-title"><i data-lucide="clock"></i> Recent Activity</h2>
           <span class="timeline-today">Today</span>
         </div>
-        <ol class="timeline" aria-label="Recent activity list">
+        <ol class="timeline">
           <li class="tl-item tl-item--blue">
             <time class="tl-time">09:42</time>
             <div class="tl-dot"></div>
-            <div class="tl-body">
-              <p class="tl-title">New user registered</p>
-              <p class="tl-sub">budi.santoso@gmail.com joined MEA</p>
-            </div>
+            <div class="tl-body"><p class="tl-title">New user registered</p><p class="tl-sub">budi.santoso@gmail.com joined MEA</p></div>
           </li>
           <li class="tl-item tl-item--indigo">
             <time class="tl-time">09:15</time>
             <div class="tl-dot"></div>
-            <div class="tl-body">
-              <p class="tl-title">AI request spike detected</p>
-              <p class="tl-sub">+340 requests in 5 min — auto-scaled</p>
-            </div>
+            <div class="tl-body"><p class="tl-title">AI request spike detected</p><p class="tl-sub">+340 requests in 5 min — auto-scaled</p></div>
           </li>
           <li class="tl-item tl-item--emerald">
             <time class="tl-time">08:50</time>
             <div class="tl-dot"></div>
-            <div class="tl-body">
-              <p class="tl-title">OAuth token refreshed</p>
-              <p class="tl-sub">drive.user@company.com — token renewed</p>
-            </div>
+            <div class="tl-body"><p class="tl-title">OAuth token refreshed</p><p class="tl-sub">drive.user@company.com — token renewed</p></div>
           </li>
         </ol>
-        <a href="analytics/" class="view-all-link">
-          View all activity <i data-lucide="arrow-right"></i>
-        </a>
+        <a href="analytics/" class="view-all-link">View all activity <i data-lucide="arrow-right"></i></a>
       </section>
 
-      <!-- Quick Actions — 4 simplified -->
       <section class="card quick-actions-card" aria-label="Quick actions">
         <div class="card-header">
           <h2 class="card-title"><i data-lucide="zap"></i> Quick Actions</h2>
         </div>
         <div class="qa-grid">
-          <a href="users/" class="qa-btn" aria-label="Users">
-            <i data-lucide="users"></i>
-            <span>Users</span>
-          </a>
-          <a href="account/" class="qa-btn" aria-label="Account Center">
-            <i data-lucide="briefcase"></i>
-            <span>Account Center</span>
-          </a>
-          <a href="ai/" class="qa-btn" aria-label="AI Center">
-            <i data-lucide="cpu"></i>
-            <span>AI Center</span>
-          </a>
-          <a href="settings/" class="qa-btn" aria-label="Settings">
-            <i data-lucide="settings"></i>
-            <span>Settings</span>
-          </a>
+          <a href="users/"     class="qa-btn"><i data-lucide="users"></i><span>Manajemen Users</span></a>
+          <a href="account/"   class="qa-btn"><i data-lucide="briefcase"></i><span>Account Center</span></a>
+          <a href="ai/"        class="qa-btn"><i data-lucide="cpu"></i><span>AI Center</span></a>
+          <a href="settings/"  class="qa-btn"><i data-lucide="settings"></i><span>Settings</span></a>
         </div>
       </section>
     </div>
@@ -382,6 +198,7 @@
   </div>
 </main>
 
+<script src="assets/js/sidebar.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
