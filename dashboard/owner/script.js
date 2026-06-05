@@ -1,30 +1,29 @@
-/* MEA Assistant — Owner Dashboard script.js */
+/* MEA Assistant — Dashboard (owner/index.html) */
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ── Lucide icons ──
-  lucide.createIcons();
+  // Sidebar init — injects HTML, sets active, wires drawer
+  MEASidebar.init();
 
-  // ── Live clock ──
+  // Live clock
   const clockEl = document.getElementById('liveClock');
   function updateClock() {
-    const now = new Date();
-    const h = String(now.getHours()).padStart(2, '0');
-    const m = String(now.getMinutes()).padStart(2, '0');
-    const s = String(now.getSeconds()).padStart(2, '0');
-    clockEl.textContent = `${h}:${m}:${s}`;
+    const n = new Date();
+    const pad = v => String(v).padStart(2, '0');
+    clockEl.textContent = `${pad(n.getHours())}:${pad(n.getMinutes())}:${pad(n.getSeconds())}`;
   }
   updateClock();
   setInterval(updateClock, 1000);
 
-  // ── Date line ──
+  // Date line
   const dateEl = document.getElementById('dateLine');
   if (dateEl) {
-    const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    dateEl.textContent = new Date().toLocaleDateString('en-US', opts);
+    dateEl.textContent = new Date().toLocaleDateString('en-US', {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
   }
 
-  // ── Greeting ──
+  // Greeting
   const greetEl = document.getElementById('greeting');
   if (greetEl) {
     const h = new Date().getHours();
@@ -32,45 +31,25 @@ document.addEventListener('DOMContentLoaded', () => {
     greetEl.textContent = `${part}, Owner`;
   }
 
-  // ── Last login ──
+  // Last login
   const loginEl = document.getElementById('lastLogin');
   if (loginEl) {
     const d = new Date(Date.now() - 2 * 60 * 60 * 1000);
     loginEl.textContent = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + ' today';
   }
 
-  // ── Stat counter animation ──
+  // Stat counter animation
   document.querySelectorAll('.stat-value[data-count]').forEach(el => {
     const target = parseInt(el.dataset.count, 10);
-    const duration = 900;
-    const start = performance.now();
+    const start  = performance.now();
+    const dur    = 900;
     function step(now) {
-      const elapsed = now - start;
-      const progress = Math.min(elapsed / duration, 1);
-      const ease = 1 - Math.pow(1 - progress, 3);
-      el.textContent = Math.round(ease * target).toLocaleString();
-      if (progress < 1) requestAnimationFrame(step);
+      const t = Math.min((now - start) / dur, 1);
+      const e = 1 - Math.pow(1 - t, 3); // ease-out-cubic
+      el.textContent = Math.round(e * target).toLocaleString();
+      if (t < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
   });
-
-  // ── Mobile drawer ──
-  const menuBtn      = document.getElementById('menuBtn');
-  const sidebar      = document.getElementById('sidebar');
-  const overlay      = document.getElementById('drawerOverlay');
-
-  function openDrawer() {
-    sidebar.classList.add('open');
-    overlay.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeDrawer() {
-    sidebar.classList.remove('open');
-    overlay.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  menuBtn?.addEventListener('click', openDrawer);
-  overlay?.addEventListener('click', closeDrawer);
 
 });
