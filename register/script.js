@@ -163,6 +163,18 @@ async function handleRegister() {
     throw error;
   }
 
+    await MEASupabase
+  .from('users')
+  .insert({
+    auth_id: data.user.id,
+    full_name: fullName,
+    username: username,
+    email: email,
+    role: 'member',
+    status: 'active',
+    email_verified: false
+  });
+
     // Success — show success state
     document.getElementById("registerForm").hidden = true;
     document.querySelector(".auth-switch").hidden  = true;
