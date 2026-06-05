@@ -1,23 +1,25 @@
 /**
- * MEA ASSISTANT V2 — REGISTER SCRIPT
+ * MEA ASSISTANT V2 — REGISTER SCRIPT (Supabase 100%)
  * ─────────────────────────────────────────────────────────
- * Deps: ../assets/theme/config.js
+ * Deps (load order di HTML):
+ *   1. supabase CDN
+ *   2. /assets/js/supabase-client.js
+ *   3. /assets/theme/config.js
+ *   4. script.js  ← file ini
+ *
+ * NOTE: insert ke public.users dilakukan oleh SQL trigger
+ * (lihat schema-users.sql) sehingga script ini TIDAK perlu
+ * melakukan insert manual. Jika trigger belum dipasang,
+ * ada fallback insert di bawah (dikomentari, bisa diaktifkan).
+ * ─────────────────────────────────────────────────────────
  */
 
 "use strict";
 
-/* ── SHA-256 ────────────────────────────────────────────── */
-async function sha256(str) {
-  const buf = await crypto.subtle.digest(
-    "SHA-256",
-    new TextEncoder().encode(str)
-  );
-  return Array.from(new Uint8Array(buf))
-    .map(b => b.toString(16).padStart(2, "0"))
-    .join("");
-}
+/* ══════════════════════════════════════════════════════════
+   UI HELPERS
+   ══════════════════════════════════════════════════════════ */
 
-/* ── Alert helpers ──────────────────────────────────────── */
 function showAlert(msg, type = "error") {
   const box = document.getElementById("alertBox");
   box.textContent = msg;
@@ -25,75 +27,88 @@ function showAlert(msg, type = "error") {
   box.hidden      = false;
 }
 function hideAlert() {
-  document.getElementById("alertBox").hidden = true;
+  const box = document.getElementById("alertBox");
+  if (box) box.hidden = true;
 }
 
-/* ── Field error helpers ────────────────────────────────── */
-const FIELDS = ["fullName","username","email","password","confirmPassword"];
+const FIELDS = ["fullName", "username", "email", "password", "confirmPassword"];
 
 function setError(field, msg) {
   const err   = document.getElementById(field + "Err");
   const input = document.getElementById(field);
-  if (err) err.textContent = msg;
+  if (err)   err.textContent = msg;
   if (input) input.classList.toggle("error", !!msg);
 }
 function clearErrors() {
   FIELDS.forEach(f => setError(f, ""));
 }
 
-/* ── Loading state ──────────────────────────────────────── */
 function setLoading(on) {
   const btn = document.getElementById("registerBtn");
+  if (!btn) return;
   btn.classList.toggle("loading", on);
   btn.disabled = on;
 }
 
-/* ── Password toggle ─────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   PASSWORD TOGGLE
+   ══════════════════════════════════════════════════════════ */
+
 function makeToggle(btnId, inputId) {
-  document.getElementById(btnId).addEventListener("click", function() {
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+  btn.addEventListener("click", function () {
     const pw = document.getElementById(inputId);
-    pw.type = pw.type === "password" ? "text" : "password";
+    if (pw) pw.type = pw.type === "password" ? "text" : "password";
   });
 }
-makeToggle("togglePw", "password");
+makeToggle("togglePw",      "password");
 makeToggle("toggleConfirm", "confirmPassword");
 
-/* ── Password strength ──────────────────────────────────── */
-document.getElementById("password").addEventListener("input", function() {
-  const val = this.value;
-  const bar = document.getElementById("pwStrength");
-  const fill = document.getElementById("pwFill");
-  const label = document.getElementById("pwLabel");
+/* ══════════════════════════════════════════════════════════
+   PASSWORD STRENGTH
+   ══════════════════════════════════════════════════════════ */
 
-  if (!val) { bar.hidden = true; return; }
-  bar.hidden = false;
+const pwInput = document.getElementById("password");
+if (pwInput) {
+  pwInput.addEventListener("input", function () {
+    const val   = this.value;
+    const bar   = document.getElementById("pwStrength");
+    const fill  = document.getElementById("pwFill");
+    const label = document.getElementById("pwLabel");
 
-  let strength = 0;
-  if (val.length >= 8)            strength++;
-  if (/[A-Z]/.test(val))          strength++;
-  if (/[0-9]/.test(val))          strength++;
-  if (/[^A-Za-z0-9]/.test(val))   strength++;
+    if (!val || !bar) return (bar && (bar.hidden = true));
+    bar.hidden = false;
 
-  const map = ["", "weak","medium","medium","strong"];
-  const levels = ["","LEMAH","SEDANG","SEDANG","KUAT"];
-  const cls = strength <= 1 ? "weak" : strength <= 3 ? "medium" : "strong";
+    let strength = 0;
+    if (val.length >= 8)           strength++;
+    if (/[A-Z]/.test(val))         strength++;
+    if (/[0-9]/.test(val))         strength++;
+    if (/[^A-Za-z0-9]/.test(val))  strength++;
 
-  fill.className  = "pw-strength-fill " + cls;
-  label.className = "pw-strength-label " + cls;
-  label.textContent = cls === "weak" ? "LEMAH" : cls === "medium" ? "SEDANG" : "KUAT";
-});
+    const cls = strength <= 1 ? "weak" : strength <= 3 ? "medium" : "strong";
+    if (fill)  fill.className   = "pw-strength-fill "  + cls;
+    if (label) {
+      label.className   = "pw-strength-label " + cls;
+      label.textContent = cls === "weak" ? "LEMAH" : cls === "medium" ? "SEDANG" : "KUAT";
+    }
+  });
+}
 
-/* ── Validate ───────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   VALIDASI
+   ══════════════════════════════════════════════════════════ */
+
 function validate() {
   clearErrors();
   hideAlert();
   let ok = true;
 
-  const fullName  = document.getElementById("fullName").value.trim();
-  const username  = document.getElementById("username").value.trim();
-  const email     = document.getElementById("email").value.trim();
-  const password  = document.getElementById("password").value;
-  const confirm   = document.getElementById("confirmPassword").value;
+  const fullName = document.getElementById("fullName").value.trim();
+  const username = document.getElementById("username").value.trim();
+  const email    = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  const confirm  = document.getElementById("confirmPassword").value;
 
   if (!fullName) {
     setError("fullName", "Nama lengkap wajib diisi.");
@@ -111,9 +126,7 @@ function validate() {
   if (!email) {
     setError("email", "Email wajib diisi.");
     ok = false;
-  } else if (
-  !/^[^\s@]+@(gmail\.com|yahoo\.com)$/i.test(email)
-) {
+  } else if (!/^[^\s@]+@(gmail\.com|yahoo\.com)$/i.test(email)) {
     setError("email", "Hanya Gmail atau Yahoo yang diperbolehkan.");
     ok = false;
   }
@@ -137,7 +150,38 @@ function validate() {
   return ok;
 }
 
-/* ── Submit ─────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   APPROVE MODE HELPER
+   ══════════════════════════════════════════════════════════ */
+
+/**
+ * Ambil mode approve dari tabel app_settings.
+ * Jika tabel / row belum ada → default AUTO (langsung active).
+ * Owner mengubah ini melalui dashboard.
+ *
+ * Tabel: public.app_settings
+ *   key   TEXT PRIMARY KEY
+ *   value TEXT
+ *
+ *   row: { key: 'approve_mode', value: 'auto' | 'manual' }
+ */
+async function getApproveMode() {
+  try {
+    const { data } = await MEASupabase
+      .from("app_settings")
+      .select("value")
+      .eq("key", "approve_mode")
+      .single();
+    return data?.value === "manual" ? "manual" : "auto";
+  } catch {
+    return "auto"; // default fallback
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   CORE: HANDLE REGISTER
+   ══════════════════════════════════════════════════════════ */
+
 async function handleRegister() {
   if (!validate()) return;
 
@@ -149,50 +193,114 @@ async function handleRegister() {
   setLoading(true);
 
   try {
+    /* ── Step 1: Cek username belum dipakai ──────────────────────── */
+    const { data: existingUser } = await MEASupabase
+      .from("users")
+      .select("id")
+      .eq("username", username)
+      .single();
 
-  const { data, error } = await MEASupabase.auth.signUp({
-  email,
-  password,
-  options: {
-    emailRedirectTo: "https://assistant.evanalmunawar.my.id"
-  }
-});
+    if (existingUser) {
+      setError("username", "Username sudah digunakan.");
+      setLoading(false);
+      return;
+    }
 
-  if (error) {
-    throw error;
-  }
+    /* ── Step 2: Ambil approve mode ──────────────────────────────── */
+    const approveMode  = await getApproveMode();
+    const initialStatus = approveMode === "manual" ? "pending" : "active";
 
-    await MEASupabase
-  .from('users')
-  .insert({
-    auth_id: data.user.id,
-    full_name: fullName,
-    username: username,
-    email: email,
-    role: 'member',
-    status: 'active',
-    email_verified: false
-  });
+    /* ── Step 3: Daftar ke Supabase Auth ─────────────────────────── */
+    const { data: authData, error: authError } = await MEASupabase
+      .auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: "https://assistant.evanalmunawar.my.id/auth/callback/",
+          // Data ini diteruskan ke trigger SQL via raw_user_meta_data
+          data: {
+            full_name : fullName,
+            username  : username,
+            status    : initialStatus,
+          },
+        },
+      });
 
-    // Success — show success state
-    document.getElementById("registerForm").hidden = true;
-    document.querySelector(".auth-switch").hidden  = true;
-    document.getElementById("successState").hidden = false;
-    document.querySelector(".auth-title").textContent = "CEK EMAIL ANDA";
+    if (authError) {
+      if (authError.message.includes("already registered")) {
+        setError("email", "Email sudah terdaftar.");
+      } else {
+        showAlert("Gagal mendaftar: " + authError.message);
+      }
+      setLoading(false);
+      return;
+    }
+
+    /*
+     * ── Step 4: Insert ke public.users ────────────────────────────
+     *
+     * OPSI A (DIREKOMENDASIKAN): Biarkan SQL trigger yang insert.
+     *   Trigger membaca raw_user_meta_data yang sudah dikirim di Step 3.
+     *   Tidak perlu kode di sini. (Lihat schema-users.sql)
+     *
+     * OPSI B (FALLBACK): Jika trigger belum dipasang, aktifkan blok di bawah.
+     *   Pastikan anon key memiliki izin INSERT ke public.users,
+     *   atau gunakan service-role key di server (jangan di client!).
+     */
+
+    // ── OPSI B — aktifkan jika trigger belum ada ──────────────────
+    // const { error: insertError } = await MEASupabase
+    //   .from("users")
+    //   .insert({
+    //     auth_id        : authData.user.id,
+    //     full_name      : fullName,
+    //     username       : username,
+    //     email          : email,
+    //     role           : CONFIG.DEFAULT_ROLE,   // "member"
+    //     status         : initialStatus,
+    //     email_verified : false,
+    //   });
+    //
+    // if (insertError) {
+    //   console.error("[Register] Insert public.users gagal:", insertError);
+    //   // Lanjutkan tetap — user sudah ada di auth.users
+    //   // Admin dapat fix manual di Supabase dashboard
+    // }
+    // ─────────────────────────────────────────────────────────────
+
+    /* ── Step 5: Tampilkan success state ─────────────────────────── */
+    const registerForm  = document.getElementById("registerForm");
+    const authSwitch    = document.querySelector(".auth-switch");
+    const successState  = document.getElementById("successState");
+    const authTitle     = document.querySelector(".auth-title");
+
+    if (registerForm) registerForm.hidden = true;
+    if (authSwitch)   authSwitch.hidden   = true;
+    if (successState) successState.hidden = false;
+    if (authTitle)    authTitle.textContent = "CEK EMAIL ANDA";
+
     showAlert(
-  "Link verifikasi telah dikirim ke email Anda. Silakan cek inbox atau spam.",
-  "success"
-);
+      approveMode === "manual"
+        ? "Pendaftaran berhasil! Cek email untuk verifikasi, lalu tunggu persetujuan administrator."
+        : "Link verifikasi dikirim ke email. Silakan cek inbox atau folder spam.",
+      "success"
+    );
 
   } catch (err) {
-    console.error("Register error:", err);
+    console.error("[Register] Unexpected error:", err);
     showAlert("Gagal terhubung ke server. Coba lagi.");
     setLoading(false);
   }
 }
 
-/* ── Events ─────────────────────────────────────────────── */
-document.getElementById("registerBtn").addEventListener("click", handleRegister);
-document.getElementById("registerForm").addEventListener("keydown", function(e) {
-  if (e.key === "Enter") handleRegister();
-});
+/* ══════════════════════════════════════════════════════════
+   EVENT LISTENERS
+   ══════════════════════════════════════════════════════════ */
+
+document.getElementById("registerBtn")
+  .addEventListener("click", handleRegister);
+
+document.getElementById("registerForm")
+  .addEventListener("keydown", function (e) {
+    if (e.key === "Enter") handleRegister();
+  });
