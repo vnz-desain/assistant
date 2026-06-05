@@ -17,8 +17,8 @@
   // Replace these two values with your actual Supabase project credentials.
   // Do NOT commit real keys to public repos — use environment injection
   // or a build-time secret manager for production.
-  const SUPABASE_URL  = 'https://YOUR_PROJECT_ID.supabase.co';
-  const SUPABASE_ANON = 'YOUR_ANON_PUBLIC_KEY';
+  const SUPABASE_URL  = 'https://xztlfssdzdtusxvnphne.supabase.co';
+  const SUPABASE_ANON = 'sb_publishable_Yd4ZIKHVT86qulfKasA8mA_V4Wsrio_';
   // ─────────────────────────────────────────────────────────
 
   let _client = null;
