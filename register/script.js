@@ -147,33 +147,21 @@ async function handleRegister() {
   setLoading(true);
 
   try {
-    const hash = await sha256(password);
 
-    const formData = new URLSearchParams();
-
-formData.append("action", "register");
-formData.append("fullName", fullName);
-formData.append("username", username);
-formData.append("email", email);
-formData.append("passwordHash", hash);
-
-const res = await fetch(CONFIG.API_URL, {
-  method: "POST",
-  body: formData
-});
-    const data = await res.json();
-
-    if (!data.success) {
-      if (data.code === "USERNAME_TAKEN") {
-        setError("username", "Username sudah digunakan.");
-      } else if (data.code === "EMAIL_TAKEN") {
-        setError("email", "Email sudah terdaftar.");
-      } else {
-        showAlert(data.message || "Registrasi gagal. Coba lagi.");
+  const { data, error } = await MEASupabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        full_name: fullName,
+        username: username
       }
-      setLoading(false);
-      return;
     }
+  });
+
+  if (error) {
+    throw error;
+  }
 
     // Success — show success state
     document.getElementById("registerForm").hidden = true;
