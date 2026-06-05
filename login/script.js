@@ -129,19 +129,61 @@ const password   = document.getElementById("password").value;
 setLoading(true);
 
 try {
-const hash = await sha256(password);
+async function handleLogin() {
+  if (!validate()) return;
 
-const formData = new URLSearchParams();
-formData.append("action", "login");
-formData.append("identifier", identifier);
-formData.append("passwordHash", hash);
+  const identifier = document.getElementById("identifier").value.trim();
+  const password   = document.getElementById("password").value;
 
-const res = await fetch(CONFIG.API_URL, {
-  method: "POST",
-  body: formData
-});
+  setLoading(true);
 
-const data = await res.json();
+  try {
+
+    const { data: userData, error: userError } = await MEASupabase
+      .from("users")
+      .select("*")
+      .or(`email.eq.${identifier},username.eq.${identifier}`)
+      .single();
+
+    if (userError || !userData) {
+      showAlert("Akun tidak ditemukan.");
+      setLoading(false);
+      return;
+    }
+
+    const { data, error } = await MEASupabase.auth.signInWithPassword({
+      email: userData.email,
+      password: password
+    });
+
+    if (error) {
+      showAlert("Password salah.");
+      setLoading(false);
+      return;
+    }
+
+    if (!data.user.email_confirmed_at) {
+      showAlert("Silakan verifikasi email terlebih dahulu.");
+      await MEASupabase.auth.signOut();
+      setLoading(false);
+      return;
+    }
+
+    saveSession({
+      userId: userData.id,
+      username: userData.username,
+      fullName: userData.full_name,
+      role: userData.role
+    });
+
+    redirectByRole(userData.role);
+
+  } catch (err) {
+    console.error(err);
+    showAlert("Gagal login.");
+    setLoading(false);
+  }
+}
 
 if (!data.success) {
   if (data.code === "PENDING") {
