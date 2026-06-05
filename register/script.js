@@ -181,7 +181,11 @@ async function handleRegister() {
     document.getElementById("registerForm").hidden = true;
     document.querySelector(".auth-switch").hidden  = true;
     document.getElementById("successState").hidden = false;
-    document.querySelector(".auth-title").textContent = "BERHASIL";
+    document.querySelector(".auth-title").textContent = "CEK EMAIL ANDA";
+    showAlert(
+  "Link verifikasi telah dikirim ke email Anda. Silakan cek inbox atau spam.",
+  "success"
+);
 
   } catch (err) {
     console.error("Register error:", err);
