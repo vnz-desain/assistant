@@ -49,8 +49,10 @@
 
   // Expose a thin proxy so call-sites can write:
   //   MEASupabase.from(...)   instead of   MEASupabase.client().from(...)
-  const handler = {
+    const handler = {
     get(_, prop) {
+      if (prop === 'getClient') return getClient;
+
       const client = getClient();
       if (!client) return () => Promise.resolve({ data: null, error: new Error('No client') });
       const value = client[prop];
@@ -60,7 +62,5 @@
 
   global.MEASupabase = new Proxy({}, handler);
 
-  // Also expose raw client getter for edge cases
-  global.MEASupabase.getClient = getClient;
-
 })(window);
+
