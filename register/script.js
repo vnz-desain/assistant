@@ -114,7 +114,7 @@ function validate() {
   } else if (
   !/^[^\s@]+@(gmail\.com|yahoo\.com)$/i.test(email)
 ) {
-    setError("email", "Format email tidak valid.");
+    setError("email", "Hanya Gmail atau Yahoo yang diperbolehkan.");
     ok = false;
   }
 
