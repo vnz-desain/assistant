@@ -44,7 +44,7 @@ function setUI(state, title, desc, actions = "") {
 /* ── Main ───────────────────────────────────────────────── */
 
 (async function handleCallback() {
-  const client = MEASupabase.getClient();
+  const client = MEASupabase;
   if (!client) {
     setUI("error", "Koneksi gagal", "Tidak bisa terhubung ke server.");
     return;
