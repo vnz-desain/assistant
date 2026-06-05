@@ -43,7 +43,7 @@
 
       <div class="stat-card">
         <div class="stat-label">Connected Accounts</div>
-        <div class="stat-value">12</div>
+        <div class="stat-value" id="connectedAccounts">0</div>
         <div class="stat-delta positive">
           <i data-lucide="user-check"></i>
           All accounts active
@@ -61,7 +61,7 @@
 
       <div class="stat-card">
         <div class="stat-label">Active OAuth Tokens</div>
-        <div class="stat-value">9</div>
+        <div class="stat-value" id="oauthCount">0</div>
         <div class="stat-delta positive">
           <i data-lucide="shield-check"></i>
           All tokens valid
@@ -239,7 +239,12 @@
   </div>
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
 <script src="../assets/js/sidebar.js"></script>
+<script src="../assets/js/supabase-client.js"></script>
+<script src="../assets/js/account-data.js"></script>
+
 <script src="script.js"></script>
 </body>
 </html>
