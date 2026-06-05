@@ -1,29 +1,22 @@
 /**
- * MEA ASSISTANT V2 — LOGIN SCRIPT
+ * MEA ASSISTANT V2 — LOGIN SCRIPT (Supabase 100%)
  * ─────────────────────────────────────────────────────────
- * Deps: ../assets/theme/config.js (loaded before this file)
+ * Deps (load order di HTML):
+ *   1. supabase CDN
+ *   2. /assets/js/supabase-client.js
+ *   3. /assets/theme/config.js
+ *   4. script.js  ← file ini
+ *
+ * Hapus semua referensi CONFIG.API_URL dari halaman login.
+ * ─────────────────────────────────────────────────────────
  */
 
 "use strict";
 
-/* ── Utils ─────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   UI HELPERS
+   ══════════════════════════════════════════════════════════ */
 
-/**
- * SHA-256 hash (Web Crypto API — no external lib needed)
- * @param {string} str
- * @returns {Promise<string>} hex string
- */
-async function sha256(str) {
-  const buf  = await crypto.subtle.digest(
-    "SHA-256",
-    new TextEncoder().encode(str)
-  );
-  return Array.from(new Uint8Array(buf))
-    .map(b => b.toString(16).padStart(2, "0"))
-    .join("");
-}
-
-/** Show or hide the alert box */
 function showAlert(msg, type = "error") {
   const box = document.getElementById("alertBox");
   box.textContent = msg;
@@ -31,46 +24,56 @@ function showAlert(msg, type = "error") {
   box.hidden      = false;
 }
 function hideAlert() {
-  document.getElementById("alertBox").hidden = true;
+  const box = document.getElementById("alertBox");
+  if (box) box.hidden = true;
 }
 
-/** Set field error message */
 function setError(id, msg) {
-  const el = document.getElementById(id);
-  if (el) el.textContent = msg;
+  const el    = document.getElementById(id);
   const input = document.getElementById(id.replace("Err", ""));
+  if (el)    el.textContent = msg;
   if (input) input.classList.toggle("error", !!msg);
 }
 function clearErrors() {
-  ["identifierErr","passwordErr"].forEach(id => setError(id, ""));
+  ["identifierErr", "passwordErr"].forEach(id => setError(id, ""));
 }
 
-/** Toggle loading state on submit button */
 function setLoading(on) {
   const btn = document.getElementById("loginBtn");
+  if (!btn) return;
   btn.classList.toggle("loading", on);
   btn.disabled = on;
 }
 
-/* ── Session helpers ────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   SESSION HELPERS
+   ══════════════════════════════════════════════════════════ */
 
-function saveSession(data) {
-  const session = {
-    userId    : data.userId,
-    username  : data.username,
-    fullName  : data.fullName,
-    role      : data.role,
-    loginTime : new Date().toISOString(),
+/**
+ * Simpan data profil tambahan ke localStorage.
+ * Session utama dikelola Supabase (cookie/localStorage internal).
+ */
+function saveProfileCache(userData) {
+  const profile = {
+    userId   : userData.id,
+    username : userData.username,
+    fullName : userData.full_name,
+    role     : userData.role,
+    status   : userData.status,
   };
-  localStorage.setItem(CONFIG.SESSION_KEY, JSON.stringify(session));
+  localStorage.setItem(CONFIG.SESSION_KEY, JSON.stringify(profile));
 }
 
-function getSession() {
+function getProfileCache() {
   try {
     return JSON.parse(localStorage.getItem(CONFIG.SESSION_KEY));
   } catch {
     return null;
   }
+}
+
+function clearProfileCache() {
+  localStorage.removeItem(CONFIG.SESSION_KEY);
 }
 
 function redirectByRole(role) {
@@ -79,34 +82,75 @@ function redirectByRole(role) {
   window.location.replace(dest);
 }
 
-/* ── Guard: already logged in → redirect ───────────────── */
-(function checkExistingSession() {
-  const s = getSession();
-  if (s && s.role) {
-    redirectByRole(s.role);
+/* ══════════════════════════════════════════════════════════
+   GUARD: SUDAH LOGIN → REDIRECT
+   ══════════════════════════════════════════════════════════ */
+
+(async function checkExistingSession() {
+  const client = MEASupabase.getClient();
+  if (!client) return;
+
+  const { data: { session } } = await client.auth.getSession();
+  if (!session) {
+    // Bersihkan cache lama jika session Supabase sudah habis
+    clearProfileCache();
+    return;
+  }
+
+  // Session masih valid → ambil profil dan redirect
+  const cache = getProfileCache();
+  if (cache && cache.role) {
+    redirectByRole(cache.role);
+    return;
+  }
+
+  // Cache tidak ada → fetch dari DB
+  const { data: userData } = await MEASupabase
+    .from("users")
+    .select("id, username, full_name, role, status")
+    .eq("auth_id", session.user.id)
+    .single();
+
+  if (userData && userData.status === "active") {
+    saveProfileCache(userData);
+    redirectByRole(userData.role);
   }
 })();
 
-/* ── Password toggle ────────────────────────────────────── */
-document.getElementById("togglePw").addEventListener("click", function () {
-  const pw = document.getElementById("password");
-  const isHidden = pw.type === "password";
-  pw.type = isHidden ? "text" : "password";
+/* ══════════════════════════════════════════════════════════
+   PASSWORD TOGGLE
+   ══════════════════════════════════════════════════════════ */
 
-  // Swap icon
-  document.getElementById("eyeIcon").innerHTML = isHidden
-    ? `<path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>`
-    : `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
-});
+const togglePwBtn = document.getElementById("togglePw");
+if (togglePwBtn) {
+  togglePwBtn.addEventListener("click", function () {
+    const pw       = document.getElementById("password");
+    const isHidden = pw.type === "password";
+    pw.type        = isHidden ? "text" : "password";
 
-/* ── Validate ───────────────────────────────────────────── */
+    const eyeIcon = document.getElementById("eyeIcon");
+    if (eyeIcon) {
+      eyeIcon.innerHTML = isHidden
+        ? `<path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/>
+           <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/>
+           <line x1="1" y1="1" x2="23" y2="23"/>`
+        : `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+           <circle cx="12" cy="12" r="3"/>`;
+    }
+  });
+}
+
+/* ══════════════════════════════════════════════════════════
+   VALIDASI
+   ══════════════════════════════════════════════════════════ */
+
 function validate() {
-  let ok = true;
-  const identifier = document.getElementById("identifier").value.trim();
-  const password   = document.getElementById("password").value;
-
   clearErrors();
   hideAlert();
+  let ok = true;
+
+  const identifier = document.getElementById("identifier").value.trim();
+  const password   = document.getElementById("password").value;
 
   if (!identifier) {
     setError("identifierErr", "Username atau email wajib diisi.");
@@ -119,16 +163,10 @@ function validate() {
   return ok;
 }
 
-/* ── Submit ─────────────────────────────────────────────── */
-async function handleLogin() {
-if (!validate()) return;
+/* ══════════════════════════════════════════════════════════
+   CORE: HANDLE LOGIN
+   ══════════════════════════════════════════════════════════ */
 
-const identifier = document.getElementById("identifier").value.trim();
-const password   = document.getElementById("password").value;
-
-setLoading(true);
-
-try {
 async function handleLogin() {
   if (!validate()) return;
 
@@ -138,11 +176,14 @@ async function handleLogin() {
   setLoading(true);
 
   try {
+    /* ── Step 1: Cari user di public.users (support username/email) ── */
+    const isEmail    = identifier.includes("@");
+    const filterCol  = isEmail ? "email" : "username";
 
     const { data: userData, error: userError } = await MEASupabase
       .from("users")
-      .select("*")
-      .or(`email.eq.${identifier},username.eq.${identifier}`)
+      .select("id, auth_id, email, username, full_name, role, status, email_verified")
+      .eq(filterCol, identifier)
       .single();
 
     if (userError || !userData) {
@@ -151,66 +192,76 @@ async function handleLogin() {
       return;
     }
 
-    const { data, error } = await MEASupabase.auth.signInWithPassword({
-      email: userData.email,
-      password: password
-    });
+    /* ── Step 2: Cek status akun ─────────────────────────────────── */
+    if (userData.status === "pending") {
+      showAlert("Akun kamu masih menunggu persetujuan administrator.", "warning");
+      setLoading(false);
+      return;
+    }
 
-    if (error) {
+    if (userData.status === "rejected") {
+      showAlert("Akun kamu telah ditolak. Hubungi administrator.", "error");
+      setLoading(false);
+      return;
+    }
+
+    if (userData.status !== "active") {
+      showAlert("Akun tidak aktif. Hubungi administrator.");
+      setLoading(false);
+      return;
+    }
+
+    /* ── Step 3: Supabase Auth sign-in ───────────────────────────── */
+    const { data: authData, error: authError } = await MEASupabase
+      .auth.signInWithPassword({
+        email    : userData.email,
+        password : password,
+      });
+
+    if (authError) {
+      // Supabase mengembalikan generic error untuk password salah
       showAlert("Password salah.");
       setLoading(false);
       return;
     }
 
-    if (!data.user.email_confirmed_at) {
-      showAlert("Silakan verifikasi email terlebih dahulu.");
+    /* ── Step 4: Cek email verified (via Supabase auth.users) ─────── */
+    if (!authData.user.email_confirmed_at) {
+      showAlert(
+        "Email belum diverifikasi. Cek inbox/spam untuk link verifikasi.",
+        "warning"
+      );
+      // Sign out agar tidak ada session yang tersimpan
       await MEASupabase.auth.signOut();
       setLoading(false);
       return;
     }
 
-    saveSession({
-      userId: userData.id,
-      username: userData.username,
-      fullName: userData.full_name,
-      role: userData.role
-    });
+    /* ── Step 5: Update last_login ───────────────────────────────── */
+    await MEASupabase
+      .from("users")
+      .update({ last_login: new Date().toISOString() })
+      .eq("auth_id", authData.user.id);
 
+    /* ── Step 6: Simpan profil cache & redirect ──────────────────── */
+    saveProfileCache(userData);
     redirectByRole(userData.role);
 
   } catch (err) {
-    console.error(err);
-    showAlert("Gagal login.");
+    console.error("[Login] Unexpected error:", err);
+    showAlert("Gagal terhubung ke server. Coba lagi.");
     setLoading(false);
   }
 }
 
-if (!data.success) {
-  if (data.code === "PENDING") {
-    showAlert("Akun masih menunggu persetujuan administrator.", "warning");
-  } else if (data.code === "REJECTED") {
-    showAlert("Akun kamu telah ditolak. Hubungi administrator.", "error");
-  } else {
-    showAlert(data.message || "Username/email atau password salah.");
-  }
+/* ══════════════════════════════════════════════════════════
+   EVENT LISTENERS
+   ══════════════════════════════════════════════════════════ */
 
-  setLoading(false);
-  return;
-}
+document.getElementById("loginBtn")
+  .addEventListener("click", handleLogin);
 
-saveSession(data.user);
-redirectByRole(data.user.role);
-
-} catch (err) {
-console.error("Login error:", err);
-showAlert("Gagal terhubung ke server. Coba lagi.");
-setLoading(false);
-}
-}
-/* ── Event listeners ────────────────────────────────────── */
-document.getElementById("loginBtn").addEventListener("click", handleLogin);
-
-// Allow Enter key
-document.getElementById("loginForm").addEventListener("keydown", function (e) {
-  if (e.key === "Enter") handleLogin();
-});
+document.getElementById("loginForm")
+  .addEventListener("keydown", function (e) {
+    if (e.key === "Enter") handleLogin();
+  });
