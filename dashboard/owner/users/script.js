@@ -142,9 +142,12 @@ async function loadUsers() {
   setLoading(true);
   try {
     const { data, error } = await MEASupabase
-      .from('users')
-      .select('id, full_name, username, email, role, status, created_at, last_login')
-      .order('created_at', { ascending: false });
+  .from('users')
+  .select('id, full_name, username, email, role, status, created_at, last_login')
+  .order('created_at', { ascending: false });
+
+console.log('USERS DATA:', data);
+console.log('USERS ERROR:', error);
 
     if (error) throw error;
 
