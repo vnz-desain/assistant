@@ -18,19 +18,25 @@
 "use strict";
 
 (async function authGuard() {
-  // Tunggu sampai CONFIG tersedia di window
-  if (typeof CONFIG === 'undefined') {
-    console.log("Menunggu CONFIG dimuat...");
-    setTimeout(authGuard, 100); // Coba lagi setelah 100ms
+  // Fungsi helper untuk menunggu config
+  const waitForConfig = () => {
+    return new Promise((resolve) => {
+      if (window.CONFIG) return resolve();
+      window.addEventListener('mea:config-ready', resolve);
+    });
+  };
+
+  // Tunggu sampai benar-benar siap
+  await waitForConfig();
+
+  // Sekarang aman untuk menggunakan CONFIG
+  const client = MEASupabase; 
+  if (!client) {
+    window.location.replace(window.CONFIG.PATHS.LOGIN);
     return;
   }
+  
 
-  // Lanjutkan logika guard Anda di bawah sini...
-  const client = MEASupabase; // Pastikan ini juga sudah didefinisikan
-  if (!client) {
-     window.location.replace(CONFIG.PATHS.LOGIN);
-     return;
-  }
 
   /* ── Cek Supabase session ───────────────────────────── */
   const { data: { session } } = await client.auth.getSession();
