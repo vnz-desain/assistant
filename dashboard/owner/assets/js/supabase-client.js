@@ -62,5 +62,20 @@
 
   global.MEASupabase = new Proxy({}, handler);
 
-})(window);
+  /**
+   * MEASupabase.onReady(fn)
+   * Calls fn(client) once the Supabase client is initialised.
+   * Safe to call before the CDN finishes loading — polls up to 3 s.
+   */
+  global.MEASupabase.onReady = function (fn) {
+    const client = getClient();
+    if (client) { fn(client); return; }
+    let attempts = 0;
+    const iv = setInterval(function () {
+      const c = getClient();
+      if (c) { clearInterval(iv); fn(c); }
+      if (++attempts > 30) clearInterval(iv); // give up after 3 s
+    }, 100);
+  };
 
+})(window);
