@@ -61,6 +61,17 @@
   const path         = window.location.pathname;
   const expectedRole = Object.entries(CONFIG.PATHS.DASHBOARD)
     .find(([, p]) => path.startsWith(p))?.[0];
+  const CONFIG = {
+  // ...
+  PATHS: {
+    DASHBOARD: {
+      owner: '/dashboard/owner/',
+      admin: '/dashboard/admin/',
+      member: '/dashboard/member/'
+    }
+  }
+};
+    
 
   if (expectedRole && userData.role !== expectedRole) {
     // User mengakses dashboard yang bukan haknya → redirect ke dashboard benar
