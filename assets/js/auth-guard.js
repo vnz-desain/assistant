@@ -1,120 +1,98 @@
 /**
- * MEA ASSISTANT V2 — AUTH GUARD
+ * MEA ASSISTANT V2 — AUTH GUARD (PRODUCTION READY)
  * ─────────────────────────────────────────────────────────
  * Include di setiap halaman dashboard SEBELUM script halaman:
  *
- *   <script src="/assets/js/auth-guard.js"></script>
- *   <script src="./script.js"></script>
- *
- * Guard akan:
- *   1. Cek session Supabase aktif
- *   2. Cek status akun = active
- *   3. Cek role sesuai halaman
- *   4. Redirect ke login jika gagal
- *   5. Expose window.MEAUser untuk dipakai script halaman
+ * <script src="/assets/js/config.js" defer></script>
+ * <script src="/assets/js/supabase-client.js" defer></script>
+ * <script src="/assets/js/auth-guard.js" defer></script>
  * ─────────────────────────────────────────────────────────
  */
 
 "use strict";
 
 (async function authGuard() {
-  // Fungsi helper untuk menunggu config
+  // 1. Helper untuk memastikan CONFIG global sudah tersedia
   const waitForConfig = () => {
     return new Promise((resolve) => {
-      if (window.CONFIG) return resolve();
+      if (typeof window.CONFIG !== 'undefined') return resolve();
       window.addEventListener('mea:config-ready', resolve);
     });
   };
 
-  // Tunggu sampai benar-benar siap
   await waitForConfig();
 
-  // Sekarang aman untuk menggunakan CONFIG
-  const client = MEASupabase; 
+  // 2. Inisialisasi Client
+  const client = typeof MEASupabase !== 'undefined' ? MEASupabase : null;
   if (!client) {
+    console.error("MEASupabase client tidak ditemukan.");
     window.location.replace(window.CONFIG.PATHS.LOGIN);
     return;
   }
-  
 
-
-  /* ── Cek Supabase session ───────────────────────────── */
-  const { data: { session } } = await client.auth.getSession();
-  if (!session) {
-    localStorage.removeItem(CONFIG.SESSION_KEY);
-    window.location.replace(CONFIG.PATHS.LOGIN);
+  // 3. Cek Supabase session aktif
+  const { data: { session }, error: sessionError } = await client.auth.getSession();
+  if (sessionError || !session) {
+    localStorage.removeItem(window.CONFIG.SESSION_KEY);
+    window.location.replace(window.CONFIG.PATHS.LOGIN);
     return;
   }
 
-  /* ── Ambil profil user dari DB ──────────────────────── */
-  const { data: userData, error } = await MEASupabase
+  // 4. Ambil profil user dari DB
+  const { data: userData, error: dbError } = await client
     .from("users")
     .select("id, username, full_name, role, status, email_verified")
     .eq("auth_id", session.user.id)
     .single();
 
-  if (error || !userData) {
+  if (dbError || !userData) {
     await client.auth.signOut();
-    localStorage.removeItem(CONFIG.SESSION_KEY);
-    window.location.replace(CONFIG.PATHS.LOGIN);
+    localStorage.removeItem(window.CONFIG.SESSION_KEY);
+    window.location.replace(window.CONFIG.PATHS.LOGIN);
     return;
   }
 
-  /* ── Cek status akun ────────────────────────────────── */
+  // 5. Cek status akun aktif
   if (userData.status !== "active") {
     await client.auth.signOut();
-    localStorage.removeItem(CONFIG.SESSION_KEY);
-    // Redirect ke login dengan pesan
+    localStorage.removeItem(window.CONFIG.SESSION_KEY);
     window.location.replace(
-      CONFIG.PATHS.LOGIN + "?reason=" + encodeURIComponent(userData.status)
+      window.CONFIG.PATHS.LOGIN + "?reason=" + encodeURIComponent(userData.status)
     );
     return;
   }
 
-  /* ── Cek role vs path ───────────────────────────────── */
-  const path         = window.location.pathname;
-  const expectedRole = Object.entries(CONFIG.PATHS.DASHBOARD)
+  // 6. Cek role vs path (Akses Control)
+  const path = window.location.pathname;
+  const expectedRole = Object.entries(window.CONFIG.PATHS.DASHBOARD)
     .find(([, p]) => path.startsWith(p))?.[0];
-  const CONFIG = {
-  // ...
-  PATHS: {
-    DASHBOARD: {
-      owner: '/dashboard/owner/',
-      admin: '/dashboard/admin/',
-      member: '/dashboard/member/'
-    }
-  }
-};
-    
 
   if (expectedRole && userData.role !== expectedRole) {
-    // User mengakses dashboard yang bukan haknya → redirect ke dashboard benar
-    const correctPath = CONFIG.PATHS.DASHBOARD[userData.role]
-      || CONFIG.PATHS.DASHBOARD.member;
+    const correctPath = window.CONFIG.PATHS.DASHBOARD[userData.role] 
+                     || window.CONFIG.PATHS.DASHBOARD.member;
     window.location.replace(correctPath);
     return;
   }
 
-  /* ── Update cache & expose global ──────────────────── */
+  // 7. Update cache & expose global
   const profile = {
-    userId   : userData.id,
-    username : userData.username,
-    fullName : userData.full_name,
-    role     : userData.role,
-    status   : userData.status,
+    userId: userData.id,
+    username: userData.username,
+    fullName: userData.full_name,
+    role: userData.role,
+    status: userData.status,
   };
-  localStorage.setItem(CONFIG.SESSION_KEY, JSON.stringify(profile));
-
-  /** Global yang bisa dipakai script dashboard:
-   *  window.MEAUser.role, .username, .fullName, dll.
-   */
+  
+  localStorage.setItem(window.CONFIG.SESSION_KEY, JSON.stringify(profile));
   window.MEAUser = profile;
 
-  /* ── Logout helper (pakai di tombol logout dashboard) ── */
+  // 8. Logout helper (bisa dipanggil dari console atau tombol logout)
   window.MEALogout = async function () {
     await client.auth.signOut();
-    localStorage.removeItem(CONFIG.SESSION_KEY);
-    window.location.replace(CONFIG.PATHS.LOGIN);
+    localStorage.removeItem(window.CONFIG.SESSION_KEY);
+    window.location.replace(window.CONFIG.PATHS.LOGIN);
   };
 
+  console.log("Auth Guard: User verified -", userData.role);
 })();
+    
