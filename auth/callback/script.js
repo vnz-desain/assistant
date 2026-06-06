@@ -168,3 +168,25 @@ console.log("Session Error:", sessionError);
   );
 
 })();
+
+// Di dalam halaman callback, setelah Supabase session terbentuk
+const { data: { session } } = await MEASupabase.auth.getSession();
+
+if (session) {
+  // Ambil role user dari tabel users
+  const { data: userData } = await MEASupabase
+    .from("users")
+    .select("role")
+    .eq("auth_id", session.user.id)
+    .single();
+
+  // Redirect berdasarkan role
+  if (userData.role === 'owner') {
+    window.location.replace('/dashboard/owner/');
+  } else if (userData.role === 'admin') {
+    window.location.replace('/dashboard/admin/');
+  } else {
+    window.location.replace('/dashboard/member/');
+  }
+}
+
