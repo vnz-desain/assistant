@@ -18,7 +18,8 @@
 "use strict";
 
 (async function authGuard() {
-  const client = MEASupabase.getClient();
+  // Ganti MEASupabase.getClient() menjadi MEASupabase saja
+const client = MEASupabase; 
   if (!client) {
     window.location.replace(CONFIG.PATHS.LOGIN);
     return;
