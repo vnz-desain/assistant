@@ -3,12 +3,15 @@
 <head>
   <!-- WAJIB diletakkan di paling atas head atau sebelum skrip lain -->
 <!-- Ubah path agar sesuai dengan lokasi file yang benar -->
-  <script src="/assets/theme/config.js"></script> 
+  <!-- 1. Pustaka Utama -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-  <script src="assets/js/supabase-client.js"></script>
+<!-- 2. Konfigurasi dan Setup Lokal -->
+<script src="assets/theme/config.js" defer></script> 
+<script src="assets/js/supabase-client.js" defer></script>
 
-  <script src="/assets/js/auth-guard.js"></script>
+<!-- 3. Guard -->
+<script src="assets/js/auth-guard.js" defer></script>
   
   
   <meta charset="UTF-8" />
